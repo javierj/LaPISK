@@ -1,0 +1,32 @@
+V1:
+http://boardgamegeek.com/wiki/page/BGG_XML_API&redirectedfrom=XML_API#
+
+Game stats: http://www.boardgamegeek.com/xmlapi/boardgame/2860?stats=1
+Game Hitorial: http://www.boardgamegeek.com/xmlapi/boardgame/35424,2860?historical=1
+( cada cuanto tiempos e registra ?)
+
+Toda la colección de un jugador.
+http://www.boardgamegeek.com/xmlapi/collection/eekspider
+
+
+V2:
+http://boardgamegeek.com/wiki/page/BGG_XML_API2#
+
+The root path for all requests in the XMLAPI2 are prefixed as follows. These queries can be made on any domain and are interchangeable. Example paths:
+
+http://www.boardgamegeek.com/xmlapi2/
+http://www.rpggeek.com/xmlapi2/
+http://www.videogamegeek.com/xmlapi2/
+
+-------------------
+
+
+De los uegos no puedo llegfar a los usuarios, no puedo saber un juego cuantos usuarios lo tienen.
+Necesito saber todos los usuarios e ir cribándolos,
+
+Peo si puedo ver los comentarios d eun juego y sus fans, por ahí puedo llegar a algunos usuarios.
+
+Sí, viene cuantos jugadores lo poseen, y si pulsas click, entonces te sale una lista de esos jugadores. Lo que no sé es si estos e puede hacer por API o por web scrapping.
+
+¿Cómo puedo detectar cuando un jugador riene una copia del juego u otra? ¿Tengo que hacer web scrapping?
+
