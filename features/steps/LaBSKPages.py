@@ -1,3 +1,5 @@
+__author__ = 'Javier'
+
 from bs4 import UnicodeDammit, BeautifulSoup
 from bs4.element import Tag
 from LaBSKPage import LaBSKPage

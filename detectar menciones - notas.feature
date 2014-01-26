@@ -101,8 +101,10 @@ scenatio ¿cómo detecto una mención en un mensaje?
 soup = BeautifulSoup(urlopen("http://labsk.net/index.php?action=unread;all"))
 Sólamente para usuarios registrados.
 
+from urllib2 import urlopen
+
 Novedades actualidad : http://labsk.net/index.php?board=18.0;sort=last_post;desc
-soup = BeautifulSoup(urlopen("http://labsk.net/index.php?board=18.0"))
+soup = BeautifulSoup(urlopen("http://labsk.net/index.php?board=18.0;sort=last_post;desc"))
 
 Si funciona.
 
