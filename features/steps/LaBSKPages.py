@@ -7,10 +7,7 @@ from LaBSKPage import LaBSKPage
 
 class LaBSKMessagesPage(LaBSKPage):
     def __init__(self, webclient):
-        #LaBSKPage.__init__(self, webclient)
         super(LaBSKMessagesPage, self).__init__(webclient)
-        #self.webclient = webclient
-        #self.soup = BeautifulSoup(webclient.sourceCode())
 
 
     def count(self, word):
@@ -30,9 +27,10 @@ class LaBSKMessagesPage(LaBSKPage):
 
     def manage_next_page(self):
         nextlink = self.search_next_page()
-        #print "Next link ", nextlink
         if nextlink == None:
+            print "No more pages"
             return False
+        print "Next page "
         self.webclient.load(nextlink)
         self.soup = BeautifulSoup(self.webclient.sourceCode())
         return True

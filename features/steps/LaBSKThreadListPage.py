@@ -20,9 +20,11 @@ class LaBSKThreadListPage(LaBSKPage):
             field = line.find("td", "subject windowbg2")
             if self.title_contains_word(field, word):
                 count += 1
+                print "Skipping ", self.getURLForThread(field)
             else:
                 if field <> None:
                     url = self.getURLForThread(field)
+                    print "Searching in ", url
                     page = self.msgpages_factory.create(url)
                     count += page.count(word)
 

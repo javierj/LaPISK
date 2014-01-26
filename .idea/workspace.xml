@@ -13,8 +13,8 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/LaBSK-API$TestLaBSKMessagesPage.coverage" NAME="TestLaBSKMessagesPage Coverage Results" MODIFIED="1390734447671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/unittest" />
-    <SUITE FILE_PATH="coverage/LaBSK-API$serach_in_noticias.coverage" NAME="serach_in_noticias Coverage Results" MODIFIED="1390738247040" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/realtest" />
-    <SUITE FILE_PATH="coverage/LaBSK-API$TestLaBSKPages.coverage" NAME="TestLaBSKPages Coverage Results" MODIFIED="1390735948104" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/unittest" />
+    <SUITE FILE_PATH="coverage/LaBSK-API$serach_in_noticias.coverage" NAME="serach_in_noticias Coverage Results" MODIFIED="1390738799699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/realtest" />
+    <SUITE FILE_PATH="coverage/LaBSK-API$TestLaBSKPages.coverage" NAME="TestLaBSKPages Coverage Results" MODIFIED="1390738634628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/unittest" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -41,28 +41,19 @@
         <entry file="file://$PROJECT_DIR$/realtest/serach_in_noticias.py">
           <provider selected="true" editor-type-id="text-editor">
             <state line="2" column="13" selection-start="36" selection-end="36" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LaBSKMessagesPage.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/features/steps/LaBSKMessagesPage.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="23" selection-start="113" selection-end="130" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="986">
               <folding>
-                <element signature="e#0#44#0" expanded="true" />
+                <marker date="1390738176773" expanded="true" signature="23:124" placeholder="import ..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestLaBSKPages.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="TestLaBSKPages.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/unittest/TestLaBSKPages.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="20" selection-start="273" selection-end="273" vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="765">
+            <state line="9" column="20" selection-start="264" selection-end="264" vertical-scroll-proportion="0.45" vertical-offset="0" max-vertical-offset="765">
               <folding>
-                <element signature="e#23#85#0" expanded="true" />
+                <element signature="e#23#78#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -95,10 +86,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LaBSKThreadListPage.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="LaBSKThreadListPage.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/features/steps/LaBSKThreadListPage.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="0" selection-start="154" selection-end="154" vertical-scroll-proportion="0.18696883" vertical-offset="19" max-vertical-offset="850">
+            <state line="46" column="30" selection-start="155" selection-end="1607" vertical-scroll-proportion="0.0" vertical-offset="463" max-vertical-offset="884">
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
               </folding>
@@ -109,7 +100,7 @@
       <file leaf-file-name="LaBSKPages.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/features/steps/LaBSKPages.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="54" column="19" selection-start="1628" selection-end="1628" vertical-scroll-proportion="0.0" vertical-offset="599" max-vertical-offset="1020">
+            <state line="52" column="19" selection-start="1511" selection-end="1511" vertical-scroll-proportion="0.0" vertical-offset="437" max-vertical-offset="986">
               <folding>
                 <element signature="e#23#67#0" expanded="true" />
               </folding>
@@ -139,14 +130,15 @@
         <option value="$PROJECT_DIR$/LaBSKApi/LaBSKApi.py" />
         <option value="$PROJECT_DIR$/unittest/TestLaBSKMessagesPage.py" />
         <option value="$PROJECT_DIR$/LaBSKApi/WebClient.py" />
-        <option value="$PROJECT_DIR$/features/steps/LaBSKMessagesPage.py" />
         <option value="$PROJECT_DIR$/features/steps/LaBSKPage.py" />
-        <option value="$PROJECT_DIR$/unittest/TestLaBSKPages.py" />
         <option value="$PROJECT_DIR$/features/detectar_menciones.feature" />
         <option value="$PROJECT_DIR$/features/steps/LaBSKApi.py" />
         <option value="$PROJECT_DIR$/features/steps/discoverquotations.py" />
         <option value="$PROJECT_DIR$/realtest/serach_in_noticias.py" />
+        <option value="$PROJECT_DIR$/features/steps/LaBSKMessagesPage.py" />
         <option value="$PROJECT_DIR$/features/steps/LaBSKThreadListPage.py" />
+        <option value="$PROJECT_DIR$/features/steps/LaBSKPages.py" />
+        <option value="$PROJECT_DIR$/unittest/TestLaBSKPages.py" />
       </list>
     </option>
   </component>
@@ -558,18 +550,18 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32885906" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25153375" sideWeight="0.67114097" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32885906" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -641,28 +633,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/unittest/TestLaBSKPages.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="20" selection-start="273" selection-end="273" vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="765">
-          <folding>
-            <element signature="e#23#85#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/features/detectar_menciones.feature">
       <provider selected="true" editor-type-id="text-editor">
         <state line="19" column="10" selection-start="624" selection-end="665" vertical-scroll-proportion="0.0" vertical-offset="242" max-vertical-offset="595">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/features/steps/LaBSKPages.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="19" selection-start="1628" selection-end="1628" vertical-scroll-proportion="0.0" vertical-offset="599" max-vertical-offset="1020">
-          <folding>
-            <element signature="e#23#67#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -683,24 +657,35 @@
     <entry file="file://$PROJECT_DIR$/realtest/serach_in_noticias.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="13" selection-start="36" selection-end="36" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/features/steps/LaBSKMessagesPage.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="23" selection-start="113" selection-end="130" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="986">
           <folding>
-            <element signature="e#0#44#0" expanded="true" />
+            <marker date="1390738176773" expanded="true" signature="23:124" placeholder="import ..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/features/steps/LaBSKThreadListPage.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="154" selection-end="154" vertical-scroll-proportion="0.18696883" vertical-offset="19" max-vertical-offset="850">
+        <state line="46" column="30" selection-start="155" selection-end="1607" vertical-scroll-proportion="0.0" vertical-offset="463" max-vertical-offset="884">
           <folding>
             <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/features/steps/LaBSKPages.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="19" selection-start="1511" selection-end="1511" vertical-scroll-proportion="0.0" vertical-offset="437" max-vertical-offset="986">
+          <folding>
+            <element signature="e#23#67#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/unittest/TestLaBSKPages.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="20" selection-start="264" selection-end="264" vertical-scroll-proportion="0.45" vertical-offset="0" max-vertical-offset="765">
+          <folding>
+            <element signature="e#23#78#0" expanded="true" />
           </folding>
         </state>
       </provider>

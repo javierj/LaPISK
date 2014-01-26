@@ -1,8 +1,8 @@
 __author__ = 'Javier'
 
-from features.steps.LaBSKMessagesPage import LaBSKMessagesPage
+from features.steps.LaBSKPages import LaBSKMessagesPage
 from features.steps.LaBSKThreadListPage import LaBSKThreadListPage
-from LaBSKPages.web import WebClient
+from LaBSKApi.web import WebClient
 from bs4 import UnicodeDammit, BeautifulSoup
 
 import unittest
