@@ -13,11 +13,12 @@ then el resultado es 2 mencion
 Scenario: Buscar menciones en el cuerpo del mensajes de dos paginas
 
 given dos paginas de mensajes LaBSK con un listado de mensajes del juego Fief
+  and limite de 2 paginas
 when quiero saber las menciones del juego "Fief" dentro de los mensajes visitanfo ambas paginas
 then el resultado es 4 menciones
 
 
-Scenario: Buscar menciones en el listado de asuntos
+Scenario: Buscar menciones en el listado de asuntos (limite 1 por defecto)
 
 given una pagina de mensajes LaBSK con 20 asuntos
   and uno de los asuntos menciona el juego Sushi

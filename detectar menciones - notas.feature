@@ -47,6 +47,7 @@ for link in soup.find_all("a", "navPages"):
 
 /*
 from bs4 import BeautifulSoup
+from urllib2 import urlopen
 
 soup = BeautifulSoup(urlopen("http://labsk.net/index.php?topic=119300.0"))
 from bs4 import UnicodeDammit, BeautifulSoup
@@ -237,4 +238,33 @@ for line in soup.find("table", "table_grid").tbody.find_all("tr"):
 	if field <> None:
 		ud = UnicodeDammit(field.a.contents[0])
 		print ud.unicode_markup
+*/
 
+
+/*
+for link in soup.find_all("a", "navPages"):
+    link.contents[0]
+
+	
+fullmsg = soup.find_all("div", "post_wrapper")
+
+Para cada msg en fullmsg este es el usuario
+fullmsg.find('a').contents[0]
+
+Y en esta URL s epuede encontrar su Id de usuario
+fullmsg.find('a')['href']
+
+
+Vwntana con la fecha del mensaje
+
+fullmsg.find('div', 'smalltext')
+
+Fecha y hora en un mismo texto:
+fullmsg.find('div', 'smalltext').contents[2]
+
+Resultado: u' 25 de Octubre de 2013, 12:12:00 pm \xbb'
+
+
+
+
+			*/
