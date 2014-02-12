@@ -15,6 +15,12 @@ class LaBSKThreadListPage(LaBSKPage):
         self.msgpages_factory = msgpages_factory
         self.reportfactory = AsuntoFactory()
 
+    """
+    def __init__(self, page, pagelimit):
+        self.page = page
+        self.pagelimit = pagelimit
+    """
+
     def count(self, word):
         #count = 0
         report = []
@@ -22,7 +28,6 @@ class LaBSKThreadListPage(LaBSKPage):
         while morepages:
             for line in self.titles_table():
                 #field = line.find("td", "subject windowbg2")
-
                 info = self.reportfactory.create(line)
                 if word in info["title"]:
                 #if self.title_contains_word(field, word):

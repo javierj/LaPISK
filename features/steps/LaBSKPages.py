@@ -44,7 +44,6 @@ class LaBSKMessagesPage(LaBSKPage):
         super(LaBSKMessagesPage, self).__init__(webclient, pageslimit)
 
 
-
     def count(self, word):
         report = []
         self.pagecount = 0

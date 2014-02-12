@@ -4,7 +4,8 @@ from features.steps.LaBSKPages import LaBSKMessagesPage
 from features.steps.LaBSKThreadListPage import LaBSKThreadListPage
 from LaBSKApi.web import WebClient
 from bs4 import UnicodeDammit, BeautifulSoup
-from TestHTML2Objects import HTMLFactory
+
+from Harness import MockWebClient, HTMLFactory
 
 
 import unittest
@@ -55,6 +56,8 @@ class TestLaBSKThreadListPage(unittest.TestCase):
         source = BeautifulSoup(u'<td class="subject windowbg2"><div><span id="msg_1169262"><a href="http://labsk.net/index.php?topic=119300.0">Fief - Feudo Ediciones MasQueOca editara Fief en Espanyol</a></span><p>Iniciado por <a href="http://labsk.net/index.php?action=profile;u=19849" title="Ver perfil de flOrO">flOrO</a><small id="pages1169262">x <a class="navPages" href="http://labsk.net/index.php?topic=119300.0">1</a> <a class="navPages" href="http://labsk.net/index.php?topic=119300.15">2</a> <a class="navPages" href="http://labsk.net/index.php?topic=119300.30">3</a> <span onclick="expandPages(this, "http://labsk.net/index.php?topic=119300.%1$d", 45, 210, 15);" onmouseover="this.style.cursor="pointer";" style="font-weight: bold;"> ... </span><a class="navPages" href="http://labsk.net/index.php?topic=119300.210">15</a>  x</small></p></div></td>')
         page = LaBSKThreadListPage(MockWebClient())
         self.assertEqual(page.getURLForThread(source), u'http://labsk.net/index.php?topic=119300.0')
+
+
 
 if __name__ == '__main__':
     unittest.main()
