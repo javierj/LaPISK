@@ -1,9 +1,10 @@
 __author__ = 'Javier'
 
 import unittest
+
 from LaBSKApi.HTML2Objects import AsuntoFactory, MsgFactory
 from LaBSKApi.Process import ProcessThreads, ProcessMsgs
-from Harness import MockWebClient, HTMLFactory, MockMongo
+from tests.Harness import MockWebClient, HTMLFactory, MockMongo
 
 
 class MockMsgPageFactory(object):

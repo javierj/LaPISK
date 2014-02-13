@@ -2,8 +2,8 @@ from urllib2 import urlopen
 
 __author__ = 'Javier'
 
-class WebClient(object):
 
+class WebClient(object):
 
     def __init__(self, url):
         self.url = url

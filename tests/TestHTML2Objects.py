@@ -2,7 +2,6 @@ __author__ = 'Javier'
 
 import unittest
 from LaBSKApi.HTML2Objects import MsgFactory, AsuntoFactory, MsgPageFactory
-
 from Harness import MockWebClient, HTMLFactory
 
 
@@ -97,6 +96,29 @@ class TestAsuntoFactory(unittest.TestCase):
         self.factory.changeUrl(url)
 
         self.assertEqual(url, webclient.url)
+
+    def test_create_with_url(self):
+        url = "xxx"
+        factory = AsuntoFactory(url=url)
+
+        self.assertEqual(url, factory.webclient.url)
+
+    def test_append_if_valid_when_is_Valid(self):
+        l = list()
+        msg = {'tile': 'x', 'link': 'y'}
+
+        self.factory.append_if_valid(l, msg)
+
+        self.assertEquals(len(l), 1)
+
+    def test_append_if_valid_when_is_not_Valid(self):
+        l = list()
+        msg = {'tile': "", 'link': ""}
+
+        self.factory.append_if_valid(l, msg)
+
+        self.assertEquals(len(l), 0)
+
 
 
 class TestMsgPageFactory(unittest.TestCase):

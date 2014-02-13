@@ -11,7 +11,7 @@ class MsgFactory(object):
         self.soup = None
 
     # Private method
-    def createMsg(self, soupfragment, body=""):
+    def createMsg(self, soupfragment):
         result = {"user": soupfragment.find('a').contents[0],
                   "date": soupfragment.find('div', 'smalltext').contents[2],
                   "body": self._build_msg(soupfragment)
@@ -44,13 +44,14 @@ class MsgFactory(object):
         for link in self.soup.find_all("a", "navPages"):
             content = str(link.contents[0])
             #print "Search: ", content
-            if  content == ">>":
-		        return link['href']
+            if content == ">>":
+                return link['href']
         return ""
 
     def changeUrl(self, url):
         self.webclient.load(url)
         self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
+
 
 class MsgPageFactory(object):
 
@@ -60,11 +61,14 @@ class MsgPageFactory(object):
 
 class AsuntoFactory(object):
 
-    def __init__(self, webclient=None):
+    def __init__(self, webclient=None, url = None):
         self.webclient = webclient
         if webclient is not None:
             #print webclient.sourceCode()
             self.soupfragment = BeautifulSoup(webclient.sourceCode())
+        if url is not None:
+            self.webclient = WebClient(url)
+            self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
 
     def create(self, soupfragment):
         result = dict()
@@ -81,12 +85,16 @@ class AsuntoFactory(object):
 
         return result
 
+    def append_if_valid(self, l, msg):
+        if msg['link'] is not "":
+            l.append(msg)
+
     def createListOfAsuntos(self, soupFragment = None):
         if soupFragment is None:
             soupFragment = self.soupfragment
         result = list()
         for asunto in soupFragment.find("table", "table_grid").tbody.find_all("tr"):
-            result.append(self.create(asunto))
+            self.append_if_valid(result, self.create(asunto))
         return result
 
     def nextUrl(self):

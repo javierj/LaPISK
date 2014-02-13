@@ -1,14 +1,14 @@
 __author__ = 'Javier'
 
+import unittest
+
+from bs4 import BeautifulSoup
+
 from features.steps.LaBSKPages import LaBSKMessagesPage
 from features.steps.LaBSKThreadListPage import LaBSKThreadListPage
 from LaBSKApi.web import WebClient
-from bs4 import UnicodeDammit, BeautifulSoup
+from tests.Harness import MockWebClient, HTMLFactory
 
-from Harness import MockWebClient, HTMLFactory
-
-
-import unittest
 
 class MockWebClient:
     def sourceCode(self):
