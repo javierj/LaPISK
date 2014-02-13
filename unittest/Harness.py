@@ -286,19 +286,24 @@ src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/ic
     def navigation_url():
         return """
             <div class="pagelinks floatleft">Paginas: [<strong>1</strong>] <a class="navPages"
-             href="http://labsk.net/index.php?board=18.20">2</a> <a class="navPages" href="http://labsk.net/index.php?board=18.40">3</a> <span style="font-weight: bold;" onclick="expandPages(this, 'http://labsk.net/index.php?board=18.%1$d', 60, 2080, 20);" onmouseover="this.style.cursor='pointer';"> ... </span><a class="navPages" href="http://labsk.net/index.php?board=18.2080">105</a> <a class="navPages" href="http://labsk.net/index.php?board=18.20">>></a>  &nbsp;&nbsp;<a href="#bot"><strong>Ir Abajo</strong></a></div>
+             href="http://labsk.net/index.php?board=18.20">2</a> <a class="navPages"
+              href="http://labsk.net/index.php?board=18.40">3</a> <span style="font-weight: bold;"
+              > ... </span>
+              <a class="navPages" href="http://labsk.net/index.php?board=18.2080">105</a>
+              <a class="navPages" href="http://labsk.net/index.php?board=18.20">>></a>  &nbsp;&nbsp;<a href="#bot"><strong>Ir Abajo</strong></a></div>
             """
 
 
 class MockWebClient(object):
     def __init__(self, code = ""):
         self.code = code
+        self.url = ""
 
     def sourceCode(self):
         return self.code
 
     def load(self, link):
-        pass
+         self.url = link
 
 
 class MockMongo(object):
@@ -309,4 +314,4 @@ class MockMongo(object):
     def saveThread(self, thread):
         self.treadssaved += 1
         self.listofthreads.append(thread)
-        print thread
+        # print thread

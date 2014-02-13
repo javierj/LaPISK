@@ -40,6 +40,16 @@ class TestMsgFactory(unittest.TestCase):
         msg = msgs[1]
         self.assertEqual(msg['body'], u"Body")
 
+    def test_change_url(self):
+        webclient = MockWebClient(HTMLFactory.navigation_url())
+        self.factory = MsgFactory(webclient)
+        url = "xxxx"
+        self.factory.changeUrl(url)
+
+        self.assertEqual(url, webclient.url)
+
+
+
 
 class TestAsuntoFactory(unittest.TestCase):
     def setUp(self):
@@ -79,6 +89,14 @@ class TestAsuntoFactory(unittest.TestCase):
         self.assertEquals(2, len(res))
         self.assertEqual(res[0]['title'], u'1936 guerra civil -  D6')
         self.assertEqual(res[1]['title'], u'Temporada de Regionales 2014 de Edge')
+
+    def test_change_url(self):
+        webclient = MockWebClient(HTMLFactory.navigation_url())
+        self.factory = AsuntoFactory(webclient)
+        url = "xxxx"
+        self.factory.changeUrl(url)
+
+        self.assertEqual(url, webclient.url)
 
 
 class TestMsgPageFactory(unittest.TestCase):

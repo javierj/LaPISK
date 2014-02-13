@@ -2,7 +2,9 @@ from urllib2 import urlopen
 
 __author__ = 'Javier'
 
-class WebClient:
+class WebClient(object):
+
+
     def __init__(self, url):
         self.url = url
 
@@ -11,4 +13,3 @@ class WebClient:
 
     def load(self, url):
         self.url = url
-
