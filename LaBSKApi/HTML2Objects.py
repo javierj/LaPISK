@@ -63,12 +63,13 @@ class AsuntoFactory(object):
 
     def __init__(self, webclient=None, url = None):
         self.webclient = webclient
+        self.soupfragment = None
         if webclient is not None:
             #print webclient.sourceCode()
             self.soupfragment = BeautifulSoup(webclient.sourceCode())
         if url is not None:
             self.webclient = WebClient(url)
-            self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
+            #self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
 
     def create(self, soupfragment):
         result = dict()
@@ -91,6 +92,8 @@ class AsuntoFactory(object):
 
     def createListOfAsuntos(self, soupFragment = None):
         if soupFragment is None:
+            if self.soupfragment is None:
+                self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
             soupFragment = self.soupfragment
         result = list()
         for asunto in soupFragment.find("table", "table_grid").tbody.find_all("tr"):

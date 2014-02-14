@@ -29,7 +29,9 @@ limit = 3
 print "Start. Page limit ", limit
 print "-----------------------------------"
 
-threads = ProcessThreads(MongoDB(), MsgPageFactory())
+#db = MongoDB()
+db = MockMongo()
+threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(StdListener())
 threads.setPageLimit(limit)
 
