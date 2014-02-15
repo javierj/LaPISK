@@ -1,0 +1,28 @@
+
+feature generar informe de menciones
+
+scenario hilos que mencionan el juego
+
+# Buscar que tengo en la BBDD de Mongo
+given el informe de Lost Games que busca menciones del juego XX
+when obtengo el informew
+then obtengo el hilo "xxx" porque se menciona en su titulo
+
+
+scenario mensajes que mencionan el juego
+
+# Buscar que tengo en la BBDD de Mongo
+given el informe de Lost Games que busca menciones del juego XX
+when obtengo el informew
+then obtengo el hilo "xxx" con 4 mensajes porque mencionan el juego
+
+# ¿Necesito algo mas?
+
+scenario sin menciones del juego
+
+# Buscar que tengo en la BBDD de Mongo
+given el informe de Lost Games que busca menciones del juego XX
+when obtengo el informew
+then obtengo un informe vacío
+
+# No tiwne sentido que haga pruebas a este nivel de ver si hay todos los elementos del inform

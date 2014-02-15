@@ -5,19 +5,35 @@ Feature: generar informe de menciones
 
 
     Scenario: encontrar hilos que mencionan un juego
-		Given Las noticias de LaBSK
+		Given las noticias de LaBSK
 		When solicito el informe del juego "EONS"
 		Then el informe contiene el hilo "EONS, para los creadores de universos"
 
+    Scenario: encontrar hilos que mencionan una editorial
+		Given las noticias de LaBSK
+		When solicito el informe de la editorial "MasQueOca"
+		Then el informe contiene "2" hilos que la mencionan en el titulo
+        And "2" hilos que la mencionan en un mensaje
+
+
+	Scenario: encontrar mensajes que mencionan un juego
+		Given las noticias de LaBSK
+		When solicito el informe del juego "Grenadier"
+		Then obtengo el hilo con enlace "http://labsk.net/index.php?topic=127181.0"
+        And "1" mensaje del usuairo "Ech-Pi-El"
+
+    Scenario: sin menciones del juego
+		Given Las noticias de LaBSK
+		When solicito el informe del juego "Castle Rising"
+		Then el informe esta vacio
+
 """
 	Scenario: encontrar mensajes que mencionan un juego
-		given el informe de Lost Games que busca menciones del juego XX
-		when obtengo el informe
-		then obtengo el hilo "xxx" con 4 mensajes porque mencionan el juego
+		Given las noticias de LaBSK
+		When solicito el informe del juego "Mansiones"
+		Then obtengo un hilo con "2" mensajes
+
+    # AD&D no lo encuentra, no se por que
 
 
-	Scenario: sin menciones del juego
-		given Las noticias de LaBSK
-		when solicito el informe de "Lost Games" y su juego "Castle Rising" 
-		then el informe esta vacio
 """

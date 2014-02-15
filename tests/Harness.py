@@ -310,8 +310,14 @@ class MockMongo(object):
     def __init__(self):
         self.treadssaved = 0
         self.listofthreads = list()
+        self.threadscalled = 0
+        self.mockthread = {'title':""}
 
     def saveThread(self, thread):
         self.treadssaved += 1
         self.listofthreads.append(thread)
         # print thread
+
+    def threads(self):
+        self.threadscalled += 1
+        return [self.mockthread]

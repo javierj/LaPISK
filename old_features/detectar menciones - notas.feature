@@ -264,7 +264,8 @@ fullmsg.find('div', 'smalltext').contents[2]
 
 Resultado: u' 25 de Octubre de 2013, 12:12:00 pm \xbb'
 
-
+el cuerpo:
+fullmsg.find("div", "inner")
 
 
 			*/

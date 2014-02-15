@@ -1,4 +1,4 @@
-feature Detectar versiones dle juego
+feature Detectar versiones dle juego en la BGG
 
 scenario Recuperar versiones de un juego
 

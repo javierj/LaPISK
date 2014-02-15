@@ -11,3 +11,6 @@ class MongoDB(object):
 
     def saveThread(self, thread):
         self.col.insert(thread)
+
+    def threads(self):
+        return self.col.find()
