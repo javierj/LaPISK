@@ -4,10 +4,13 @@ from pymongo import MongoClient
 
 class MongoDB(object):
 
-    def __init__(self, host = "localhost", port = 27017, db="labsk"):
+    def __init__(self, host = "localhost", port = 27017, db="labsk", col = None):
         self.connection = MongoClient(host, port)
         self.db = self.connection[db]
-        self.col = self.db[db + "_test"]
+        if col is None:
+            self.col = self.db[db + "_test"]
+        else:
+            self.col = self.db[col]
 
     def saveThread(self, thread):
         self.col.insert(thread)

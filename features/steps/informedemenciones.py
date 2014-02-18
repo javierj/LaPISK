@@ -1,9 +1,17 @@
 __author__ = 'Javier'
 
-import sure
+#import sure
 from LaBSKApi.MongoDB import MongoDB
 from presenter.ReportPresenter import ReportPresenter
 from tests.Harness import MockMongo
+from expects import expect
+
+
+#
+# Helppers
+#
+def crea_informe(name = "Name", keywords = []):
+    return {'name': name, 'keywords': keywords}
 
 """
 	Scenario encontrar hilos que mencionan un juego
@@ -26,16 +34,17 @@ def given_labsk(context):
 def when_generating_report(context, word):
     presenter = ReportPresenter()
     presenter.database = context.db
-    informe = {'name': word, 'keywords': [word]}
+    informe = crea_informe(keywords=[word])
     context.informe = presenter.generateReport(informe)
     context.keyword = word
 
 
 @then('el informe contiene el hilo "{titulo_del_hilo}"')
 def assert_titulo_del_hilo(context, titulo_del_hilo):
-    # context.informe['title'].should.equal(titulo_del_hilo)
     threads = context.informe[context.keyword]
-    threads[0]['title'].should.equal(titulo_del_hilo)
+    title = threads[0]['title']
+    #title.should.equal(titulo_del_hilo)
+    expect(title).to.equal(titulo_del_hilo)
     #print "Informe: "
     #print context.informe
 
@@ -50,7 +59,7 @@ def assert_titulo_del_hilo(context, titulo_del_hilo):
 def when_generating_report_from_editor(context, word):
     presenter = ReportPresenter()
     presenter.database = context.db
-    informe = {'name': word, 'keywords': [word]}
+    informe = crea_informe(keywords=[word])
     context.informe = presenter.generateReport(informe)
     context.keyword = word
 
@@ -64,7 +73,8 @@ def assert_hilos_del_informe(context, numero):
         if context.keyword in thread['title']:
             result += 1
     #threads.should.have.length_of(count)
-    result.should.equal(count)
+    #result.should.equal(count)
+    expect(result).to.equal(count)
     #print "Informe: "
     #print context.informe
 
@@ -76,7 +86,8 @@ def assert_hilos_con_mensajes(context, numero):
     for thread in threads:
         if context.keyword in thread['title']:
             result += 1
-    threads.should.have.length_of(count + result)
+    #threads.should.have.length_of(count + result)
+    expect(threads).to.have.length(count + result)
     #result.should.equal(0)
     #print "Informe: "
     #print context.informe
@@ -91,19 +102,22 @@ def assert_hilos_con_mensajes(context, numero):
 @then(u'obtengo el hilo con enlace "{URL}"')
 def assert_Url(context, URL):
     keyword = context.keyword
-    print  context.informe
+    #print  context.informe
     threads = context.informe[keyword]
-    # Solo un hilo
-    threads.should.have.length_of(1)
+    #threads.should.have.length_of(1)
+    expect(threads).to.have.length(1)
     context.thread = threads[0]
-    context.thread['link'].should.equal(URL)
+    #context.thread['link'].should.equal(URL)
+    expect(context.thread['link']).to.equal(URL)
 
 @then(u'"{numero}" mensaje del usuairo "{usuario}"')
 def assert_messages_and_user(context, numero, usuario):
     count = int(numero)
-    context.thread['msgs'].should.have.length_of(count)
+    #context.thread['msgs'].should.have.length_of(count)
+    expect(context.thread['msgs']).to.have.length(count)
     msg = context.thread['msgs'][0]
-    msg['user'].should.equal(usuario)
+    #msg['user'].should.equal(usuario)
+    expect(msg['user']).to.equal(usuario)
 
 
 """
@@ -116,29 +130,6 @@ def assert_messages_and_user(context, numero, usuario):
 def assert_informe_vacio(context):
     #assert context.keyword not in context.informe
     threads = context.informe[context.keyword]
-    threads.should.have.length_of(0)
+    #threads.should.have.length_of(0)
+    expect(threads).to.have.length(0)
 
-
-# Exceptiones # No usado
-
-failureException = AssertionError  # es del propio lenguage
-
-def fail( msg=None):
-    """Fail immediately, with the given message."""
-    raise failureException, msg
-
-
-def failIf(expr, msg=None):
-    "Fail the test if the expression is true."
-    if expr: raise failureException, msg
-
-def failUnlessEqual(first, second, msg=None):
-    """Fail if the two objects are unequal as determined by the '=='
-       operator.
-    """
-    if not first == second:
-        raise failureException, \
-            (msg or '%r != %r' % (first, second))
-
-
-assertEqual = assertEquals = failUnlessEqual

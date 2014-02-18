@@ -1,5 +1,6 @@
 __author__ = 'Javier'
 
+from datetime import datetime
 
 class ReportBuilder(object):
 
@@ -62,6 +63,8 @@ class ReportBuilder(object):
             self.report['title'] = "Result for report " + self.report_request['name']
         else:
             self.report['title'] = "Result for report."
+        # Untested feature
+        self.report['report_date'] = datetime.date(datetime.now())
 
     # Deprecated. delete it
     def _thread_contains_keywords(self, thread, keywords):
