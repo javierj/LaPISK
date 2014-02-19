@@ -27,8 +27,7 @@ class StdListener(object):
 
 """
 18/02/2014
-limit = 2
-4 urls
+limit = 2, 4 urls, 156 msgs
 
 Total time:  0:05:17.864000
 """

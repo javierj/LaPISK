@@ -2,6 +2,11 @@ __author__ = 'Javier'
 
 from datetime import datetime
 
+class PreGeneratedReports(object):
+
+    report_asylum_games = {'name': 'Informe de Asylum Games',
+                            'keywords': ["Asylum Games", "Polis", "Mutinies", "Banjooli"]}
+
 class ReportBuilder(object):
 
     def __init__(self, db):
