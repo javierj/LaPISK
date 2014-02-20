@@ -21,13 +21,10 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 # FIX: This will fail
 reportPresenter = ReportPresenter()
+reportPresenter.database = MongoDB()
 
 @app.route("/")
 def main():
-    global reportPresenter
-    reportPresenter = ReportPresenter()
-    mongo =  MongoDB()
-    reportPresenter.database(mongo)
     return render_template('main.html', reports_url = url_for("reports"))
 
 @app.route("/reports")

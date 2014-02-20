@@ -2,7 +2,7 @@ __author__ = 'Javier'
 
 import unittest
 from presenter.ReportPresenter import ReportPresenter
-from Harness import Reports
+from Harness import Reports, MockMongo
 
 class TestReportPresenter(unittest.TestCase):
 
@@ -23,6 +23,11 @@ class TestReportPresenter(unittest.TestCase):
         result = self.presenter._toGUIMode(self.asylum, Reports.asylum_keywords)
         print result.nexttext
         post.assertEqual(len(result.nexttext), 4)
+
+    def test_set_database(self):
+        mock = MockMongo()
+        self.presenter.database = mock
+        self.assertEquals(self.presenter.database, mock)
 
 if __name__ == '__main__':
     unittest.main()

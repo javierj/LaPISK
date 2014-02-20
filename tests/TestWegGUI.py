@@ -7,6 +7,7 @@ from mockito import *
 from presenter.ReportPresenter import ReportPresenter
 from presenter.GUIModel import Text
 from webgui.helppers import GenerateHTMLFromText
+import urllib2
 
 class TestFlaskWeb(unittest.TestCase):
 
@@ -20,10 +21,14 @@ class TestFlaskWeb(unittest.TestCase):
         self.assertIsInstance(flaskweb.reportPresenter, ReportPresenter)
 
     def test_main_page_title(self):
+        mockReportPresenter = mock()
+        flaskweb.reportPresenter = mockReportPresenter
         rv = self.app.get('/')
         self.assertTitleIn("HootBoard", rv)
 
     def test_main_page_link_to_reports(self):
+        mockReportPresenter = mock()
+        flaskweb.reportPresenter = mockReportPresenter
         rv = self.app.get('/')
         self.assertLinkIn("reports", rv)
 
@@ -64,6 +69,12 @@ class TestGenerateHTMLFromText(unittest.TestCase):
         result = create.html_from(text, 2)
         self.assertEquals(result, "<p>Hola / Adios</p>")
 
+
+class TestPintToPoint(unittest.TestCase):
+
+    def test_LoadReportAsylumGame(self):
+        web = urllib2.urlopen("http://127.0.0.1:5000/reports/asylum-games")
+        #pass
 
 if __name__ == '__main__':
     unittest.main()

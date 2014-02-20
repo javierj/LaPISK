@@ -19,9 +19,10 @@ class ReportPresenter(object):
         Predefines report is declared in repowts module"
         return a text object
         """
+        assert self.db is not None
         informeBuilder = ReportBuilder(self.db)
         report = informeBuilder.build_report(PreGeneratedReports.report_asylum_games)
-        return self._(report, PreGeneratedReports.report_asylum_games)
+        return self._toGUIMode(report, PreGeneratedReports.report_asylum_games)
 
 
     def _toGUIMode(self, report, keywords):
