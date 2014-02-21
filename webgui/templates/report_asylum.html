@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HootBoardGame</title>
+</head>
+<body>
+
+Prototype 0.01 / 2014/02/19 <br/>
+Asylum Games Report. <br/>
+<hr/>
+
+{% for keyword in keywords %}
+<p><b>Keyword: {{ keyword }} </b></p>
+
+    {% for thread in report[keyword] %}
+        Thread: {{ thread['title'] }} / {{ thread['link'] }} <br/>
+        {% for msg in thread['msgs'] %}
+            {{ msg['date'] }}  / {{ msg['link'] }}
+            <br>
+            {{msg['body'] }}
+            <br>
+        {% endfor %}
+        <br>
+        <br>
+    {% endfor %}
+    <hr>
+{% endfor %}
+<hr/>
+</body>
+</html>

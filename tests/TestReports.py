@@ -1,8 +1,8 @@
 __author__ = 'Javier'
 
 import unittest
-from Harness import MockMongo
-from LaBSKApi.reports import ReportBuilder
+from Harness import MockMongo, Reports
+from LaBSKApi.reports import ReportBuilder, ReportModel
 
 class TestReportBuilder(unittest.TestCase):
 
@@ -105,6 +105,13 @@ class TestReportBuilder(unittest.TestCase):
         self.assertIn('msgs', thread)
         msgs = thread['msgs']
         self.assertEquals(msgs[0]['body'], msg['body'])
+
+
+class TestReportModel(unittest.TestCase):
+
+    def test_json_is_the_same_that_creation(self):
+        rm = ReportModel(Reports.asylum)
+        self.assertEqual(Reports.asylum, rm.json())
 
 
 if __name__ == '__main__':

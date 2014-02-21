@@ -104,3 +104,10 @@ class ReportBuilder(object):
         thread['msgs'] = msgs
         self._add_thead_to_report(keyword, thread)
 
+
+class ReportModel(object):
+    def __init__(self, json):
+        self.jsondoc = json
+
+    def json(self):
+        return self.jsondoc

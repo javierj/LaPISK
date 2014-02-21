@@ -3,7 +3,7 @@ __author__ = 'Javier'
 
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
-from presenter.ReportPresenter import ReportPresenter
+from presenter.ReportPresenter import ReportPresenter, PreGeneratedReports
 from LaBSKApi.MongoDB import MongoDB
 import helppers
 
@@ -31,9 +31,10 @@ def main():
 def reports():
     return render_template('reports.html')
 
-# Untested method
+
 @app.route("/reports/asylum-games")
 def reports_asylum_games():
+    """
     text = reportPresenter.generatePreReport_AsylumGames()
     helpper = helppers.GenerateHTMLFromText()
     if text is not None:
@@ -41,7 +42,14 @@ def reports_asylum_games():
     else:
         html = "Warning, report result was None. "
     return render_template('report.html', text = html)
+    """
 
+    # first obtaining the report
+    report = reportPresenter.getReportFor_AsylumGames()
+    # Passing the Json to the template
+    # This is a hack and shuld be changed
+    return render_template('report_asylum.html', report = report.json(), \
+                                               keywords=  PreGeneratedReports.report_asylum_games['keywords'])
 
 
 if __name__ == "__main__":
