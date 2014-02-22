@@ -2,14 +2,13 @@
 Demo for testing OpenShift with Flask.
 """
 
-from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
-    DEBUG=True,
+    DEBUG=False,
     SECRET_KEY='development key',
     USERNAME='admin',
     PASSWORD='default'

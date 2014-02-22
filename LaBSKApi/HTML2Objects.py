@@ -14,7 +14,8 @@ class MsgFactory(object):
     def createMsg(self, soupfragment):
         result = {"user": soupfragment.find('a').contents[0],
                   "date": soupfragment.find('div', 'smalltext').contents[2],
-                  "body": self._build_msg(soupfragment)
+                  "body": self._build_msg(soupfragment),
+                  "id": soupfragment.find('div', 'inner')['id']
                  }
         return result
 
@@ -75,15 +76,17 @@ class AsuntoFactory(object):
         result = dict()
         field = soupfragment.find("td", "subject windowbg2")
         title = ""
-        link = ""
+        result["link"] = ""
+        result["answers"] = ""
+        result["views"] = ""
         if field <> None:
             title = UnicodeDammit(field.a.contents[0]).unicode_markup
-            link = soupfragment.find("td", "subject windowbg2").a['href']
-
+            result["link"] = soupfragment.find("td", "subject windowbg2").a['href']
+            result["answers"] = self._get_number_from(soupfragment.find('td', 'stats windowbg').contents[0].strip())
+            result["views"] = self._get_number_from(soupfragment.find('td', 'stats windowbg').contents[2].strip())
         result["title"]= title.strip()
-        result["link"] = link
-        #result['next_url'] = _nextUrl(soupfragment)
 
+        #result['next_url'] = _nextUrl(soupfragment)
         return result
 
     def append_if_valid(self, l, msg):
@@ -111,5 +114,8 @@ class AsuntoFactory(object):
     def changeUrl(self, url):
         self.webclient.load(url)
         self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
+
+    def _get_number_from(self, txt):
+        return txt.split(' ')[0]
 
 

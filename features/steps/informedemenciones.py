@@ -3,7 +3,6 @@ __author__ = 'Javier'
 #import sure
 from LaBSKApi.MongoDB import MongoDB
 from presenter.ReportPresenter import ReportPresenter
-from tests.Harness import MockMongo
 from expects import expect
 
 
@@ -45,8 +44,6 @@ def assert_titulo_del_hilo(context, titulo_del_hilo):
     title = threads[0]['title']
     #title.should.equal(titulo_del_hilo)
     expect(title).to.equal(titulo_del_hilo)
-    #print "Informe: "
-    #print context.informe
 
 
 """
@@ -67,30 +64,23 @@ def when_generating_report_from_editor(context, word):
 @then('el informe contiene "{numero}" hilos que la mencionan en el titulo')
 def assert_hilos_del_informe(context, numero):
     count = int(numero)
-    threads = context.informe[context.keyword]
+    all_threads = context.informe[context.keyword]
     result = 0
-    for thread in threads:
-        if context.keyword in thread['title']:
-            result += 1
+    threads = [m for m in all_threads if context.keyword in m['title']]
     #threads.should.have.length_of(count)
     #result.should.equal(count)
-    expect(result).to.equal(count)
-    #print "Informe: "
-    #print context.informe
+    #expect(result).to.equal(count)
+    expect(threads).to.have.length(count)
 
 @then('"{numero}" hilos que la mencionan en un mensaje')
 def assert_hilos_con_mensajes(context, numero):
     count = int(numero)
-    threads = context.informe[context.keyword]
-    result = 0
-    for thread in threads:
-        if context.keyword in thread['title']:
-            result += 1
+    all_threads = context.informe[context.keyword]
+    threads = [m for m in all_threads if context.keyword in m['title']]
+
     #threads.should.have.length_of(count + result)
-    expect(threads).to.have.length(count + result)
+    expect(all_threads).to.have.length(count + len(threads))
     #result.should.equal(0)
-    #print "Informe: "
-    #print context.informe
 
 """
 	Scenario: encontrar mensajes que mencionan un juego

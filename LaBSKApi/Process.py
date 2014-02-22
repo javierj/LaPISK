@@ -83,10 +83,12 @@ class ProcessThreads(object):
 
     def _createThreadStruct(self, thread, msgs):
         result = dict()
+        #result = ThreadModel.clone(thread)
         result['source'] = "LaBSK"
         result['title'] = thread['title']
         result['link'] = thread['link']
         result['msgs'] = msgs
+        result['answers'] = len(msgs)
         return result
 
 

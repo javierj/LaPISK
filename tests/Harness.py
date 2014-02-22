@@ -8,20 +8,20 @@ class HTMLFactory:
     def msg_html():
         return """
         <div class="post_wrapper">
-						<div class="poster">
-							<h4>
-								<a href="http://labsk.net/index.php?action=profile;u=19849" title="Ver perfil de flOrO">flOrO</a>
-							</h4>
+			<div class="poster">
+				<h4>
+					<a href="http://labsk.net/index.php?action=profile;u=19849" title="Ver perfil de flOrO">flOrO</a>
+					</h4>
 							<ul class="reset smalltext" id="msg_1169262_extra_info">
-								<li class="postgroup">Experimentado</li>
-								<li class="stars"><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/star.gif" alt="*" /><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/star.gif" alt="*" /><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/star.gif" alt="*" /><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/star.gif" alt="*" /></li>
-								<li class="postcount">Mensajes: 412</li>
-								<li class="postgroup">Ubicacion: Mallorca</li>
+						<li class="postgroup">Experimentado</li>
+						<li class="stars"><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/star.gif" alt="*" /><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/star.gif" alt="*" /><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/star.gif" alt="*" /><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/star.gif" alt="*" /></li>
+						<li class="postcount">Mensajes: 412</li>
+						<li class="postgroup">Ubicacion: Mallorca</li>
 								<li class="profile">
 									<ul>
 										<li><a href="http://labsk.net/index.php?action=profile;u=19849"><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/icons/profile_sm.gif" alt="Ver Perfil" title="Ver Perfil" /></a></li>
-										<li><a href="http://labsk.net/index.php?action=emailuser;sa=email;msg=1169262" rel="nofollow"><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/email_sm.gif" alt="Email" title="Email" /></a></li>
-										<li><a href="http://labsk.net/index.php?action=pm;sa=send;u=19849" title="Mensaje Privado (Desconectado)"><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/im_off.gif" alt="Mensaje Privado (Desconectado)" /></a></li>
+								<li><a href="http://labsk.net/index.php?action=emailuser;sa=email;msg=1169262" rel="nofollow"><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/email_sm.gif" alt="Email" title="Email" /></a></li>
+									<li><a href="http://labsk.net/index.php?action=pm;sa=send;u=19849" title="Mensaje Privado (Desconectado)"><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/im_off.gif" alt="Mensaje Privado (Desconectado)" /></a></li>
 									</ul>
 								</li>
 							</ul>
@@ -31,11 +31,11 @@ class HTMLFactory:
 								<div class="keyinfo">
 									<div class="messageicon">
 										<img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/post/novedad.gif" alt="" />
-									</div>
-									<h5 id="subject_1169262">
-										<a href="http://labsk.net/index.php?topic=119300.msg1169262#msg1169262" rel="nofollow">Fief - Feudo Ediciones MasQueOca editara Fief en Espanyol</a>
+								</div>
+								<h5 id="subject_1169262">
+									<a href="http://labsk.net/index.php?topic=119300.msg1169262#msg1169262" rel="nofollow">Fief - Feudo Ediciones MasQueOca editara Fief en Espanyol</a>
 									</h5>
-									<div class="smalltext">&#171; <strong> en:</strong> 25 de Octubre de 2013, 12:12:00 pm &#187;</div>
+								<div class="smalltext">&#171; <strong> en:</strong> 25 de Octubre de 2013, 12:12:00 pm &#187;</div>
 									<div id="msg_1169262_quick_mod"></div>
 								</div>
 								<ul class="reset smalltext quickbuttons">
@@ -155,7 +155,8 @@ class HTMLFactory:
 </td>
 <td class="subject windowbg2">
 <div>
-<span id="msg_1216998"><a href="http://labsk.net/index.php?topic=126314.0">Robinson Crusoe de Portal Games en espanol (al 95)</a></span>
+<span id="msg_1216998">
+<a href="http://labsk.net/index.php?topic=126314.0">Robinson Crusoe de Portal Games en espanol (al 95)</a></span>
 <p>Iniciado por <a href="http://labsk.net/index.php?action=profile;u=22255" title="Ver perfil de Borja">Borja</a>
 <small id="pages1216998"></small>
 </p>

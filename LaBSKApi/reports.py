@@ -111,3 +111,38 @@ class ReportModel(object):
 
     def json(self):
         return self.jsondoc
+
+class MsgModel(object):
+    """ Wraps a JSon containing a msg
+    """
+    def __init__(self, json):
+        self.jsondoc = json
+
+    def json(self):
+        return self.jsondoc
+
+    def body(self):
+        return self.jsondoc['body']
+
+
+class ThreadModel(object):
+    """ Wraps a JSon containing a thread
+        dont wrap msgs
+    """
+    def __init__(self, json):
+        self.jsondoc = json
+
+    def json(self):
+        return self.jsondoc
+
+    def answers(self):
+        return self.jsondoc['answers']
+
+    def views(self):
+        return self.jsondoc['views']
+
+    def source(self):
+        return self.jsondoc['source']
+
+    def title(self):
+        return self.jsondoc['title']
