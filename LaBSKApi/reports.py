@@ -6,6 +6,8 @@ class PreGeneratedReports(object):
 
     report_asylum_games = {'name': 'Informe de Asylum Games',
                             'keywords': ["Asylum Games", "Polis", "Mutinies", "Banjooli"]}
+    report_devir = {'name': 'Informe de Devir',
+                            'keywords': ["Devir"]}
 
 class ReportBuilder(object):
 

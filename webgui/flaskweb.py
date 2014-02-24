@@ -21,7 +21,7 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 # FIX: This will fail
 reportPresenter = ReportPresenter()
-reportPresenter.database = MongoDB()
+#reportPresenter.database = MongoDB()
 
 @app.route("/")
 def main():
@@ -31,8 +31,14 @@ def main():
 def reports():
     return render_template('reports.html')
 
-
 @app.route("/reports/asylum-games")
+def static_asylum_games():
+    return render_template('static_asylum_games.html')
+
+
+
+# Dynamic behaviour
+@app.route("/reports/dynamic-asylum-games")
 def reports_asylum_games():
     """
     text = reportPresenter.generatePreReport_AsylumGames()
@@ -48,7 +54,7 @@ def reports_asylum_games():
     report = reportPresenter.getReportFor_AsylumGames()
     # Passing the Json to the template
     # This is a hack and shuld be changed
-    return render_template('report_asylum.html', report = report.json(), \
+    return render_template('_static_report.html', report = report.json(), \
                                                keywords=  PreGeneratedReports.report_asylum_games['keywords'])
 
 

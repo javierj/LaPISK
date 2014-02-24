@@ -1,5 +1,6 @@
 __author__ = 'Javier'
 
+from HTML2Objects import AsuntoFactory
 
 class VoidListener(object):
     def enteringThread(self, title, link):
@@ -20,6 +21,11 @@ class VoidListener(object):
     def newMsg(self, user, body):
         pass
 
+    def newURL(self, url):
+        """ url is a web.URL object
+        """
+        pass
+
 
 class ProcessThreads(object):
     def __init__(self, database, processmsgfactory):
@@ -34,6 +40,15 @@ class ProcessThreads(object):
 
     def setPageLimit(self,limit):
         self.pagelimit = limit
+
+    def scrapListOfURL(self, listOfURLS):
+        """ Receives a list of web.URL objects
+            for each, creates a page and calls self. storeThreads
+        """
+        for url in listOfURLS:
+            self.listener.newURL(url)
+            page = AsuntoFactory(url = url.url)
+            self.storeThreads(page)
 
     def storeThreads(self, page):
         repeat = True

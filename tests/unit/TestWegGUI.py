@@ -18,11 +18,11 @@ class TestFlaskWeb(unittest.TestCase):
         self.app = flaskweb.app.test_client()
         self.baseURL = ""
         self.title = "HootBoardGame"
-
+    """
     def test_report_presenter_by_default(self):
         self.app = flaskweb.app.test_client()
         self.assertIsInstance(flaskweb.reportPresenter, ReportPresenter)
-
+    """
     def test_main_page_title(self):
         mockReportPresenter = mock()
         flaskweb.reportPresenter = mockReportPresenter
@@ -45,11 +45,16 @@ class TestFlaskWeb(unittest.TestCase):
         when(jsonMock).json().thenReturn(dict())
         when(mockReportPresenter).getReportFor_AsylumGames().thenReturn(jsonMock)
         flaskweb.reportPresenter = mockReportPresenter
-        rv = self.app.get('/reports/asylum-games')
+        rv = self.app.get('/reports/dynamic-asylum-games')
         verify(mockReportPresenter).getReportFor_AsylumGames()
 
     def testGenerateAsylumGamesReport_contains_keyword(self):
-        rv = self.app.get('/reports/asylum-games')
+        mockReportPresenter = mock()
+        jsonMock = mock()
+        when(jsonMock).json().thenReturn(dict())
+        when(mockReportPresenter).getReportFor_AsylumGames().thenReturn(jsonMock)
+        flaskweb.reportPresenter = mockReportPresenter
+        rv = self.app.get('/reports/dynamic-asylum-games')
         #report = ReportModel(Reports.asylum)
         for word in Reports.asylum_keywords:
             self.assertIn(word, rv.data)
@@ -63,6 +68,38 @@ class TestFlaskWeb(unittest.TestCase):
 
     def assertLinkIn(self, link, rv):
         self.assertIn("<a href='" + self.baseURL + "/"+link+"'", rv.data)
+
+
+class TestWebNavigation(unittest.TestCase):
+    def setUp(self):
+        #self.db_fd, flaskr.app.config['DATABASE'] = tempfile.mkstemp()
+        flaskweb.app.config['TESTING'] = True
+        self.app = flaskweb.app.test_client()
+        self.baseURL = ""
+        self.title = "HootBoardGame"
+
+    def test_report_page_links_to_static_asylum_report(self):
+        rv = self.app.get('/reports')
+        self.assertLinkIn("reports/asylum-games", rv)
+
+    def assertLinkIn(self, link, rv):
+        self.assertIn("<a href='" + self.baseURL + "/"+link+"'", rv.data)
+
+
+
+class TestStaticReports(unittest.TestCase):
+    def setUp(self):
+        #self.db_fd, flaskr.app.config['DATABASE'] = tempfile.mkstemp()
+        flaskweb.app.config['TESTING'] = True
+        self.app = flaskweb.app.test_client()
+        self.baseURL = ""
+        self.title = "HootBoardGame"
+
+    def test_report_page_links_to_static_asylum_report(self):
+        rv = self.app.get('/reports/asylum-games')
+        for word in Reports.asylum_keywords:
+            self.assertIn(word, rv.data)
+
 
 
 class TestGenerateHTMLFromText(unittest.TestCase):

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HootBoardGame</title>
+</head>
+<body>
+
+Prototype 0.01 / 2014/02/19 <br/>
+<hr/>
+<h2>{{ report['title'] }}. </h2>
+<p> Generated {{ report['report_date'] }} </p>
+<p> Para este informe se han consultado los siguientes hilos de LaBSK: {{ links }} hasta la fecha: {{ last_update }}</p>
+
+{% for keyword in keywords %}
+<p><b>Keyword: {{ keyword }} </b></p>
+
+    {% for thread in report[keyword] %}
+        <br>
+        <i>Thread: {{ thread['title'] }} </i>/ <a href=" {{ thread['link'] }}"> {{ thread['link'] }} </a> <br/>
+        {% for msg in thread['msgs'] %}
+            <br>
+            {{ msg['date'] }}  / {{ msg['link'] }}
+            <br>
+            {{msg['body'] }}
+            <br>
+        {% endfor %}
+        <br>
+        <br>
+    {% endfor %}
+    <hr>
+{% endfor %}
+<hr/>
+<p> Puedes ponerte en contacto con el desarrollor de HootBoardGame en esta direccion: hootboardgame_arroba_yahoo.es</p>
+</body>
+</html>
