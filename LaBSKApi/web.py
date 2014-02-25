@@ -22,12 +22,14 @@ class WebClient(object):
 
 
 
-labsk_urls = (URL("http://labsk.net/index.php?board=18.0;sort=last_post;desc", "Noticias"),
-        URL("http://labsk.net/index.php?board=158.0;desc", "Juegos en los medios"),
+labsk_urls = (URL("http://labsk.net/index.php?board=18.0;sort=last_post;desc", "Novedades / Actualidad"),
+        URL("http://labsk.net/index.php?board=19.0;desc", "Jornadas"),
+        #URL("http://labsk.net/index.php?board=158.0;desc", "Juegos de mesa en los medios"),
+        URL("http://labsk.net/index.php?board=4.0;desc", "Ayudas de juegos"),
         URL("http://labsk.net/index.php?board=11.0;desc", "Dudas de reglas"),
-        URL("http://labsk.net/index.php?board=133.0;desc", "Compponentes y erratas"),
+        URL("http://labsk.net/index.php?board=133.0;desc", "Componentes y erratas"),
         URL("http://labsk.net/index.php?board=77.0;desc", "Resenyas escritas"),
-        URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces")
+        #URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces")
 )
 
 def get_all_descs():

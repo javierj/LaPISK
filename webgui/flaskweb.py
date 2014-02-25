@@ -35,6 +35,9 @@ def reports():
 def static_asylum_games():
     return render_template('static_asylum_games.html')
 
+@app.route("/reports/devir")
+def static_devir_games():
+    return render_template('static_devir.html')
 
 
 # Dynamic behaviour

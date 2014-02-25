@@ -2,6 +2,15 @@ __author__ = 'Javier'
 
 from datetime import datetime
 
+# Not in use
+def _word_in(word, line):
+    normal = word.lower().strip()
+    normalword = " "+normal + " "
+    print "'"+normalword, "' / '", line.lower()+"' "
+    return normalword in line.lower()
+
+
+
 class PreGeneratedReports(object):
 
     report_asylum_games = {'name': 'Informe de Asylum Games',
@@ -62,17 +71,6 @@ class ReportBuilder(object):
             self.report[keyword] = list()
         self.report[keyword].append(thread)
 
-    def _create_report(self):
-        """ Creates a new report using the name of the report request as title.
-        """
-        self.report = dict()
-        if 'name' in self.report_request:
-            self.report['title'] = "Result for report " + self.report_request['name']
-        else:
-            self.report['title'] = "Result for report."
-        # Untested feature
-        self.report['report_date'] = datetime.date(datetime.now())
-
     # Deprecated. delete it
     def _thread_contains_keywords(self, thread, keywords):
         """ True if any of the keywords is in thread's title.
@@ -84,8 +82,17 @@ class ReportBuilder(object):
                 return True
         return False
 
-    def _word_in(self, word, line):
-        return word.lower() in line.lower()
+    def _create_report(self):
+        """ Creates a new report using the name of the report request as title.
+        """
+        self.report = dict()
+        if 'name' in self.report_request:
+            self.report['title'] = "Result for report " + self.report_request['name']
+        else:
+            self.report['title'] = "Result for report."
+        # Untested feature
+        self.report['report_date'] = datetime.date(datetime.now())
+
 
     def _word_in_msgs(self, keyword, thread):
         """ Retur a list with the msgs in the therad tan conatians the kwyord
@@ -98,6 +105,15 @@ class ReportBuilder(object):
             if self._word_in(keyword, msg['body']):
                 result.append(msg)
         return result
+
+    def _word_in(self, word, line):
+        """
+        return word.lower() in line.lower()
+        """
+        normal = word.lower()
+        #normalword = " "+normal.strip() + " "
+        #print "'"+normalword, "' / '", line.lower()+"' "
+        return normal in line.lower()
 
     def _add_msgs_to_report(self, keyword, thread, msgs):
         """ Adds a list of messages to a report's keyword that does not contain the hread

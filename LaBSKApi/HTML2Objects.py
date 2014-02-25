@@ -25,7 +25,7 @@ class MsgFactory(object):
         for content in contents:
             if type(content) is not Tag:
                 ud = UnicodeDammit(content)
-                body = body + ud.unicode_markup
+                body = body + ud.unicode_markup + '\n'
         return body
 
     # Deprecated. dont cll his methid

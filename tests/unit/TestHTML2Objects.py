@@ -41,7 +41,7 @@ class TestMsgFactory(unittest.TestCase):
     def test_create_list_of_msgs_includes_body(self):
         msgs = self.factory.createListOfMsgs()
         msg = msgs[1]
-        self.assertEqual(msg['body'], u"Body")
+        self.assertEqual(msg['body'], u"Body\n")
 
     def test_change_url(self):
         webclient = MockWebClient(HTMLFactory.navigation_url())

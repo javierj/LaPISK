@@ -2,7 +2,7 @@ __author__ = 'Javier'
 
 import unittest
 from tests.Harness import MockMongo, Reports
-from LaBSKApi.reports import ReportBuilder, ReportModel
+from LaBSKApi.reports import ReportBuilder, ReportModel, _word_in
 
 class TestReportBuilder(unittest.TestCase):
 
@@ -66,9 +66,7 @@ class TestReportBuilder(unittest.TestCase):
         self.builder._find_keywords(self.thread, ['key'])
         #self.builder._add_thead_to_report('key', self.thread)
         keyline = self.builder.report[self.keyword][0]
-
         self.assertNotIn('msgs', keyline)
-        #print keyline
 
     def test_words_are_searched_in_title_ignoring_case(self):
         self.thread['title']= self.keyword.lower()
@@ -112,6 +110,18 @@ class TestReportModel(unittest.TestCase):
     def test_json_is_the_same_that_creation(self):
         rm = ReportModel(Reports.asylum)
         self.assertEqual(Reports.asylum, rm.json())
+
+
+
+class TestWordIn(unittest.TestCase):
+    def test_word_with_itsfel(self):
+        self.assertTrue(_word_in("a", " a "))
+    def test_word_ignore_case(self):
+        self.assertTrue(_word_in("a", " A "))
+    def test_word_dont_find_fragments(self):
+        self.assertFalse(_word_in("a", "aa"))
+    def test_word_dont_find_fragments(self):
+        self.assertFalse(_word_in("a", "a"))
 
 
 if __name__ == '__main__':
