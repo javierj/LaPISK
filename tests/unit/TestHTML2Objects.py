@@ -3,6 +3,7 @@ __author__ = 'Javier'
 import unittest
 from LaBSKApi.HTML2Objects import MsgFactory, AsuntoFactory, MsgPageFactory
 from LaBSKApi.reports import MsgModel, ThreadModel
+from LaBSKApi.web import URL
 from tests.Harness import MockWebClient, HTMLFactory
 
 
@@ -68,6 +69,15 @@ class TestAsuntoFactory(unittest.TestCase):
         #print res['link']
         self.assertEqual(res['link'], u'http://labsk.net/index.php?topic=126314.0')
 
+    def test_location(self):
+        self.factory.urlobject = URL("Url", "Desc")
+        thread = ThreadModel(self.factory.create(self.fragment))
+        self.assertEqual(thread.location(), u'Desc')
+
+    def test_location_is_empty_when_no_Urlobject_is_given(self):
+        thread = ThreadModel(self.factory.create(self.fragment))
+        self.assertEqual(thread.location(), "")
+
     def test_respuestas_y_vistas(self):
         thread = ThreadModel(self.factory.create(self.fragment))
         self.assertEqual(thread.answers(), "10")
@@ -102,8 +112,15 @@ class TestAsuntoFactory(unittest.TestCase):
         self.factory = AsuntoFactory(webclient)
         url = "xxxx"
         self.factory.changeUrl(url)
-
         self.assertEqual(url, webclient.url)
+
+    def test_when_change_url_descripcion_remains_the_same(self):
+        webclient = MockWebClient(HTMLFactory.navigation_url())
+        self.factory = AsuntoFactory(webclient)
+        self.factory.urlobject = URL("Url", "Desc")
+        self.factory.changeUrl("yyy")
+        thread = ThreadModel(self.factory.create(self.fragment))
+        self.assertEqual(thread.location(), u'Desc')
 
     def test_create_with_url(self):
         url = "xxx"
@@ -114,9 +131,7 @@ class TestAsuntoFactory(unittest.TestCase):
     def test_append_if_valid_when_is_Valid(self):
         l = list()
         msg = {'tile': 'x', 'link': 'y'}
-
         self.factory.append_if_valid(l, msg)
-
         self.assertEquals(len(l), 1)
 
     def test_append_if_valid_when_is_not_Valid(self):
@@ -130,6 +145,12 @@ class TestAsuntoFactory(unittest.TestCase):
     def test_get_number_from(self):
         txt = "10 resuestas"
         self.assertEqual("10",  self.factory._get_number_from(txt))
+
+    def test_create_with_URL_object(self):
+        asunto = AsuntoFactory.createFromURLObject(URL("xx", "yy"))
+        self.assertEqual(asunto.webclient.url, "xx")
+
+
 
 
 class TestMsgPageFactory(unittest.TestCase):

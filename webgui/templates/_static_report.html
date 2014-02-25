@@ -16,7 +16,7 @@ Prototype 0.01 / 2014/02/19 <br/>
 
     {% for thread in report[keyword] %}
         <br>
-        <i>Thread: {{ thread['title'] }} </i>/ <a href=" {{ thread['link'] }}"> {{ thread['link'] }} </a> <br/>
+        <i>{{ thread['location'] }} / {{ thread['title'] }} </i>/ <a href=" {{ thread['link'] }}"> {{ thread['link'] }} </a> <br/>
         {% for msg in thread['msgs'] %}
             <br>
             {{ msg['date'] }}  / {{ msg['link'] }}

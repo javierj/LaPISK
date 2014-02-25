@@ -32,6 +32,7 @@ class ProcessThreads(object):
         self.database = database
         self.processmsgfactory = processmsgfactory
         self.pagelimit = 1
+        self.msgpagelimit = 1
         self.pagecount = 0
         self.listener = VoidListener()
 
@@ -41,13 +42,17 @@ class ProcessThreads(object):
     def setPageLimit(self,limit):
         self.pagelimit = limit
 
+    def setMsgPageLimit(self,limit):
+        self.msgpagelimit = limit
+
     def scrapListOfURL(self, listOfURLS):
         """ Receives a list of web.URL objects
             for each, creates a page and calls self. storeThreads
         """
         for url in listOfURLS:
             self.listener.newURL(url)
-            page = AsuntoFactory(url = url.url)
+            #page = AsuntoFactory(url = url.url)
+            page = AsuntoFactory.createFromURLObject(url)
             self.storeThreads(page)
 
     def storeThreads(self, page):
@@ -88,13 +93,22 @@ class ProcessThreads(object):
 
     def _messagesfrom(self, thread):
         page = self.processmsgfactory.create(thread)
-        process = ProcessMsgs()
+        process = self._createProcessMsgs()
 
         # this should done by a factory
         process.setListener(self.listener)
         process.pagelimit = self.pagelimit
 
         return process.getMsgs(page)
+
+    def _createProcessMsgs(self):
+        """ Creates a ProcessMsgs to read the messages of a thread
+        """
+        process = ProcessMsgs()
+        process.setListener(self.listener)
+        process.pagelimit = self.msgpagelimit
+        return process
+
 
     def _createThreadStruct(self, thread, msgs):
         result = dict()

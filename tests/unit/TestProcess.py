@@ -65,6 +65,12 @@ class TestProcessThreads(unittest.TestCase):
 
         self.assertEquals(u"http://labsk.net/index.php?board=18.20", page.webclient.url)
 
+    def test_set_the_limit_for_process_msg(self):
+        self.processthread.setMsgPageLimit(4)
+        process = self.processthread._createProcessMsgs()
+        self.assertEqual(process.pagelimit, 4)
+
+
 
 class TestProcessMsgs(unittest.TestCase):
 

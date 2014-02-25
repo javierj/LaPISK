@@ -148,3 +148,6 @@ class ThreadModel(object):
 
     def title(self):
         return self.jsondoc['title']
+
+    def location(self):
+        return self.jsondoc['location']

@@ -62,7 +62,14 @@ class MsgPageFactory(object):
 
 class AsuntoFactory(object):
 
+    @staticmethod
+    def createFromURLObject(urlobject):
+        factory = AsuntoFactory(url = urlobject.url)
+        factory.urlobject = urlobject
+        return factory
+
     def __init__(self, webclient=None, url = None):
+        self.urlobject = None
         self.webclient = webclient
         self.soupfragment = None
         if webclient is not None:
@@ -79,7 +86,12 @@ class AsuntoFactory(object):
         result["link"] = ""
         result["answers"] = ""
         result["views"] = ""
-        if field <> None:
+        result["location"] = ""
+        if self.urlobject is not None:
+            result["location"] = self.urlobject.desc
+
+        #result['location'] = self.webclient.get_url_desc()
+        if field is not None:
             title = UnicodeDammit(field.a.contents[0]).unicode_markup
             result["link"] = soupfragment.find("td", "subject windowbg2").a['href']
             result["answers"] = self._get_number_from(soupfragment.find('td', 'stats windowbg').contents[0].strip())
