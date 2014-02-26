@@ -12,9 +12,6 @@ db = MongoDB(col="labsk_asylum_2")
 
 starttime = datetime.now()
 
-#informe = {'name': 'Informe de Asylum Games',
-#           'keywords': ["Asylum Games", "Polis", "Munities", "Banjooli"]}
-
 builder = ReportBuilder(db)
 report = builder.build_report(PreGeneratedReports.report_asylum_games)
 
