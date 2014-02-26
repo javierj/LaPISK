@@ -54,9 +54,20 @@ class MsgFactory(object):
         self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
 
 
+
 class MsgPageFactory(object):
 
-    def create(self, thread):
+    def create(self, thread, last_msg_id = None):
+        if last_msg_id is None:
+            return self._create_without_id(thread)
+        if thread['link'].endswith(".0"):
+            link = thread['link'][:-2]
+        else:
+            link = thread['link']
+        url = link + "." + last_msg_id
+        return MsgFactory(WebClient(url))
+
+    def _create_without_id(self, thread):
         return MsgFactory(WebClient(thread['link']))
 
 

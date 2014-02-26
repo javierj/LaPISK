@@ -46,7 +46,8 @@ class MongoDB(object):
                 self.saveDocIn(target,doc)
         return count
 
-
+    def find_one_by(self, field, value):
+        return self.col.find_one({field:value})
 
 class Collection(object):
 

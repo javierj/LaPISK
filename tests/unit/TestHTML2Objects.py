@@ -2,7 +2,7 @@ __author__ = 'Javier'
 
 import unittest
 from LaBSKApi.HTML2Objects import MsgFactory, AsuntoFactory, MsgPageFactory
-from LaBSKApi.reports import MsgModel, ThreadModel
+from LaBSKApi.modelobjects import MsgModel, ThreadModel
 from LaBSKApi.web import URL
 from tests.Harness import MockWebClient, HTMLFactory
 
@@ -155,13 +155,33 @@ class TestAsuntoFactory(unittest.TestCase):
 
 class TestMsgPageFactory(unittest.TestCase):
 
-    def test_create_process(self):
-        factory = MsgPageFactory()
-        url = 'url__'
-        thread = {'link':url}
-        msgpage = factory.create(thread)
+    def setUp(self):
+        self.factory = MsgPageFactory()
+        self.url = 'url__'
+        self.thread = {'link':self.url}
 
-        self.assertEquals(msgpage.webclient.url, url)
+
+    def test_create_process(self):
+        msgpage = self.factory.create(self.thread )
+
+        self.assertEquals(msgpage.webclient.url, self.url)
+
+    def test_create_with_id_and_url_not_ending_0(self):
+        id = "id"
+        msgpage = self.factory.create(self.thread, id)
+
+        result = self.url+"."+id
+        self.assertEquals(msgpage.webclient.url, result)
+
+    def test_create_with_id_and_url_ending_0(self):
+        id = "id"
+        url_0 = self.url+".0"
+        self.thread['link'] = url_0
+        msgpage = self.factory.create(self.thread, id)
+
+        result = self.url+"."+id
+        self.assertEquals(msgpage.webclient.url, result)
+
 
 if __name__ == '__main__':
     unittest.main()

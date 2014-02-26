@@ -1,10 +1,10 @@
 __author__ = 'Javier'
 
 import unittest
-from flask import Flask
 from webgui import flaskweb
 from mockito import *
-from presenter.ReportPresenter import ReportPresenter, ReportModel
+from presenter.ReportPresenter import ReportPresenter
+from LaBSKApi.modelobjects import ReportModel
 from presenter.GUIModel import Text
 from webgui.helppers import GenerateHTMLFromText
 from tests.Harness import Reports
@@ -103,7 +103,6 @@ class TestStaticReports(unittest.TestCase):
         rv = self.app.get('/reports/asylum-games')
         for word in Reports.asylum_keywords:
             self.assertIn(word, rv.data)
-
 
 
 class TestGenerateHTMLFromText(unittest.TestCase):

@@ -2,7 +2,7 @@ __author__ = 'Javier'
 
 import unittest
 from tests.Harness import MockMongo, Reports
-from LaBSKApi.reports import ReportBuilder, ReportModel, _word_in
+from LaBSKApi.reports import ReportBuilder, _word_in
 
 class TestReportBuilder(unittest.TestCase):
 
@@ -105,14 +105,6 @@ class TestReportBuilder(unittest.TestCase):
         self.assertEquals(msgs[0]['body'], msg['body'])
 
 
-class TestReportModel(unittest.TestCase):
-
-    def test_json_is_the_same_that_creation(self):
-        rm = ReportModel(Reports.asylum)
-        self.assertEqual(Reports.asylum, rm.json())
-
-
-
 class TestWordIn(unittest.TestCase):
     def test_word_with_itsfel(self):
         self.assertTrue(_word_in("a", " a "))
@@ -122,7 +114,6 @@ class TestWordIn(unittest.TestCase):
         self.assertFalse(_word_in("a", "aa"))
     def test_word_dont_find_fragments(self):
         self.assertFalse(_word_in("a", "a"))
-
 
 if __name__ == '__main__':
     unittest.main()

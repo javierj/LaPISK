@@ -37,7 +37,7 @@ class StdListener(object):
         """ url is a web.URL object
         """
         print "----------------------------------------------"
-        print "---  ", url.desc, " ", url.desc
+        print "---  ", url.desc, " ", url.url
 
 """
 18/02/2014
@@ -69,7 +69,13 @@ New: 89  Updated: 10
 threads limit = 1, mspg pages limit = 4, 169 hilos 10 urls, 1430 msgs
 Total time:  0:02:27.784000
 New: 67  Updated: 102
-674 hilos en el merge / 11275 mensajes
+674 hilos en el merge / 11275 mensajes por 613459 de LaBSK
+
+26/02/2014
+threads limit = 2, mspg pages limit = 6, 349 hilos 10 urls, 4201 msgs
+Total time:  0:08:18.704000
+New: 68  Updated: 174
+742 hilos en el merge / 14037 mensajes por 613459 de LaBSK
 
 """
 
@@ -83,8 +89,8 @@ starttime = datetime.now()
 listener = StdListener()
 threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(listener)
-threads.setPageLimit(1)
-threads.setMsgPageLimit(4)
+threads.setPageLimit(2)
+threads.setMsgPageLimit(6)
 print "Page limit ", threads.pagelimit, " Msg page limit ", threads.msgpagelimit
 
 """ - Use this to play with threads

@@ -1,6 +1,7 @@
 __author__ = 'Javier'
 
-from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, ReportModel
+from LaBSKApi.reports import ReportBuilder, PreGeneratedReports
+from LaBSKApi.modelobjects import ReportModel
 from GUIModel import Text
 
 class ReportPresenter(object):

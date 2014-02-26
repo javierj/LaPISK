@@ -3,9 +3,10 @@ __author__ = 'Javier'
 import unittest
 
 from LaBSKApi.HTML2Objects import AsuntoFactory, MsgFactory
-from LaBSKApi.Process import ProcessThreads, ProcessMsgs
-from LaBSKApi.reports import ThreadModel
-from tests.Harness import MockWebClient, HTMLFactory, MockMongo
+from LaBSKApi.Process import ProcessThreads, ProcessMsgs, ProcessThread
+from LaBSKApi.modelobjects import ThreadModel
+from tests.Harness import MockWebClient, HTMLFactory, MockMongo, Reports
+from mockito import mock, verify, any, when
 
 
 class MockMsgPageFactory(object):
@@ -27,17 +28,6 @@ class TestProcessThreads(unittest.TestCase):
         self.processthread.storeThreads(self.threadfactory)
 
         self.assertEquals(2, self.mongo.treadssaved)
-
-    def test_createThreadStruct(self):
-        self.assertEquals("", self.threadfactory.nextUrl())
-        thread = self.threadfactory.create(HTMLFactory.asunto())
-        msgs = list()
-        struct = ThreadModel(self.processthread._createThreadStruct(thread, msgs))
-
-        self.assertEquals("LaBSK", struct.source())
-        self.assertEquals(thread['title'], struct.title())
-        self.assertEquals(struct.answers(), 0)
-        self.assertIsInstance(struct.json()['msgs'], list)
 
     def test_createThreadStruct_with_msgs(self):
         self.processthread.storeThreads(self.threadfactory)
@@ -65,11 +55,71 @@ class TestProcessThreads(unittest.TestCase):
 
         self.assertEquals(u"http://labsk.net/index.php?board=18.20", page.webclient.url)
 
+
+
+class TestProcessThreads(unittest.TestCase):
+
+    def setUp(self):
+        self. processthread = ProcessThread()
+        self.t01 = ThreadModel(Reports.threats_with_newline.copy())
+        self.t02 = ThreadModel(Reports.threats_with_newline.copy())
+
+
     def test_set_the_limit_for_process_msg(self):
-        self.processthread.setMsgPageLimit(4)
-        process = self.processthread._createProcessMsgs()
+        #self.processthread.setMsgPageLimit(4)
+
+        self. processthread.msgpagelimit = 4
+        process = self. processthread._createProcessMsgs()
         self.assertEqual(process.pagelimit, 4)
 
+    # Pocess Thread
+    def test_createThreadStruct(self):
+        mockweb = MockWebClient(HTMLFactory.tablamensajes_html())
+        self.threadfactory = AsuntoFactory(mockweb)
+        self.assertEquals("", self.threadfactory.nextUrl())
+        thread = self.threadfactory.create(HTMLFactory.asunto())
+        msgs = list()
+        struct = ThreadModel(self. processthread._createThreadStruct(thread, msgs))
+
+        self.assertEquals("LaBSK", struct.source())
+        self.assertEquals(thread['title'], struct.title())
+        self.assertEquals(struct.answers(), 0)
+        self.assertIsInstance(struct.json()['msgs'], list)
+
+    def test_when_thread_is_new_then_store_it(self):
+        self.processthread.database = mock()
+        self.processthread.processmsgfactory = mock()
+        page = mock()
+        when(page).createListOfMsgs().thenReturn(list())
+        when(self.processthread.processmsgfactory).create(any()).thenReturn(page)
+        thread = mock()
+
+        self.processthread._evaluate_thread(thread)
+
+        verify(self.processthread.database, times=1).saveThread(any())
+
+    def test_hilo_modificado_iguales(self):
+        self.assertTrue(self.processthread._hilo_modificado(self.t01, self.t02))
+
+    def test_hilo_modificado_diferente_fecha(self):
+        self.t01.set_date("Yes")
+        self.t02.set_date("No")
+        self.assertFalse(self.processthread._hilo_modificado(self.t01, self.t02))
+
+    def test_hilo_modificado_misma_fecha(self):
+        self.t01.set_date("Yes")
+        self.t02.set_date("Yes")
+        self.assertTrue(self.processthread._hilo_modificado(self.t01, self.t02))
+
+    def test_hilo_modificado_diferentes_mensajes(self):
+        self.t01.set_answers(10)
+        self.t02.set_answers(20)
+        self.assertFalse(self.processthread._hilo_modificado(self.t01, self.t02))
+
+    def test_hilo_modificado_misma_mensajes(self):
+        self.t01.set_answers(10)
+        self.t02.set_answers(10)
+        self.assertTrue(self.processthread._hilo_modificado(self.t01, self.t02))
 
 
 class TestProcessMsgs(unittest.TestCase):

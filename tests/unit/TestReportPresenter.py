@@ -29,5 +29,7 @@ class TestReportPresenter(unittest.TestCase):
         self.presenter.database = mock
         self.assertEquals(self.presenter.database, mock)
 
+
+
 if __name__ == '__main__':
     unittest.main()
