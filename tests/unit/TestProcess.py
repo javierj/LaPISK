@@ -11,7 +11,7 @@ from mockito import mock, verify, any, when
 
 class MockMsgPageFactory(object):
     def create(self, thread):
-        return MsgFactory( MockWebClient(HTMLFactory.msg_html()))
+        return MsgFactory(MockWebClient(HTMLFactory.msg_html()))
 
 
 class TestProcessThreads(unittest.TestCase):
@@ -57,17 +57,17 @@ class TestProcessThreads(unittest.TestCase):
 
 
 
-class TestProcessThreads(unittest.TestCase):
+class TestProcessThread(unittest.TestCase):
 
     def setUp(self):
-        self. processthread = ProcessThread()
-        self.t01 = ThreadModel(Reports.threats_with_newline.copy())
-        self.t02 = ThreadModel(Reports.threats_with_newline.copy())
-
+        self.processthread = ProcessThread()
+        self.t01 = ThreadModel(Reports.get_asylum_thread())
+        self.t02 = ThreadModel(Reports.get_asylum_thread())
+        self.listener = mock()
+        self.processthread.listener = self.listener
 
     def test_set_the_limit_for_process_msg(self):
         #self.processthread.setMsgPageLimit(4)
-
         self. processthread.msgpagelimit = 4
         process = self. processthread._createProcessMsgs()
         self.assertEqual(process.pagelimit, 4)
@@ -98,29 +98,34 @@ class TestProcessThreads(unittest.TestCase):
 
         verify(self.processthread.database, times=1).saveThread(any())
 
-    def test_hilo_modificado_iguales(self):
-        self.assertTrue(self.processthread._hilo_modificado(self.t01, self.t02))
+    def test_when_thread_exists_not_saved(self):
+        self.db = mock()
+        when(self.db).find_one_by('link', self.t01.link()).thenReturn(self.t01.json())
+        self.processthread.database = self.db
 
-    def test_hilo_modificado_diferente_fecha(self):
-        self.t01.set_date("Yes")
-        self.t02.set_date("No")
-        self.assertFalse(self.processthread._hilo_modificado(self.t01, self.t02))
+        self.processthread._evaluate_thread(self.t01)
 
-    def test_hilo_modificado_misma_fecha(self):
-        self.t01.set_date("Yes")
-        self.t02.set_date("Yes")
-        self.assertTrue(self.processthread._hilo_modificado(self.t01, self.t02))
+        verify(self.db, times=1).find_one_by('link', self.t01.link())
+        verify(self.db, times=0).saveThread(any())
+        verify(self.listener, times=1).skippingUnmodifiedThread(self.t01)
 
-    def test_hilo_modificado_diferentes_mensajes(self):
-        self.t01.set_answers(10)
-        self.t02.set_answers(20)
-        self.assertFalse(self.processthread._hilo_modificado(self.t01, self.t02))
 
-    def test_hilo_modificado_misma_mensajes(self):
-        self.t01.set_answers(10)
-        self.t02.set_answers(10)
-        self.assertTrue(self.processthread._hilo_modificado(self.t01, self.t02))
+    def test_hilo_igual_es_no_modificado(self):
+        self.assertTrue(self.processthread._is_unmodified(self.t01, self.t02))
 
+    def test_hilo_distinto_num_de_mensajes_es_modificado(self):
+        self.t01.msgList().append_msg({'date': "Otra fecha"})
+        self.assertFalse(self.processthread._is_unmodified(self.t01, self.t02))
+
+    """ Ya no uso este criterio
+    def test_hilo_distinta_ultima_fecha_es_modificado(self):
+        json = self.t01.json()
+        json['msgs'][0]['date'] = "Otra fecha"
+        other_thread = ThreadModel(json)
+        self.assertEqual(self.t02.msgList().size(), other_thread.msgList().size())
+        self.assertNotEqual(other_thread.date_last_msg(), self.t02.date_last_msg())
+        self.assertFalse(self.processthread._is_unmodified(other_thread, self.t02))
+    """
 
 class TestProcessMsgs(unittest.TestCase):
 

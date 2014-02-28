@@ -157,7 +157,8 @@ class HTMLFactory:
 <div>
 <span id="msg_1216998">
 <a href="http://labsk.net/index.php?topic=126314.0">Robinson Crusoe de Portal Games en espanol (al 95)</a></span>
-<p>Iniciado por <a href="http://labsk.net/index.php?action=profile;u=22255" title="Ver perfil de Borja">Borja</a>
+<p>Iniciado por
+<a href="http://labsk.net/index.php?action=profile;u=22255" title="Ver perfil de Borja">Borja</a>
 <small id="pages1216998"></small>
 </p>
 </div>
@@ -169,7 +170,8 @@ class HTMLFactory:
 					</td>
 <td class="lastpost windowbg2">
 <a href="http://labsk.net/index.php?topic=126314.0#msg1217369"><img alt="Ultimo mensaje"
-src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/icons/last_post.gif" title="Ultimo mensaje"/></a>
+src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/icons/last_post.gif" title="Ultimo mensaje"/>
+</a>
 <strong>Hoy</strong> a las 08:43:50 pm<br/>
 						por <a href="http://labsk.net/index.php?action=profile;u=20257">Dens</a>
 </td>
@@ -323,6 +325,9 @@ class MockMongo(object):
         self.threadscalled += 1
         return [self.mockthread]
 
+    def find_one_by(self, field, value):
+        return None
+
 
 class ObjectId(object):
     """Mock for using SON copied from MondoDB """
@@ -351,8 +356,17 @@ class Reports(object):
 
     threats_with_newline = {u'source': u'LaBSK', u'_id': ObjectId('530370a9c6a54a1a4c3d837c'),
                      u'link': u'http://labsk.net/index.php?topic=119092.0',
-                     u'msgs': [{u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb',
+                     u'msgs': [{u'id':'msg_1169262',
+                                   u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb',
                                 u'body': u"Programaci\xf3n de la emisi\xf3n para hoy jueves 24.\nEn el aire desde:10:00 - Grublin Games Publishing - Cornish Smuggler10:20 - Lautapelit.fi - Nations10:40 - Blackrock Editions - Armad\xf6ra11:00 - Ares Games - Sails of Glory, Galaxy Defenders11:30 - Placentia Games - Florenza: The Card Game12:00 - Schmidt Spiele/Drei Magier Spiele - Stories!, Dog Deluxe, Der geheimnisvolle Spiegel12:30 - Czech Board Games - Dr. Hrubec13:00 - Deinko Games - Patchistory13:30 - Asylum Games - Banjooli Xeet, 21 Mutinies Arrr! Edition14:00 - eggertspiele - Rokoko, Coal Baron14:30 - Portal Games - Legacy: The Testament of Duke de Crecy, Theseus: The Dark Orbit15:00 - Hans im Gl\xfcck - Russian Railroads, Carcassonne: South Seas15:30 - Hurrican - Sheeepzz15:45 - LudiCreations - Byzantio16:00 - Backspindle Games - Luchador! Mexican Wrestling Dice16:30 - IELLO - C'est pas faux!, Guardians' Chronicles, Heroes of Normandie17:00 - IELLO - Continued17:30 - Spielworxx - Agora, Kohle & Kolonie18:00 - Queen Games - Dark Darker Darkest, Amerigo, Speculation, Templar: The Secret Treasures18:30 - Queen Games - Continued", u'user': u'winston smith'}
                               ],
                  u'title': u'ESSEN 2013 - Emisi\xf3n en Streaming',
                  }
+
+    @staticmethod
+    def get_asylum_thread():
+        thread = Reports.threats_with_newline.copy()
+        thread['msgs'] = list()
+        for msg in Reports.threats_with_newline['msgs']:
+            thread['msgs'].append(msg.copy())
+        return thread

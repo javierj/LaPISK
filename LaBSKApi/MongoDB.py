@@ -11,9 +11,16 @@ class MongoDB(object):
             self.col = self.db[db + "_test"]
         else:
             self.col = self.db[col]
+        self.query_col = self.insert_col = self.col
+
+    def query(self, name):
+        self.query_col = self.db[name]
+
+    def insert(self, name):
+        self.insert_col = self.db[name]
 
     def saveThread(self, thread):
-        self.col.insert(thread)
+        self.insert_col.insert(thread)
 
     def saveDocIn(self, colllection, doc):
         colllection.insert(doc)
@@ -47,7 +54,7 @@ class MongoDB(object):
         return count
 
     def find_one_by(self, field, value):
-        return self.col.find_one({field:value})
+        return self.query_col.find_one({field:value})
 
 class Collection(object):
 

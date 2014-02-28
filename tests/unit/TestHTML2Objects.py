@@ -52,8 +52,6 @@ class TestMsgFactory(unittest.TestCase):
         self.assertEqual(url, webclient.url)
 
 
-
-
 class TestAsuntoFactory(unittest.TestCase):
     def setUp(self):
         self.fragment = HTMLFactory().asunto()
@@ -85,12 +83,12 @@ class TestAsuntoFactory(unittest.TestCase):
 
     def test_next_url(self):
         mockweb = MockWebClient(HTMLFactory.navigation_url())
-        self.factory =  AsuntoFactory(mockweb)
+        self.factory = AsuntoFactory(mockweb)
         self.assertEqual(self.factory.nextUrl(), u'http://labsk.net/index.php?board=18.20')
 
     def test_next_url_is_empty_when_not_next_URL(self):
         mockweb = MockWebClient(HTMLFactory.tablamensajes_html())
-        self.factory =  AsuntoFactory(mockweb)
+        self.factory = AsuntoFactory(mockweb)
         self.assertEqual(self.factory.nextUrl(), "")
 
     def test_create_asuntos(self):
@@ -151,8 +149,6 @@ class TestAsuntoFactory(unittest.TestCase):
         self.assertEqual(asunto.webclient.url, "xx")
 
 
-
-
 class TestMsgPageFactory(unittest.TestCase):
 
     def setUp(self):
@@ -160,25 +156,20 @@ class TestMsgPageFactory(unittest.TestCase):
         self.url = 'url__'
         self.thread = {'link':self.url}
 
-
     def test_create_process(self):
         msgpage = self.factory.create(self.thread )
-
         self.assertEquals(msgpage.webclient.url, self.url)
 
     def test_create_with_id_and_url_not_ending_0(self):
         id = "id"
         msgpage = self.factory.create(self.thread, id)
-
         result = self.url+"."+id
         self.assertEquals(msgpage.webclient.url, result)
 
     def test_create_with_id_and_url_ending_0(self):
         id = "id"
-        url_0 = self.url+".0"
-        self.thread['link'] = url_0
+        self.thread['link'] = self.url+".0"
         msgpage = self.factory.create(self.thread, id)
-
         result = self.url+"."+id
         self.assertEquals(msgpage.webclient.url, result)
 

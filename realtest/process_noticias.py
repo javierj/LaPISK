@@ -10,9 +10,10 @@ from datetime import datetime
 class StdListener(object):
     def __init__(self):
         self.msgs = 0
+        self.urls = 0
 
-    def enteringThread(self, title, link):
-        print "Thread ", title, " | ", link
+    def enteringThread(self, obj_thread):
+        print "Thread ", obj_thread.title(), ", ", obj_thread.answers(), " | ", obj_thread.link()
 
     def msgsFound(self, count):
         #print "Msgs found: ", count
@@ -38,6 +39,20 @@ class StdListener(object):
         """
         print "----------------------------------------------"
         print "---  ", url.desc, " ", url.url
+        self.urls += 1
+
+    def oldThreadFound(self, obj):
+        """ A URL with the same link is already stored
+        """
+        print "Old thread found ", obj.title()
+
+    def skippingUnmodifiedThread(self, obj):
+        """ Old thread seems to be the same one than the new thread
+        """
+        print "No modification. Skipping ", obj.title()
+
+    def __str__(self):
+        return "Urls: " + self.urls + " Messages readed: " + listener.msgs
 
 """
 18/02/2014
@@ -73,16 +88,34 @@ New: 67  Updated: 102
 
 26/02/2014
 threads limit = 2, mspg pages limit = 6, 349 hilos 10 urls, 4201 msgs
-Total time:  0:08:18.704000
+Total time:  0:08:18.704000, 498,704 segundos || 1'43 seg por hilo || 0'119 seg por msgs
 New: 68  Updated: 174
 742 hilos en el merge / 14037 mensajes por 613459 de LaBSK
+
+
+27/02/2014
+threads limit = 2, mspg pages limit = 7, xx hilos 13 urls, xx msgs
+La tuve que parar por fata de tiempo.
+Empieoz a ver que va muy lento.
+New: 73  Updated: 65
+Msgs in Labsk_merge: 17184
+
+
+28/02/2014
+threads limit = 2, mspg pages limit = 5, 446 hilos, 13 urls, 8274 msgs
+Total time:  0:24:03.480000, 1443,48 segundos || 3'237 seg por hilo || 0'175 seg por msgs
+New: 44  Updated: 50
+862 hilos en el merge / 19192 mensajes por 614302 de LaBSK
+
 
 """
 
 
 
-db = MongoDB(col="labsk_" + str(datetime.now()))
-#db = MockMongo()
+#db = MongoDB(col="labsk_" + str(datetime.now()))
+db = MongoDB()
+db.query("labsk_merge")
+db.insert("labsk_" + str(datetime.now()))
 
 starttime = datetime.now()
 
@@ -90,7 +123,7 @@ listener = StdListener()
 threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(listener)
 threads.setPageLimit(2)
-threads.setMsgPageLimit(6)
+threads.setMsgPageLimit(5)
 print "Page limit ", threads.pagelimit, " Msg page limit ", threads.msgpagelimit
 
 """ - Use this to play with threads
@@ -108,6 +141,6 @@ delta = datetime.now() - starttime
 
 print "----------------------------------------------"
 print "Total time: ", delta
-print "Messages readed: ", listener.msgs
+print str(listener)
 
 print "End."

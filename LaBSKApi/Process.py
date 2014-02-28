@@ -2,9 +2,11 @@ __author__ = 'Javier'
 
 from HTML2Objects import AsuntoFactory
 from modelobjects import ThreadModel
+from web import labsk_msgs_per_page
+
 
 class VoidListener(object):
-    def enteringThread(self, title, link):
+    def enteringThread(self, objthread):
         pass
 
     def msgsFound(self, count):
@@ -117,28 +119,98 @@ class ProcessThread(object):
             objthread = ThreadModel(thread)
             self._evaluate_thread(objthread)
 
-    def _evaluate_thread(self, objthread):
-        old_thread = self.database.find_one_by('link', objthread.link())
+    def _evaluate_thread(self, new_objthread):
+        """ This method evaluates if the thread is fully readed,
+            discarted or is readed from a concrete message
+        """
+        old_thread = self._search_thread(new_objthread)
+
+        if old_thread is not None and self._is_unmodified(new_objthread, old_thread):
+            self.listener.skippingUnmodifiedThread(new_objthread)
+            return
+
+        self._enter_in_thread(new_objthread)
+    """
         if old_thread is None:
+            # Reaf ull thread
             self._enter_in_thread(objthread)
+            print "A"
             return
 
         obj_old_thread = ThreadModel(old_thread)
         self.listener.oldThreadFound(objthread)
-        if not self._hilo_modificado(objthread, obj_old_thread):
-            self.listener.skippingUnmodifiedThread(objthread)
+        if self._is_unmodified(objthread, obj_old_thread):
+            # Dont read the therad, is the same
+
+            print "B"
             return
 
-    def _hilo_modificado(self, obj1, obj2):
+
+
+        print "C"
+        # Code sould not achive this pint using an empty collection
+        #This part of the method should create the URL fro starting
+        # the new messages.
+        self._addNewMsgsIbThread(obj_old_thread)
+    """
+
+    """ Not in use
+    def _are_msgs_benetah_pagelimit(self, thread_obj):
+        # Change the hardcode reference to LaBSK
+        #    Return true if there are new messages to read under my limit.
+        msg_limit = self.msgpagelimit * labsk_msgs_per_page
+        return thread_obj.msgList().size() < msg_limit
+    """
+
+    def _search_thread(self, objthread):
+        """ Serach if the new thread read from  the web is already stored
+        """
+        json_obj = self.database.find_one_by('link', objthread.link())
+        if json_obj is None:
+            return None
+        return ThreadModel(json_obj)
+
+
+    def _is_unmodified(self, new_thread, old_thread):
+        """ Return true if thread is not modified
+
         if obj1.date() is not None and obj2.date() is not None:
             return obj1.date() == obj2.date()
         if obj1.answers() is not None and obj2.answers() is not None:
             return obj1.answers() == obj2.answers()
-        return True
+        """
 
+        # dont have the date_last_msg of the new thread
+        # same_last_msg = new_thread.date_last_msg() == old_thread.date_last_msg()
+        # Number of msgs of new hread is the samethan the msgs I already have
+        same_msgs = new_thread.answers() == old_thread.answers()
+                    # old_thread.msgList().size() -- never update
+        #return same_last_msg and same_msgs
+        return same_msgs
+
+    # I wont use this mthod
+    def _addNewMsgsIbThread(self, objthread):
+        return
+        # Get last msg_id
+        # create factory
+        # read
+        # add mesasages to thread
+        # update in database
+        # self.listener.enteringThread(objthread.title(), objthread.link())
+        last_id = objthread.id_last_msg()
+        if last_is is None:
+            msgs = self._messagesfrom(objthread.json())
+        else:
+            page = self.processmsgfactory.create(thread)
+            process = self._createProcessMsgs()
+            msgs = process.getMsgs(page)
+
+        objthread.update_msgs(msgs)
+        #self.listener.msgsFound(len(msgs))
+        self.database.updateThread(info)
 
     def _enter_in_thread(self, objthread):
-        self.listener.enteringThread(objthread.title(), objthread.link())
+        self.listener.enteringThread(objthread)
         msgs = self._messagesfrom(objthread.json())
         info = self._createThreadStruct(objthread.json(), msgs)
         self.listener.msgsFound(len(msgs))
@@ -147,10 +219,6 @@ class ProcessThread(object):
     def _messagesfrom(self, thread):
         page = self.processmsgfactory.create(thread)
         process = self._createProcessMsgs()
-
-        # this should done by a factory
-        process.setListener(self.listener)
-        process.pagelimit = self.pagelimit
 
         return process.getMsgs(page)
 

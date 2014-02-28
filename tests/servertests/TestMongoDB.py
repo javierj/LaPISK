@@ -48,6 +48,23 @@ class  TestMongoDB(unittest.TestCase):
         results = self.db.find_one_by('link', 'no no')
         self.assertIsNone(results)
 
+    def test_by_default_query_and_insert_columns_are_the_column_in_constructor(self):
+        db = MongoDB(col = "labsk_test")
+        self.assertIs(db.col, db.query_col)
+        self.assertIs(db.col, db.insert_col)
+
+    def test_when_query_and_insert_columns_are_different_insertion_and_query_uses_diferent_cols(self):
+        db = MongoDB()
+        db.query("labsk_test")
+        db.insert("to_delete")
+
+        db.saveThread({'id':'1'})
+        self.assertIsNone(db.find_one_by('id', '1'))
+
+        db.query("to_delete")
+        self.assertIsNotNone(db.find_one_by('id', '1'))
+
+        db.drop("to_delete")
 
 
 if __name__ == '__main__':

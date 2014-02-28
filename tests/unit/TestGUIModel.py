@@ -14,14 +14,12 @@ class TestGUIModel(unittest.TestCase):
         self.assertEqual("a", self.t.insert_br("a"))
 
     def test_insert_br_one_newline(self):
-        t = Text()
-        self.assertEqual("a<br/>", t.insert_br("a\n"))
+        self.assertEqual("a<br/>", self.t.insert_br("a\n"))
 
     def test_insert_br_several_newline(self):
-        t = Text()
-        self.assertEqual("a<br/>a<br/><br/>a", t.insert_br("a\na\n\na"))
+        self.assertEqual("a<br/>a<br/><br/>a", self.t.insert_br("a\na\n\na"))
 
-    def test_insert_br_several_newline(self):
+    def test_insert_br_real_newline(self):
         msg = u"Programaci\xf3n de la emisi\xf3n para hoy jueves 24.\nEn el aire"
         expected_msg = u"Programaci\xf3n de la emisi\xf3n para hoy jueves 24.<br/>En el aire"
         result = self.t.insert_br(msg)
@@ -39,8 +37,6 @@ class TestGUIModel(unittest.TestCase):
         msg = firm[0]['body']
         self.assertIn("<br/>", msg)
         self.assertNotIn("\n", msg)
-
-
 
 if __name__ == '__main__':
     unittest.main()
