@@ -2,7 +2,6 @@ __author__ = 'Javier'
 
 from HTML2Objects import AsuntoFactory
 from modelobjects import ThreadModel
-from web import labsk_msgs_per_page
 
 
 class VoidListener(object):
@@ -39,6 +38,7 @@ class VoidListener(object):
         """
         pass
 
+
 class ProcessThreads(object):
     def __init__(self, database, processmsgfactory):
         self.database = database
@@ -51,10 +51,10 @@ class ProcessThreads(object):
     def setListener(self, listener):
         self.listener = listener
 
-    def setPageLimit(self,limit):
+    def setPageLimit(self, limit):
         self.pagelimit = limit
 
-    def setMsgPageLimit(self,limit):
+    def setMsgPageLimit(self, limit):
         self.msgpagelimit = limit
 
     def scrapListOfURL(self, listOfURLS):
@@ -71,13 +71,13 @@ class ProcessThreads(object):
         repeat = True
         self.pagecount = 1
 
-        processThread = ProcessThread(database = self.database, processmsgfactory = self.processmsgfactory)
+        processThread = ProcessThread(database=self.database, processmsgfactory=self.processmsgfactory)
         processThread.msgpagelimit = self.msgpagelimit
         processThread.listener = self.listener
 
         while repeat:
             #self._saveThread(page)
-            processThread._saveThread(page)
+            processThread.processThread(page)
             self.pagecount += 1
             repeat = self._hasNext(page) and self._onlimit()
             if repeat:
@@ -87,7 +87,7 @@ class ProcessThreads(object):
     def _hasNext(self, page):
         res = page.nextUrl() is not ""
         if res is False:
-           self.listener.noMorePagea()
+            self.listener.noMorePagea()
         return res
 
     def _nextPage(self, oldpage):
@@ -97,10 +97,8 @@ class ProcessThreads(object):
     def _onlimit(self):
         res = self.pagecount <= self.pagelimit
         if res is False:
-           self.listener.limitReached()
+            self.listener.limitReached()
         return res
-
-
 
 
 class ProcessThread(object):
@@ -113,7 +111,11 @@ class ProcessThread(object):
         self.pagecount = 0
         self.listener = VoidListener()
 
-    def _saveThread(self, page):
+    def processThread(self, page):
+        """ Main entri pint
+            reads all threads in page and decides if read messages
+            and store the thread or not
+        """
         threadlist = page.createListOfAsuntos()
         for thread in threadlist:
             objthread = ThreadModel(thread)
@@ -173,11 +175,6 @@ class ProcessThread(object):
 
     def _is_unmodified(self, new_thread, old_thread):
         """ Return true if thread is not modified
-
-        if obj1.date() is not None and obj2.date() is not None:
-            return obj1.date() == obj2.date()
-        if obj1.answers() is not None and obj2.answers() is not None:
-            return obj1.answers() == obj2.answers()
         """
 
         # dont have the date_last_msg of the new thread
@@ -187,27 +184,6 @@ class ProcessThread(object):
                     # old_thread.msgList().size() -- never update
         #return same_last_msg and same_msgs
         return same_msgs
-
-    # I wont use this mthod
-    def _addNewMsgsIbThread(self, objthread):
-        return
-        # Get last msg_id
-        # create factory
-        # read
-        # add mesasages to thread
-        # update in database
-        # self.listener.enteringThread(objthread.title(), objthread.link())
-        last_id = objthread.id_last_msg()
-        if last_is is None:
-            msgs = self._messagesfrom(objthread.json())
-        else:
-            page = self.processmsgfactory.create(thread)
-            process = self._createProcessMsgs()
-            msgs = process.getMsgs(page)
-
-        objthread.update_msgs(msgs)
-        #self.listener.msgsFound(len(msgs))
-        self.database.updateThread(info)
 
     def _enter_in_thread(self, objthread):
         self.listener.enteringThread(objthread)

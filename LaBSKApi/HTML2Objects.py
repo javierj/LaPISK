@@ -9,6 +9,7 @@ class MsgFactory(object):
     def __init__(self, webclient=None):
         self.webclient = webclient
         self.soup = None
+        self.soupfragment = None
 
     # Private method
     def createMsg(self, soupfragment):
@@ -52,7 +53,6 @@ class MsgFactory(object):
     def changeUrl(self, url):
         self.webclient.load(url)
         self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
-
 
 
 class MsgPageFactory(object):

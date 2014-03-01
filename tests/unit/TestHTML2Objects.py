@@ -59,12 +59,10 @@ class TestAsuntoFactory(unittest.TestCase):
 
     def test_title(self):
         res = self.factory.create(self.fragment)
-        #print res['title']
         self.assertEqual(res['title'], u'Robinson Crusoe de Portal Games en espanol (al 95)')
 
     def test_link(self):
         res = self.factory.create(self.fragment)
-        #print res['link']
         self.assertEqual(res['link'], u'http://labsk.net/index.php?topic=126314.0')
 
     def test_location(self):

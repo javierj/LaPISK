@@ -24,7 +24,7 @@ class TestReportBuilder(unittest.TestCase):
         emptyReport = dict()
         self.assertRaises(ValueError, self.builder.build_report, emptyReport)
 
-    def test_when_reporthas_keywords_calls_hreads(self):
+    def test_when_report_has_keywords_calls_hreads(self):
         self.builder.build_report(self.report)
 
         self.assertEquals(self.mock.threadscalled, 1)
@@ -95,9 +95,6 @@ class TestReportBuilder(unittest.TestCase):
         self.builder._add_msgs_to_report(self.keyword, self.thread, msglist)
 
         result = self.builder.report
-
-        #print result
-
         self.assertLen(1, result[self.keyword])
         thread = result[self.keyword][0]
         self.assertIn('msgs', thread)

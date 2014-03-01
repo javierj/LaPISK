@@ -52,7 +52,7 @@ class StdListener(object):
         print "No modification. Skipping ", obj.title()
 
     def __str__(self):
-        return "Urls: " + self.urls + " Messages readed: " + listener.msgs
+        return "Urls: " + str(self.urls) + " Messages readed: " + str(listener.msgs)
 
 """
 18/02/2014
@@ -108,6 +108,13 @@ New: 44  Updated: 50
 862 hilos en el merge / 19192 mensajes por 614302 de LaBSK
 
 
+01/02/2014
+threads limit = 1, mspg pages limit = 10, xx hilos, 15 urls, 8274 msgs
+Total time:  0:33:07.646000, XX segundos || 3'237 seg por hilo || 0'175 seg por msgs
+New: 44  Updated: 50
+862 hilos en el merge / 19192 mensajes por 614302 de LaBSK
+
+
 """
 
 
@@ -122,8 +129,8 @@ starttime = datetime.now()
 listener = StdListener()
 threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(listener)
-threads.setPageLimit(2)
-threads.setMsgPageLimit(5)
+threads.setPageLimit(1)
+threads.setMsgPageLimit(10)
 print "Page limit ", threads.pagelimit, " Msg page limit ", threads.msgpagelimit
 
 """ - Use this to play with threads

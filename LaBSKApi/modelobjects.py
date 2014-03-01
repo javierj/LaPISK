@@ -117,13 +117,6 @@ class ThreadModel(object):
         msg = self.msgs.lastmsg_object()
         return msg.id()
 
-    #def update_msgs(self, msglist):
-        """ compares nessages for date
-        """
-        # dates = [d for d in ]
-        # for msg in msglist
-        #pass
-
     def date_last_msg(self):
         return self.msgs.lastmsg_object().date()
 
