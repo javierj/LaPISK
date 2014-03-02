@@ -13,6 +13,9 @@ class MongoDB(object):
             self.col = self.db[col]
         self.query_col = self.insert_col = self.col
 
+    def authenticate(self, name, passwd):
+        self.db.authenticate(name, passwd)
+
     def query(self, name):
         self.query_col = self.db[name]
 
@@ -45,16 +48,20 @@ class MongoDB(object):
         target = self.db[str(target_col)]
         #criterion = {field:doc[field]}
         for doc in source.find():
-            found = target.find_one({field:doc[field]})
+            found = target.find_one({field: doc[field]})
             if found is None:
                 #print "A"
                 count += 1
                 #print count
-                self.saveDocIn(target,doc)
+                self.saveDocIn(target, doc)
         return count
 
     def find_one_by(self, field, value):
-        return self.query_col.find_one({field:value})
+        return self.query_col.find_one({field: value})
+
+    def find_all(self):
+        return self.query_col.find()
+
 
 class Collection(object):
 

@@ -330,6 +330,9 @@ class MockMongo(object):
     def find_one_by(self, field, value):
         return None
 
+    def find_all(self):
+        return self.listofthreads
+
 
 class ObjectId(object):
     """Mock for using SON copied from MondoDB """
@@ -375,8 +378,8 @@ class Reports(object):
 
 
 class MockDatetime(object):
-    def __init__(self, date):
-        self.dt = date
+    def __init__(self, date = None):
+        self.dt = self.set_datetime("01/01/2014", "14:10")
 
     def now(self):
         return self.dt

@@ -10,3 +10,18 @@ except IOError:
     pass
  
 from flaskweb import app as application
+from LaBSKApi.statistics import Statistics
+from LaBSKApi.MongoDB import MongoDB
+import flaskweb
+
+# Setup
+
+MONGODB_URI = os.environ['OPENSHIFT_MONGODB_DB_HOST']+":"+os.environ['OPENSHIFT_MONGODB_DB_PORT']
+connection_url = "mongodb://" + MONGODB_URI + "/"
+db = MongoDB(host = os.environ['OPENSHIFT_MONGODB_DB_HOST'],
+             port = os.environ['OPENSHIFT_MONGODB_DB_PORT'],
+             db= "phorumledge",
+             col = "stats")
+db.authenticate("admin","9UsXjxnQelHf")
+flaskweb.set_stats_module(Statistics(db))
+

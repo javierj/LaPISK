@@ -11,11 +11,10 @@ app = Flask(__name__)
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
-    DEBUG=True,
+    DEBUG=False,
     SECRET_KEY='development key',
     USERNAME='admin',
-    PASSWORD='default',
-    STATS = None
+    PASSWORD='default'
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
@@ -27,14 +26,12 @@ reportPresenter = ReportPresenter()
 
 ## Properties
 
-class Mock_Fake(object):
-    pass
-
 stats_module = None
 
 def set_stats_module(stats_modl):
     global stats_module
     stats_module = stats_modl
+
 
 def _get_stats_module():
     if not hasattr(g, 'stats_module'):
@@ -46,17 +43,26 @@ def _get_stats_module():
 
 @app.route("/")
 def main():
-    stats =  _get_stats_module()
-    stats.register_access_now('/')
-    return render_template('main.html', reports_url = url_for("reports"))
+    stats_mod = _get_stats_module()
+    stats_mod.register_access_now('/')
+    return render_template('main.html', reports_url=url_for("reports"))
+
+
+@app.route("/stats")
+def stats():
+    stats_mod =  _get_stats_module()
+    return render_template('no', stats_list=stats_mod.all_visits())
+
 
 @app.route("/reports")
 def reports():
     return render_template('reports.html')
 
+
 @app.route("/reports/asylum-games")
 def static_asylum_games():
     return render_template('static_asylum_games.html')
+
 
 @app.route("/reports/devir")
 def static_devir_games():

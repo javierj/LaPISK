@@ -55,25 +55,6 @@ class StdListener(object):
         return "Urls: " + str(self.urls) + " Messages readed: " + str(listener.msgs)
 
 """
-18/02/2014
-limit = 2, 4 urls, 156 hilos
-Total time:  0:05:17.864000 aprox 318 seg; 2'04 seg por hilo
-
-22/02(2014
-limit = 2, 6 urls, 230 hilos
-Total time:  0:06:53.872000 aprox. 414 seg; 1'8 seg por hilo
-Solo 110 hilos eran nuevos.
-
-22/02(2014
-limit = 4, 6 urls, 466 hilos, 7960 msgs
-Total time:  0:19:38.590000 aprox. 1178,6 seg; 2'53 seg por hilo
-
-24/02(2014
-limit = 4, 6 urls, 466 hilos, 7927 msgs
-Total time:  0:22:58.348000 aprox.  seg;  seg por hilo
-New: 15  Updated: 17 -- Casi toda la informacion es duplicada
-518 hilos en el merge
-
 25/02/2014
 threads limit = 2, mspg pages limit = 2, 232 hilos 6urls, 3152 msgs
 Total time:  0:07:06.326000
@@ -109,10 +90,10 @@ New: 44  Updated: 50
 
 
 01/02/2014
-threads limit = 1, mspg pages limit = 10, xx hilos, 15 urls, 8274 msgs
-Total time:  0:33:07.646000, XX segundos || 3'237 seg por hilo || 0'175 seg por msgs
-New: 44  Updated: 50
-862 hilos en el merge / 19192 mensajes por 614302 de LaBSK
+threads limit = 1, mspg pages limit = 10, xx hilos, 15 urls, xx msgs
+Total time:  0:33:07.646000, XX segundos || xx seg por hilo || xx seg por msgs
+New: 16  Updated: 70
+879 hilos en el merge / 20987 mensajes por 615085 de LaBSK
 
 
 """

@@ -5,7 +5,6 @@ Feature: obtener estadisticas del uso de HootBoardGame
 	I want to obtener estadisticas del uso que un visitante hace de HootBoardGame
 
 
-
     Scenario: Visita de la pagina principal
 		Given un visitante que accede a la pagina principal a las "12:00" del "01/01/2014"
 		When obtengo las estadisticas
@@ -15,17 +14,7 @@ Feature: obtener estadisticas del uso de HootBoardGame
 
 
 """
-    Scenario: tiempo en la pagina principal
-		Given dado un visitante de la aplicacion
-		When visita la pagina principal
-         And son las '12:00' del '01/01/2013'
-		Then las estadisticas me muestran la hora y el dia que visito la pagina
 
-    Scenario: tiempo en la pagina de informes
-		Given dado un visitante de la aplicacion
-		When visita la pagina de informes
-         And son las '12:05' del '01/01/2013'
-		Then las estadisticas me muestran la hora y el dia que visito la pagina
 
     # Ya mas adelante porcesaremos esta informacion
 

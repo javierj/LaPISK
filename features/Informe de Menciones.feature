@@ -15,7 +15,6 @@ Feature: generar informe de menciones
 		Then el informe contiene "2" hilos que la mencionan en el titulo
         And "2" hilos que la mencionan en un mensaje
 
-
 	Scenario: encontrar mensajes que mencionan un juego
 		Given las noticias de LaBSK
 		When solicito el informe del juego "Grenadier"
@@ -27,13 +26,4 @@ Feature: generar informe de menciones
 		When solicito el informe del juego "Castle Rising"
 		Then el informe esta vacio
 
-"""
-	Scenario: encontrar mensajes que mencionan un juego
-		Given las noticias de LaBSK
-		When solicito el informe del juego "Mansiones"
-		Then obtengo un hilo con "2" mensajes
-
-    # AD&D no lo encuentra, no se por que
-
-
-"""
+# AD&D no lo encuentra, no se por que
