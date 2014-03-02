@@ -1,7 +1,7 @@
 __author__ = 'Javier'
 
 import unittest
-from tests.Harness import MockMongo, Reports
+from tests.Harness import MockMongo
 from LaBSKApi.reports import ReportBuilder, _word_in
 
 class TestReportBuilder(unittest.TestCase):
@@ -80,7 +80,7 @@ class TestReportBuilder(unittest.TestCase):
         result = self.builder._word_in_msgs(self.keyword, self.thread)
         self.assertLen(1, result)
 
-    def test_word_in_msgs_when_msg_coitains_keyword(self):
+    def test_word_in_msgs_when_msg_not_coitains_keyword(self):
         self.thread['msgs'].append({'body': "No word"})
         result = self.builder._word_in_msgs(self.keyword, self.thread)
         self.assertLen(0, result)
@@ -109,7 +109,7 @@ class TestWordIn(unittest.TestCase):
         self.assertTrue(_word_in("a", " A "))
     def test_word_dont_find_fragments(self):
         self.assertFalse(_word_in("a", "aa"))
-    def test_word_dont_find_fragments(self):
+    def test_word_dont_find_fragments_one_letter(self):
         self.assertFalse(_word_in("a", "a"))
 
 if __name__ == '__main__':

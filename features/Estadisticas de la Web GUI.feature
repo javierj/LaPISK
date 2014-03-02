@@ -1,10 +1,20 @@
-Feature: obtener estadisticas dek uso de la aplicacion
-	In order of concoer el uso del sistema por parte de los visitantes
-    and validar o descartar hipotesis
+Feature: obtener estadisticas del uso de HootBoardGame
+	In order of conocer el uso del sistema por parte de los visitantes
+    and validar o descartar hipotesis sobre que funcionalidad es la mas demandada
 	As propietario del sistema
-	I want to obtner estadisticas del uso que uso que un visitante ha hecho del siste,a
+	I want to obtener estadisticas del uso que un visitante hace de HootBoardGame
 
 
+
+    Scenario: Visita de la pagina principal
+		Given un visitante que accede a la pagina principal a las "12:00" del "01/01/2014"
+		When obtengo las estadisticas
+		Then veo una visita a "/" a la hora de la visita
+
+    # El mismo escenario pero con la IP y con otras paginas
+
+
+"""
     Scenario: tiempo en la pagina principal
 		Given dado un visitante de la aplicacion
 		When visita la pagina principal
@@ -26,3 +36,4 @@ Feature: obtener estadisticas dek uso de la aplicacion
 		Then las estadisticas me muestran la hora y el dia que solicito el informe
          And las estadisticas memmuestra el informe de 'Asylum-Games'
          And las estadisticas me muestra el resultado del informe de 'Asylum-Games'
+"""

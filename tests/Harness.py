@@ -1,6 +1,8 @@
 __author__ = 'Javier'
 
 from bs4 import UnicodeDammit, BeautifulSoup
+from datetime import datetime
+
 
 class HTMLFactory:
 
@@ -370,3 +372,10 @@ class Reports(object):
         for msg in Reports.threats_with_newline['msgs']:
             thread['msgs'].append(msg.copy())
         return thread
+
+
+def create_datetime(date, hour):
+    datos_hora = hour.split(':')
+    datos_fecha = date.split('/')
+    return datetime(int(datos_fecha[2]), int(datos_fecha[1]), int(datos_fecha[0]),
+                    int(datos_hora[0]), int(datos_hora[1]))
