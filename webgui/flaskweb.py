@@ -5,7 +5,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 from presenter.ReportPresenter import ReportPresenter, PreGeneratedReports
 from LaBSKApi.MongoDB import MongoDB
-import helppers
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -14,7 +14,8 @@ app.config.update(dict(
     DEBUG=True,
     SECRET_KEY='development key',
     USERNAME='admin',
-    PASSWORD='default'
+    PASSWORD='default',
+    STATS = None
 ))
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
@@ -23,8 +24,30 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 reportPresenter = ReportPresenter()
 #reportPresenter.database = MongoDB()
 
+
+## Properties
+
+class Mock_Fake(object):
+    pass
+
+stats_module = None
+
+def set_stats_module(stats_modl):
+    global stats_module
+    stats_module = stats_modl
+
+def _get_stats_module():
+    if not hasattr(g, 'stats_module'):
+        g.stats_module = stats_module
+    return g.stats_module
+
+
+## Navigation
+
 @app.route("/")
 def main():
+    stats =  _get_stats_module()
+    stats.register_access_now('/')
     return render_template('main.html', reports_url = url_for("reports"))
 
 @app.route("/reports")

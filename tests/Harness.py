@@ -374,8 +374,16 @@ class Reports(object):
         return thread
 
 
-def create_datetime(date, hour):
-    datos_hora = hour.split(':')
-    datos_fecha = date.split('/')
-    return datetime(int(datos_fecha[2]), int(datos_fecha[1]), int(datos_fecha[0]),
+class MockDatetime(object):
+    def __init__(self, date):
+        self.dt = date
+
+    def now(self):
+        return self.dt
+
+    def set_datetime(self, date, hour):
+        datos_hora = hour.split(':')
+        datos_fecha = date.split('/')
+        self.dt = datetime(int(datos_fecha[2]), int(datos_fecha[1]), int(datos_fecha[0]),
                     int(datos_hora[0]), int(datos_hora[1]))
+        return self.dt

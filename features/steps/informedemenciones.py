@@ -9,8 +9,8 @@ from expects import expect
 #
 # Helppers
 #
-def crea_informe(name = "Name", keywords = []):
-    return {'name': name, 'keywords': keywords}
+def crea_informe(name="Name", keywords=None):
+    return {'name': name, 'keywords': (keywords or [])}
 
 """
 	Scenario encontrar hilos que mencionan un juego
@@ -60,16 +60,12 @@ def when_generating_report_from_editor(context, word):
     context.informe = presenter.generateReport(informe)
     context.keyword = word
 
-
 @then('el informe contiene "{numero}" hilos que la mencionan en el titulo')
 def assert_hilos_del_informe(context, numero):
     count = int(numero)
     all_threads = context.informe[context.keyword]
-    result = 0
     threads = [m for m in all_threads if context.keyword in m['title']]
     #threads.should.have.length_of(count)
-    #result.should.equal(count)
-    #expect(result).to.equal(count)
     expect(threads).to.have.length(count)
 
 @then('"{numero}" hilos que la mencionan en un mensaje')
@@ -77,7 +73,6 @@ def assert_hilos_con_mensajes(context, numero):
     count = int(numero)
     all_threads = context.informe[context.keyword]
     threads = [m for m in all_threads if context.keyword in m['title']]
-
     #threads.should.have.length_of(count + result)
     expect(all_threads).to.have.length(count + len(threads))
     #result.should.equal(0)
@@ -100,6 +95,7 @@ def assert_Url(context, URL):
     #context.thread['link'].should.equal(URL)
     expect(context.thread['link']).to.equal(URL)
 
+
 @then(u'"{numero}" mensaje del usuairo "{usuario}"')
 def assert_messages_and_user(context, numero, usuario):
     count = int(numero)
@@ -118,7 +114,6 @@ def assert_messages_and_user(context, numero, usuario):
 """
 @then(u'el informe esta vacio')
 def assert_informe_vacio(context):
-    #assert context.keyword not in context.informe
     threads = context.informe[context.keyword]
     #threads.should.have.length_of(0)
     expect(threads).to.have.length(0)

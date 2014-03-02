@@ -8,6 +8,10 @@ from webgui.helppers import GenerateHTMLFromText
 from tests.Harness import Reports
 
 
+class MockStats(object):
+    def register_access_now(self, url):
+        pass
+
 class TestFlaskWeb(unittest.TestCase):
 
     def setUp(self):
@@ -18,6 +22,7 @@ class TestFlaskWeb(unittest.TestCase):
         self.title = "HootBoardGame"
         self.mockReportPresenter = mock()
         flaskweb.reportPresenter = self.mockReportPresenter
+        flaskweb.set_stats_module(MockStats())
 
     def test_main_page_title(self):
         rv = self.app.get('/')
@@ -47,6 +52,7 @@ class TestFlaskWeb(unittest.TestCase):
         #report = ReportModel(Reports.asylum)
         for word in Reports.asylum_keywords:
             self.assertIn(word, rv.data)
+
 
     #
     # New asserts
