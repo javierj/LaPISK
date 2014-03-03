@@ -9,10 +9,12 @@ Prototype 0.01 / 2014/03/03 <br/>
 Access stats. <br/>
 <hr/>
 
-<table>
-    <tr> <td>Page</td><td>datetime</td> </tr>
+<table cellspacing=12>
+    <tr> <td>Page</td> <td>Datetime</td> <td>Ip</td> </tr>
     {% for visit in stats_list %}
-        <tr> <td> {{ visit.url }} </td> <td> {{ visit.access_datetime }}</td> </tr>
+        <tr>
+            <td> {{ visit.url }} </td> <td> {{ visit.access_datetime }}</td> <td> {{ visit.ip }}</td>
+        </tr>
     {% endfor %}
 </table>
 
