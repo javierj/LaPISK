@@ -20,8 +20,6 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 
 # FIX: This will fail
 reportPresenter = ReportPresenter()
-#reportPresenter.database = MongoDB()
-
 
 ## Properties
 
@@ -39,14 +37,16 @@ def _get_stats_module():
 
 def register_access(route):
     stats_mod = _get_stats_module()
-    stats_mod.register_access_now(route, request.url)
+    stats_mod.register_access_now(str(route), request.remote_addr)
+    # Tambien vale: request.environ['REMOTE_ADDR'] o request.remote_addr
 
 
 ## Navigation
 
 @app.route("/")
 def main():
-    register_access("/")
+    register_access(request.path)
+    #register_access("/")
     return render_template('main.html', reports_url=url_for("reports"))
 
 
@@ -58,7 +58,8 @@ def stats():
 
 @app.route("/reports")
 def reports():
-    register_access("/reports")
+    register_access(request.path)
+    #register_access("/reports")
     return render_template('reports.html')
 
 

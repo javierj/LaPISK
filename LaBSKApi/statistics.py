@@ -45,4 +45,7 @@ class Visit(object):
 
     @staticmethod
     def from_json(json_doc):
-        return Visit(json_doc['url'], json_doc['datetime'], json_doc['ip'])
+        ip = "No IP"
+        if 'ip' in json_doc:
+            ip = json_doc['ip']
+        return Visit(json_doc['url'], json_doc['datetime'], ip)

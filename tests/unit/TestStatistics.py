@@ -4,6 +4,7 @@ import unittest
 from LaBSKApi.statistics import Statistics, Visit
 from tests.Harness import MockDatetime, MockMongo
 import datetime
+from mockito import mock, when
 
 class TestStatistics(unittest.TestCase):
 
@@ -23,6 +24,16 @@ class TestStatistics(unittest.TestCase):
         visits = self.stats.all_visits()
         self.assertEqual(len(visits), 1)
         self.assertEquals(str(self.mock_date.dt), visits[0].access_datetime)
+        self.assertEqual('/', visits[0].url)
+
+    def test_all_visits_with_statis_without_ip(self):
+        db = mock()
+        when(db).find_all().thenReturn([{'url':"/", 'datetime': "2014/02/02 14:53"}])
+        stats = Statistics(db)
+
+        visits = stats.all_visits()
+        self.assertEqual(len(visits), 1)
+        self.assertEquals("2014/02/02 14:53", visits[0].access_datetime)
         self.assertEqual('/', visits[0].url)
 
 
