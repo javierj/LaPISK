@@ -1,0 +1,11 @@
+language: python
+python:
+  - 2.7
+  - pypy
+
+install:
+  - pip install --use-mirrors -q mockito nose pymongo beautifulsoup4 flask
+  - python setup.py -q install
+script:
+  - python --version
+  - nosetests
