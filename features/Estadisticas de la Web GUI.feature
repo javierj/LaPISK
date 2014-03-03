@@ -12,6 +12,11 @@ Feature: obtener estadisticas del uso de HootBoardGame
 
     # El mismo escenario pero con la IP y con otras paginas
 
+    Scenario: Visitante de la pagina principal
+		Given un visitante que accede a la pagina principal con la IP "http://localhost/"
+		When obtengo las estadisticas
+		Then veo una visita a "/" desde la IP del visitante
+
 
 """
 

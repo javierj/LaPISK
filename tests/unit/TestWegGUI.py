@@ -5,7 +5,8 @@ from webgui import flaskweb
 from mockito import *
 from presenter.GUIModel import Text
 from webgui.helppers import GenerateHTMLFromText
-from tests.Harness import Reports
+from tests.Harness import Reports, MockDatetime
+from LaBSKApi.statistics import Visit
 
 
 class MockStats(object):
@@ -22,7 +23,8 @@ class TestFlaskWeb(unittest.TestCase):
         self.title = "HootBoardGame"
         self.mockReportPresenter = mock()
         flaskweb.reportPresenter = self.mockReportPresenter
-        flaskweb.set_stats_module(MockStats())
+        self.mock_stat = mock()
+        flaskweb.set_stats_module(self.mock_stat)
 
     def test_main_page_title(self):
         rv = self.app.get('/')
@@ -52,6 +54,16 @@ class TestFlaskWeb(unittest.TestCase):
         #report = ReportModel(Reports.asylum)
         for word in Reports.asylum_keywords:
             self.assertIn(word, rv.data)
+
+    def test_when_requesting_stats_visits_are_rendered(self):
+        expected_time = MockDatetime().now()
+        visit = Visit("/", expected_time, "http://localhost/")
+        when(self.mock_stat).all_visits().thenReturn([visit])
+
+        rv = self.app.get('/stats')
+
+        self.assertIn("/", rv.data)
+        self.assertIn(str(expected_time), rv.data)
 
 
     #

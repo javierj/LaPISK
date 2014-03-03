@@ -4,14 +4,13 @@ __author__ = 'Javier'
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 from presenter.ReportPresenter import ReportPresenter, PreGeneratedReports
-from LaBSKApi.MongoDB import MongoDB
 from datetime import datetime
 
 app = Flask(__name__)
 
 # Load default config and override config from an environment variable
 app.config.update(dict(
-    DEBUG=False,
+    DEBUG=True,
     SECRET_KEY='development key',
     USERNAME='admin',
     PASSWORD='default'
@@ -38,34 +37,40 @@ def _get_stats_module():
         g.stats_module = stats_module
     return g.stats_module
 
+def register_access(route):
+    stats_mod = _get_stats_module()
+    stats_mod.register_access_now(route, request.url)
+
 
 ## Navigation
 
 @app.route("/")
 def main():
-    stats_mod = _get_stats_module()
-    stats_mod.register_access_now('/')
+    register_access("/")
     return render_template('main.html', reports_url=url_for("reports"))
 
 
 @app.route("/stats")
 def stats():
     stats_mod =  _get_stats_module()
-    return render_template('no', stats_list=stats_mod.all_visits())
+    return render_template('stats.html', stats_list=stats_mod.all_visits())
 
 
 @app.route("/reports")
 def reports():
+    register_access("/reports")
     return render_template('reports.html')
 
 
 @app.route("/reports/asylum-games")
 def static_asylum_games():
+    register_access("/reports/asylum-games")
     return render_template('static_asylum_games.html')
 
 
 @app.route("/reports/devir")
 def static_devir_games():
+    register_access("/reports/devir")
     return render_template('static_devir.html')
 
 

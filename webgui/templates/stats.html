@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HootBoardGame Stats</title>
+</head>
+<body>
+
+Prototype 0.01 / 2014/03/03 <br/>
+Access stats. <br/>
+<hr/>
+
+<table>
+    <tr> <td>Page</td><td>datetime</td> </tr>
+    {% for visit in stats_list %}
+        <tr> <td> {{ visit.url }} </td> <td> {{ visit.access_datetime }}</td> </tr>
+    {% endfor %}
+</table>
+
+
+<hr/>
+</body>
+</html>

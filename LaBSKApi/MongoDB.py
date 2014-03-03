@@ -5,7 +5,14 @@ from pymongo import MongoClient
 class MongoDB(object):
 
     def __init__(self, host = "localhost", port = 27017, db="labsk", col = None):
-        self.connection = MongoClient(host, port)
+
+        #self.connection = MongoClient(host, port)
+
+        MONGODB_URI = host+":"+str(port)
+        Connection_URL = "mongodb://" + MONGODB_URI + "/"
+        self.connection = MongoClient(Connection_URL)
+
+
         self.db = self.connection[db]
         if col is None:
             self.col = self.db[db + "_test"]

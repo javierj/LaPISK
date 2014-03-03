@@ -18,7 +18,7 @@ class TestStatistics(unittest.TestCase):
         self.assertIs(stats._datetime, datetime.datetime)
 
     def test_store_and_retrive_visit(self):
-        self.stats.register_access_now('/')
+        self.stats.register_access_now('/', "0.0.0.0")
 
         visits = self.stats.all_visits()
         self.assertEqual(len(visits), 1)
@@ -29,8 +29,8 @@ class TestStatistics(unittest.TestCase):
 class TestVisit(unittest.TestCase):
 
     def test_to_json(self):
-        json_doc = {'url':"/", 'datetime': "2014/02/02 14:53" }
-        visit = Visit("/", "2014/02/02 14:53")
+        json_doc = {'url':"/", 'datetime': "2014/02/02 14:53", 'ip': "0.0.0.0" }
+        visit = Visit("/", "2014/02/02 14:53", "0.0.0.0")
 
         self.assertEqual(visit.json(), json_doc)
 

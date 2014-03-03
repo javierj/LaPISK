@@ -16,8 +16,8 @@ import flaskweb
 
 # Setup
 
-MONGODB_URI = os.environ['OPENSHIFT_MONGODB_DB_HOST']+":"+os.environ['OPENSHIFT_MONGODB_DB_PORT']
-connection_url = "mongodb://" + MONGODB_URI + "/"
+#MONGODB_URI = os.environ['OPENSHIFT_MONGODB_DB_HOST']+":"+os.environ['OPENSHIFT_MONGODB_DB_PORT']
+#connection_url = "mongodb://" + MONGODB_URI + "/"
 db = MongoDB(host = os.environ['OPENSHIFT_MONGODB_DB_HOST'],
              port = os.environ['OPENSHIFT_MONGODB_DB_PORT'],
              db= "phorumledge",

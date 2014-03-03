@@ -7,8 +7,13 @@ from tests.Harness import MockDatetime, MockMongo
 
 ##
 # Fixtures
-mockMongo = MockMongo()
 
+
+def create_stats():
+    mockMongo = MockMongo()
+    stats = Statistics(mockMongo)
+    stats._datetime = MockDatetime(None)
+    return stats
 
 # This feature uses the before_scenario method in enviroment to set-up
 # a flaskweb instance and overrides the render_template method
@@ -24,13 +29,9 @@ mockMongo = MockMongo()
 
 @given('un visitante que accede a la pagina principal a las "{hora}" del "{fecha}"')
 def given_visitante_que_accede_a_la_pagina_principal(context, hora, fecha):
-    stats = Statistics(mockMongo)
-    stats._datetime = MockDatetime(None)
+    stats = create_stats()
     context.flaskweb.set_stats_module(stats)
     context.fecha_acceso_esperada = str(stats._datetime.set_datetime(fecha, hora))
-    #context.flaskweb.g['s']  = Statistics(mockMongo)
-    #context.fecha_acceso = context.webapp.datetime_module.set_datetime(fecha, hora)
-    #context.statistics_module.register_access('/', context.fecha_acceso)
     context.webapp.get('/')
 
 
@@ -50,5 +51,25 @@ def veo_una_visita_a_main(context, url):
     expect(context.fecha_acceso_esperada).to.equal(visits[0].access_datetime)
     expect(url).to.equal(visits[0].url)
 
+"""
+    Scenario: Visitante de la pagina principal
+		Given un visitante que accede a la pagina principal con la IP "0.0.0.0"
+		When obtengo las estadisticas
+		Then veo una visita a "/" desde la IP del visitante
+"""
 
+@given('un visitante que accede a la pagina principal con la IP "{ip}"')
+def given_visitante_que_accede_a_la_pagina_principal(context, ip):
+    stats = create_stats()
+    context.flaskweb.set_stats_module(stats)
+    context.ip_esperada = ip
+    context.webapp.get('/')
 
+@then('veo una visita a "{url}" desde la IP del visitante')
+def veo_una_visita_a_main(context, url):
+    context.webapp.get('/stats')
+    expect(context.render_context).to.have.key('stats_list')
+    visits = context.render_context['stats_list']
+    expect(visits).to.have.length(1)
+    expect(context.ip_esperada).to.equal(visits[0].ip)
+    expect(url).to.equal(visits[0].url)

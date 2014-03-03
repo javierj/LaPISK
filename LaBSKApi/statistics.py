@@ -1,7 +1,6 @@
 __author__ = 'Javier'
 
 from datetime import datetime
-import json
 
 class Statistics(object):
     def __init__(self, db):
@@ -15,16 +14,18 @@ class Statistics(object):
         return result
 
 
-    def register_access_now(self, url):
-        visit = Visit(url, self._datetime.now())
+    def register_access_now(self, url, ip = None):
+        visit = Visit(url, self._datetime.now(), ip)
         self.db.saveThread(visit.json())
 
 
 class Visit(object):
-
-    def __init__(self, u, access_datetime):
+    """ Stores one visit to a concrete page
+    """
+    def __init__(self, u, access_datetime, ip):
         self._url = u
         self._access_datetime = access_datetime
+        self._ip = ip
 
     @property
     def access_datetime(self):
@@ -34,10 +35,14 @@ class Visit(object):
     def url(self):
         return self._url
 
+    @property
+    def ip(self):
+        return self._ip
+
     def json(self):
         #return json.dumps(self)
-        return {'url': self._url, 'datetime':str(self._access_datetime)}
+        return {'url': self._url, 'datetime':str(self._access_datetime), 'ip': self._ip}
 
     @staticmethod
     def from_json(json_doc):
-        return Visit(json_doc['url'], json_doc['datetime'])
+        return Visit(json_doc['url'], json_doc['datetime'], json_doc['ip'])
