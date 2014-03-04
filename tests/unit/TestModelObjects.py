@@ -87,9 +87,17 @@ class TestThreadModel(unittest.TestCase):
     def test_date_last_msg(self):
         self.assertEqual(u' 24 de Octubre de 2013, 08:22:36 am \xbb', self.thread.date_last_msg())
 
-    def test_when_thread_has_no_answers_return_num_of_msg(self):
+    def test_when_thread_has_no_answers_return_num_of_msg_minus_one(self):
+        """ LaBSK doe snot count the first msg
+        """
         thread = ThreadModel({'msgs': [{}, {}]})
-        self.assertEqual(2, thread.answers())
+        self.assertEqual(1, thread.answers())
+
+        thread = ThreadModel({'msgs': []})
+        self.assertEqual(-1, thread.answers())
+
+        thread = ThreadModel({'msgs': [{u'date': u' 18 de Septiembre de 2013, 05:19:46 pm \xbb', u'body': u'Dejo por aqu\xed varios enlaces a nuestros \xfaltimos programas.\xa0 Hemos dejado de ser programa de radio de momento (espero que despu\xe9s de las fiestas del Pilar volvamos a serlo) as\xed que el sonido no es muy bueno, pero creo que las entrevistas son muy interesantes porque los invitados lo son\xa0 Proyecto de revista de juegos de mesa en papel y otros temas:Pedro Soto y otros temas:', u'user': u'verarua'}]})
+        self.assertEqual(0, thread.answers())
 
 if __name__ == '__main__':
     unittest.main()

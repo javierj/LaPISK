@@ -6,6 +6,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 from presenter.ReportPresenter import ReportPresenter, PreGeneratedReports
 from datetime import datetime
 
+##def create_app():
 app = Flask(__name__)
 
 # Load default config and override config from an environment variable
@@ -37,7 +38,10 @@ def _get_stats_module():
 
 def register_access(route):
     stats_mod = _get_stats_module()
-    stats_mod.register_access_now(str(route), request.remote_addr)
+    ip = None
+    if 'X-Client-Ip' in request.headers:
+        ip = request.headers['X-Client-Ip']
+    stats_mod.register_access_now(str(route), ip)
     # Tambien vale: request.environ['REMOTE_ADDR'] o request.remote_addr
 
 

@@ -71,10 +71,11 @@ class ThreadModel(object):
         return self.jsondoc
 
     def answers(self):
-        """ If attribute is not in hread, the use sthe number of msgs
+        """ If attribute is not in hread, the use the number of msgs minus one
+            because LaNSK doses not count the first answer
         """
         if 'answers' not in self.jsondoc:
-            return self.msgs.size()
+            return self.msgs.size() -1
         return self.jsondoc['answers']
 
     def set_answers(self, a):
