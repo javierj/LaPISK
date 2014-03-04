@@ -18,6 +18,12 @@ Feature: obtener estadisticas del uso de HootBoardGame
 		Then veo una visita a "/" desde la IP del visitante
 
 
+    Scenario: Visitante administrador
+		Given el administrador accede a la pagina principal con la IP "188.78.230.48"
+		When obtengo las estadisticas
+		Then no veo ninguna visita desde la IP del administrador
+
+
 """
 
 

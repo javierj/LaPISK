@@ -38,7 +38,7 @@ def _get_stats_module():
 
 def register_access(route):
     stats_mod = _get_stats_module()
-    ip = None
+    ip = request.remote_addr
     if 'X-Client-Ip' in request.headers:
         ip = request.headers['X-Client-Ip']
     stats_mod.register_access_now(str(route), ip)

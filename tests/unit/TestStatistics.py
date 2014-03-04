@@ -36,6 +36,13 @@ class TestStatistics(unittest.TestCase):
         self.assertEquals("2014/02/02 14:53", visits[0].access_datetime)
         self.assertEqual('/', visits[0].url)
 
+    def test_when_a_visit_comes_from_a_ignore_ip_dont_store_it(self):
+        self.stats.add_ignore_ip('ignore')
+        self.stats.register_access_now("url", "ignore")
+
+        visits = self.stats.all_visits()
+        self.assertEqual(len(visits), 0)
+
 
 class TestVisit(unittest.TestCase):
 

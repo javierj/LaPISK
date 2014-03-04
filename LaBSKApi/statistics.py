@@ -6,6 +6,7 @@ class Statistics(object):
     def __init__(self, db):
         self.db = db
         self._datetime = datetime
+        self.ignore = dict()
 
     def all_visits(self):
         result = list()
@@ -13,11 +14,16 @@ class Statistics(object):
             result.append(Visit.from_json(vist_json))
         return result
 
-
-    def register_access_now(self, url, ip = None):
+    def register_access_now(self, url, ip=None):
+        if ip in self.ignore:
+            return
         visit = Visit(url, self._datetime.now(), ip)
         self.db.saveThread(visit.json())
 
+    def add_ignore_ip(self, ip_to_ignore):
+        """ Adds a nw ip to ignore. If a visit cointais that IP is not stores
+        """
+        self.ignore[ip_to_ignore] = ip_to_ignore
 
 class Visit(object):
     """ Stores one visit to a concrete page

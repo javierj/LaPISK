@@ -8,4 +8,4 @@ install:
   - python setup.py -q install
 script:
   - python --version
-  - nosetests
+  - nosetests ./tests/unit
