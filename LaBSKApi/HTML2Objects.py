@@ -113,7 +113,7 @@ class AsuntoFactory(object):
         return result
 
     def append_if_valid(self, l, msg):
-        if msg['link'] is not "":
+        if len(msg['link']) > 0:
             l.append(msg)
 
     def createListOfAsuntos(self, soupFragment = None):
