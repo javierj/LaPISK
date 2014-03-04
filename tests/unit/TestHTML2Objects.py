@@ -133,9 +133,8 @@ class TestAsuntoFactory(unittest.TestCase):
     def test_append_if_valid_when_is_not_Valid(self):
         l = list()
         msg = {'tile': "", 'link': ""}
-
+        self.assertEquals(len(l), 0)
         self.factory.append_if_valid(l, msg)
-
         self.assertEquals(len(l), 0)
 
     def test_get_number_from(self):

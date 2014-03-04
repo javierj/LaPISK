@@ -23,5 +23,7 @@ db = MongoDB(host = os.environ['OPENSHIFT_MONGODB_DB_HOST'],
              db= "phorumledge",
              col = "stats")
 db.authenticate("admin","9UsXjxnQelHf")
-flaskweb.set_stats_module(Statistics(db))
+stats = Statistics(db)
+stats.add_ignore_ip("188.78.230.48")
+flaskweb.set_stats_module(stats)
 
