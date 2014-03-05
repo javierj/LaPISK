@@ -76,7 +76,7 @@ class ThreadModel(object):
         """
         if 'answers' not in self.jsondoc:
             return self.msgs.size() -1
-        return self.jsondoc['answers']
+        return int(self.jsondoc['answers'])
 
     def set_answers(self, a):
         self.jsondoc['answers'] = a

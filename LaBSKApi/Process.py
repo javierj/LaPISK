@@ -28,11 +28,6 @@ class VoidListener(object):
         """
         pass
 
-    def oldThreadFound(self, obj):
-        """ A URL with the same link is already stored
-        """
-        pass
-
     def skippingUnmodifiedThread(self, obj):
         """ Old thread seems to be the same one than the new thread
         """
@@ -127,6 +122,7 @@ class ProcessThread(object):
         """
         old_thread = self._search_thread(new_objthread)
 
+        #print "old_thread: ", old_thread
         if old_thread is not None and self._is_unmodified(new_objthread, old_thread):
             self.listener.skippingUnmodifiedThread(new_objthread)
             return
@@ -146,8 +142,6 @@ class ProcessThread(object):
 
             print "B"
             return
-
-
 
         print "C"
         # Code sould not achive this pint using an empty collection
@@ -175,14 +169,11 @@ class ProcessThread(object):
 
     def _is_unmodified(self, new_thread, old_thread):
         """ Return true if thread is not modified
+            It checks the answers of the new msg and the num of messages of the old one
+            Answers in LaBSK do not count the first msg
         """
-
-        # dont have the date_last_msg of the new thread
-        # same_last_msg = new_thread.date_last_msg() == old_thread.date_last_msg()
-        # Number of msgs of new hread is the samethan the msgs I already have
-        same_msgs = new_thread.answers() == old_thread.answers()
-                    # old_thread.msgList().size() -- never update
-        #return same_last_msg and same_msgs
+        same_msgs = new_thread.answers() == (old_thread.msgList().size() - 1 )
+        #print "url: ",new_thread.link(),": ", new_thread.answers(), " == ", (old_thread.msgList().size() - 1 ), " is ", same_msgs
         return same_msgs
 
     def _enter_in_thread(self, objthread):

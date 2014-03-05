@@ -60,7 +60,7 @@ class TestMsgListModel(unittest.TestCase):
 class TestThreadModel(unittest.TestCase):
 
     def setUp(self):
-        self.empty_thread = ThreadModel({"msgs": [{}]})
+        self.empty_thread = ThreadModel({"msgs": [{}], 'answers': '0'})
         self.thread = ThreadModel(Reports.threats_with_newline.copy())
 
     def test_date(self):
@@ -98,6 +98,10 @@ class TestThreadModel(unittest.TestCase):
 
         thread = ThreadModel({'msgs': [{u'date': u' 18 de Septiembre de 2013, 05:19:46 pm \xbb', u'body': u'Dejo por aqu\xed varios enlaces a nuestros \xfaltimos programas.\xa0 Hemos dejado de ser programa de radio de momento (espero que despu\xe9s de las fiestas del Pilar volvamos a serlo) as\xed que el sonido no es muy bueno, pero creo que las entrevistas son muy interesantes porque los invitados lo son\xa0 Proyecto de revista de juegos de mesa en papel y otros temas:Pedro Soto y otros temas:', u'user': u'verarua'}]})
         self.assertEqual(0, thread.answers())
+
+    def test_answers_is_numer(self):
+        #print type(self.thread.answers())
+        self.assertIsInstance(self.thread.answers(), int)
 
 if __name__ == '__main__':
     unittest.main()

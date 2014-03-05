@@ -74,9 +74,9 @@ class TestAsuntoFactory(unittest.TestCase):
         thread = ThreadModel(self.factory.create(self.fragment))
         self.assertEqual(thread.location(), "")
 
-    def test_respuestas_y_vistas(self):
+    def test_answers_y_views(self):
         thread = ThreadModel(self.factory.create(self.fragment))
-        self.assertEqual(thread.answers(), "10")
+        self.assertEqual(thread.answers(), 10)
         self.assertEqual(thread.views(), "490")
 
     def test_next_url(self):
