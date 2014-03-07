@@ -209,6 +209,7 @@ class ProcessThread(object):
         result['link'] = thread['link']
         result['msgs'] = msgs
         result['answers'] = len(msgs)
+        result['location'] = thread['location']
         return result
 
 

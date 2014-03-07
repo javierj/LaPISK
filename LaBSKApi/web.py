@@ -9,6 +9,11 @@ class URL(object):
         self.url = url
         self.desc = desc
 
+    def desc(self):
+        """ Returns the description of the URL
+        """
+        return self.desc
+
 class WebClient(object):
 
     def __init__(self, url):
@@ -41,6 +46,8 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=27.0;desc", "Ezines"),
         URL("http://labsk.net/index.php?board=212.0;desc", "Podcasts"),
         URL("http://labsk.net/index.php?board=53.0;desc", "Juego del mes"),
+        URL("http://labsk.net/index.php?board=207.0", "Wargames, por periodos"),
+        URL("http://labsk.net/index.php?board=37.0", "Humor grafico"),
         URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces")
 )
 

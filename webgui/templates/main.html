@@ -1,32 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>HootBoardGame</title>
+  <meta charset="UTF-8">
+  <title>HootBoardGame</title>
+  <meta name="description" content="HootBoardGame. Your control panel to discover everything about board games in the Net.">
+  <meta name="keywords" content="hootboardgame, board, game">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body>
+<div class="wrapper">
+<div class="left-gap1"><img src="{{ url_for('static', filename='images/spacer.gif') }}" alt="#" border="0"
+ height="1" width="6"></div>
+<div class="main">
+<div class="header">
+<div class="nav-area">
+<ul class="nav">
+  <li style="border: medium none ;"><a href='http://http://phorumledge-hootboardgame.rhcloud.com/'>HootBoardGame</a></li>
+  <li><a href='{{ url_for("reports") }}'>Menciones</a></li>
+  <li><a href='{{ url_for("faqs") }}'>Preguntas y respuestas</a></li>
+</ul>
+</div>
+<div class="banner-area"><img src="{{ url_for('static', filename='images/banner-1.jpg') }}" alt="#"
+ border="0"></div>
+</div>
+<div class="mid">
+<div class="mid-left">
+<h3>Herramientas<br>
+</h3>
+<ul class="left-item">
+  <li><a href="{{ url_for('reports') }}">Menciones<br>
+    </a></li>
+  <li><a href='{{ url_for("faqs") }}'>Preguntas y respuestas<br>
+    </a></li>
+</ul>
+</div>
+<div class="mid-right">
+<h1>HootBoardGame</h1>
+<p class="txt-1">
 HootBoardGame main page. <br/>
-Prototype 0.01 / 2014/02/19 <br/>
+Prototype 0.02 / 2014/03/07  <br/>
 <hr/>
-<br/>
-<b>Opciones:</b>
-<br/>
-<a href='{{ reports_url }}'> Reports. </a> Informes sobre palabras claves mencionas en el foro
-<br/>
-<br/>
-<b>Preguntas frecuentes:</b>
-<p> ¿Qué es HootBoardGame?</p>
-<p> HootBoardGame es un sistema de monitorización de fuentes de información de juegos de mesa.
-    El objetivo es extraer información de foros, blogs, tec. que hablen de juegos de mesa y presentarlos
-de manera útil.</p>
+</p>
+<p class="txt-1">
+    <b>Herramientas: </b> <br/>
+Menciones: busca las palabras claves en todas las fuentes de información indexadas.<br/>
+  Preguntas y repsuestas: descubre qué es HootBoardGame y el estado del proyecto.
+</p>
+<br>
+</div>
+    <br/>
+    <hr/>
+    <br/>
+    <p class="txt-1"> Puedes ponerte en contacto con HootBoardGame en esta dirección: hootboardgame_arroba_yahoo.es</p>
+</div>
+<div class="footer">
+<p class="copyright-text">Copyright 2010. Designed by <a target="_blank"
+ href="http://www.htmltemplates.net/">html templates</a></p>
+</div>
+</div>
+<div class="right-gap1"><img src="images/spacer.gif" alt="#" border="0"
+ height="1" width="6"></div>
+</div>
 
-<p> ¿Cuál es el estado de desarrollo HootBoardGame?</p>
-<p> Actualmente existe un minimo producto viable para estudiar la mejor manera de abordar el sistema. Este proucto permite realizar busquedas reales sobre un pequeño fragmento de los mensajes del foro</p>
+<!--DO NOT Remove The Footer Links-->
+<!--Designed by--><a href="http://www.htmltemplates.net">
+<img src="{{ url_for('static', filename='images/footnote.gif') }}" class="copyright" alt="htmltemplates.net"></a>
+<!--In partnership with--><a href="http://websitetemplates.net">
+<img src="{{ url_for('static', filename='images/footnote.gif') }}" class="copyright" alt="websitetemplates.net"></a>
+<!--DO NOT Remove The Footer Links-->
 
-<p> ¿Cuál es el calendario HootBoardGame?</p>
-<p> Continuar implementando nueva funcionalidad y evolucionando el producto viable.</p>
-
-
-<hr/>
-<p> Puedes ponerte en contacto con el desarrollor de HootBoardGame en esta direccion: hootboardgame_arroba_yahoo.es</p>
 </body>
 </html>

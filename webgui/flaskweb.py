@@ -50,8 +50,13 @@ def register_access(route):
 @app.route("/")
 def main():
     register_access(request.path)
-    #register_access("/")
-    return render_template('main.html', reports_url=url_for("reports"))
+    return render_template('main.html')
+
+
+@app.route("/faqs")
+def faqs():
+    register_access(request.path)
+    return render_template('faqs.html')
 
 
 @app.route("/stats")

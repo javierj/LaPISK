@@ -36,6 +36,18 @@ class TestProcessThreads(unittest.TestCase):
         thread = self.mongo.listofthreads[0]
         self.assertEqual(2, len(thread['msgs']))
 
+    def test_createThreadStruct_stores_locaton(self):
+        urlobject = mock()
+        when(urlobject).desc().thenReturn("X")
+        self.threadfactory.urlobject = urlobject
+
+        self.processthread.storeThreads(self.threadfactory)
+
+        self.assertEquals(2, len(self.mongo.listofthreads))
+        thread = self.mongo.listofthreads[0]
+        self.assertEqual("X", thread['location'])
+
+
     def test_default_pagelimit_is_1(self):
         mockweb = MockWebClient(self.navhtml)
         self.processthread.storeThreads(AsuntoFactory(mockweb))

@@ -44,6 +44,18 @@ class TestStatistics(unittest.TestCase):
         self.assertEqual(len(visits), 0)
 
 
+    def test_when_a_visit_comes_from_one_of_ignore_ips_dont_store_it(self):
+        self.stats.add_ignore_ip('ignore01')
+        self.stats.add_ignore_ip('ignore02')
+        self.stats.register_access_now("ignore01", "ignore01")
+        self.stats.register_access_now("ignore02", "ignore02")
+        self.stats.register_access_now("no_ignore", "no_ignore")
+
+        visits = self.stats.all_visits()
+        self.assertEqual(len(visits), 1)
+        self.assertEqual(visits[0].url, "no_ignore")
+
+
 class TestVisit(unittest.TestCase):
 
     def test_to_json(self):

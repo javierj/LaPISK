@@ -24,6 +24,7 @@ db = MongoDB(host = os.environ['OPENSHIFT_MONGODB_DB_HOST'],
              col = "stats")
 db.authenticate("admin","9UsXjxnQelHf")
 stats = Statistics(db)
-stats.add_ignore_ip("188.78.230.48")
+stats.add_ignore_ip("188.78.230.48") # My home laptop
+stats.add_ignore_ip("10.85.78.172") # Every hour
 flaskweb.set_stats_module(stats)
 

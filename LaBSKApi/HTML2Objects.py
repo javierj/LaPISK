@@ -99,7 +99,7 @@ class AsuntoFactory(object):
         result["views"] = ""
         result["location"] = ""
         if self.urlobject is not None:
-            result["location"] = self.urlobject.desc
+            result["location"] = self.urlobject.desc()
 
         #result['location'] = self.webclient.get_url_desc()
         if field is not None:

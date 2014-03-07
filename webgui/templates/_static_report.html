@@ -1,37 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>HootBoardGame</title>
+  <meta charset="UTF-8">
+  <title>HootBoardGame</title>
+  <meta name="description" content="HootBoardGame. Your control panel to discover everything about board games in the Net.">
+  <meta name="keywords" content="hootboardgame, board, game">
+  <link href="/static/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-
-Prototype 0.01 / 2014/02/19 <br/>
+<div class="wrapper">
+<div class="left-gap1"><img src="/static/images/spacer.gif" alt="#" border="0"
+ height="1" width="6"></div>
+<div class="main">
+<div class="header">
+<div class="nav-area">
+<ul class="nav">
+  <li style="border: medium none ;"><a href='http://http://phorumledge-hootboardgame.rhcloud.com/'>HootBoardGame</a></li>
+  <li>Menciones</li>
+  <li>Preguntas y respuestas</li>
+</ul>
+</div>
+<div class="banner-area"><img src="/static/images/banner-1.jpg" alt="#"
+ border="0"></div>
+</div>
+<div class="mid">
+<div class="mid-left">
+<h3>Herramientas<br>
+</h3>
+<ul class="left-item">
+  <li>Menciones<br>
+    </li>
+  <li>Preguntas y respuestas<br>
+    </li>
+</ul>
+</div>
+<div class="mid-right">
+<h1>Informe de menciones</h1>
+<p class="txt-1">
+HootBoardGame main page. <br/>
+Prototype 0.02 / 2014/03/07  <br/>
 <hr/>
-<h2>{{ report['title'] }}. </h2>
-<p> Generated {{ report['report_date'] }} </p>
-<p> Para este informe se han consultado los siguientes hilos de LaBSK: {{ links }} hasta la fecha: {{ last_update }}</p>
+</p>
+<br/>
+    <h2>{{ report['title'] }}. </h2>
+<p class="txt-1">
+
+ Generado el {{ report['report_date'] }}
+<br/>
+Para este informe se han consultado los siguientes hilos de LaBSK: {{ links }} hasta la fecha: {{ last_update }}
+</p>
+<br/>
+    <p class="txt-1">
 
 {% for keyword in keywords %}
-<p><b>Keyword: {{ keyword }} </b></p>
-
+<b>Keyword: {{ keyword }} </b>
+    <br/>
     {% for thread in report[keyword] %}
-        <br>
+        <br/>
         <i>{{ thread['location'] }} / {{ thread['title'] }} </i>/
             <a href=" {{ thread['link'] }}"> {{ thread['link'] }} </a> <br/>
         {% for msg in thread['msgs'] %}
-            <br>
+            <br/>
             {{ msg['date'] }}  / {{ msg['link'] }}
-            <br>
+            <br/>
             {{msg['body'] }}
-            <br>
+            <br/>
         {% endfor %}
-        <br>
-        <br>
+        <br/>
+        <br/>
     {% endfor %}
-    <hr>
+    <hr/>
 {% endfor %}
 
-<hr/>
-<p> Puedes ponerte en contacto con el desarrollor de HootBoardGame en esta direccion: hootboardgame_arroba_yahoo.es</p>
+
+</p>
+</div>
+<div class="footer">
+<p class="copyright-text">Copyright 2010. Designed by <a target="_blank"
+ href="http://www.htmltemplates.net/">html templates</a></p>
+</div>
+</div>
+<div class="right-gap1"><img src="/static/images/spacer.gif" alt="#" border="0"
+ height="1" width="6"></div>
+</div>
+
+<!--DO NOT Remove The Footer Links-->
+<!--Designed by--><a href="http://www.htmltemplates.net">
+<img src="/static/images/footnote.gif" class="copyright" alt="htmltemplates.net"></a>
+<!--In partnership with--><a href="http://websitetemplates.net">
+<img src="/static/images/footnote.gif" class="copyright" alt="websitetemplates.net"></a>
+<!--DO NOT Remove The Footer Links-->
+
 </body>
 </html>
