@@ -9,7 +9,7 @@ class URL(object):
         self.url = url
         self.desc = desc
 
-    def desc(self):
+    def description(self):
         """ Returns the description of the URL
         """
         return self.desc

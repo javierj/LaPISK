@@ -38,7 +38,7 @@ class TestProcessThreads(unittest.TestCase):
 
     def test_createThreadStruct_stores_locaton(self):
         urlobject = mock()
-        when(urlobject).desc().thenReturn("X")
+        when(urlobject).description().thenReturn("X")
         self.threadfactory.urlobject = urlobject
 
         self.processthread.storeThreads(self.threadfactory)
