@@ -1,7 +1,7 @@
 __author__ = 'Javier'
 
 import unittest
-from tests.Harness import MockMongo
+from tests.Harness import MockMongo, Reports
 from LaBSKApi.reports import ReportBuilder, _word_in
 
 class TestReportBuilder(unittest.TestCase):
@@ -53,6 +53,7 @@ class TestReportBuilder(unittest.TestCase):
         result = self.builder.report
 
         self.assertIn(self.keyword , result)
+        self.assertLen(1, result[self.keyword ])
 
     def test_when_add_second_therad_report_contains_both(self):
         self.builder._add_thead_to_report(self.keyword , self.thread)
@@ -100,6 +101,25 @@ class TestReportBuilder(unittest.TestCase):
         self.assertIn('msgs', thread)
         msgs = thread['msgs']
         self.assertEquals(msgs[0]['body'], msg['body'])
+
+    def test_report_includes_creation_date_of_thread(self):
+        self.thread['msgs'] = Reports.asylum_msg_list
+        self.mock.saveThread(self.thread)
+        self.assertLen(1, self.mock.threads())
+
+        result = self.builder.build_report(self.report)
+        # print result
+        self.assertLen(1, result[self.keyword])
+        first_thread = result[self.keyword][0]
+        self.assertEquals(first_thread['creation_date'], Reports.asylum_msg_list[0]['date'])
+
+    def test_add_creation_date_two_messages(self):
+        self.thread['msgs'].append({'date':'yes'})
+        self.thread['msgs'].append({'date':'no'})
+        self.builder._add_creation_date(self.thread)
+
+        self.assertIn('creation_date', self.thread)
+        self.assertEquals('yes', self.thread['creation_date'])
 
 
 class TestWordIn(unittest.TestCase):

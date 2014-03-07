@@ -59,6 +59,7 @@ Para este informe se han consultado los siguientes hilos de LaBSK: {{ links }} h
         <br/>
         <i>{{ thread['location'] }} / {{ thread['title'] }} </i>/
             <a href=" {{ thread['link'] }}"> {{ thread['link'] }} </a> <br/>
+        Creado el: {{ thread['creation_date'] }}. Respuestas: {{ thread['answers'] }}  <br/>
         {% for msg in thread['msgs'] %}
             <br/>
             {{ msg['date'] }}  / {{ msg['link'] }}

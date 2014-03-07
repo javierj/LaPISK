@@ -25,10 +25,13 @@ class ReportBuilder(object):
         self.report = None
         self.report_request = None
 
-    def build_report(self, report_request):
+    def _check_request(self, report_request):
         if 'keywords' not in report_request or len(report_request['keywords']) is 0:
             raise ValueError("No keywords in report: " + str(report_request))
             return
+
+    def build_report(self, report_request):
+        self._check_request(report_request)
 
         self.report_request = report_request
         self._create_report()
@@ -50,20 +53,32 @@ class ReportBuilder(object):
         messagesWithKeyword = None
         for word in keywords:
             if self._word_in(word, thread['title']):
+                self._add_creation_date(thread)
                 self._drop_msgs_from_thread(thread)
                 self._add_thead_to_report(word, thread)
             else:
                 messagesWithKeyword = self._word_in_msgs(word, thread)
                 if (len(messagesWithKeyword) > 0):
                     # Add to report
+                    self._add_creation_date(thread)
                     self._add_msgs_to_report(word, thread, messagesWithKeyword)
+
+    def _add_creation_date(self, thread):
+        msgs = thread['msgs']
+        if len(msgs) == 0:
+            thread['creation_date'] = "No messages"
+            return
+        first = msgs[0]
+        date = first['date']
+        thread['creation_date'] = date
 
     def _drop_msgs_from_thread(self, thread):
         if 'msgs' in thread:
             thread.pop('msgs')
 
     def _add_thead_to_report(self, keyword, thread):
-        """ Adds the therad but frist opo out the messages of the thread
+        """ Adds the therad to the list associated to the kwyword
+            but frist opo out the messages of the thread
         """
         if self.report is None:
             self._create_report()
@@ -95,7 +110,7 @@ class ReportBuilder(object):
 
 
     def _word_in_msgs(self, keyword, thread):
-        """ Retur a list with the msgs in the therad tan conatians the kwyord
+        """ Retur a list with the msgs in the therad tan contains the kwyord
             or an empry list if no message contains keyword.
         """
         result = list()
@@ -108,7 +123,7 @@ class ReportBuilder(object):
 
     def _word_in(self, word, line):
         """
-        return word.lower() in line.lower()
+        Returns true if word.lower() in line.lower()
         """
         normal = word.lower()
         #normalword = " "+normal.strip() + " "
