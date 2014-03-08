@@ -47,14 +47,15 @@ Prototype 0.02 / 2014/03/07  <br/>
 
  Generado el {{ report['report_date'] }}
 <br/>
-Para este informe se han consultado los siguientes hilos de LaBSK: {{ links }} hasta la fecha: {{ last_update }}
+Para este informe se han consultado los siguientes hilos de LaBSK: {{ links }} hasta la fecha.
 </p>
 <br/>
-    <p class="txt-1">
+
 
 {% for keyword in keywords %}
 <b>Keyword: {{ keyword }} </b>
     <br/>
+     <p class="txt-1">
     {% for thread in report[keyword] %}
         <br/>
         <i>{{ thread['location'] }} / {{ thread['title'] }} </i>/
@@ -70,11 +71,12 @@ Para este informe se han consultado los siguientes hilos de LaBSK: {{ links }} h
         <br/>
         <br/>
     {% endfor %}
+    </p>
     <hr/>
 {% endfor %}
 
 
-</p>
+
 </div>
 <div class="footer">
 <p class="copyright-text">Copyright 2010. Designed by <a target="_blank"

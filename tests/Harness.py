@@ -1,6 +1,6 @@
 __author__ = 'Javier'
 
-from bs4 import UnicodeDammit, BeautifulSoup
+from bs4 import BeautifulSoup
 from datetime import datetime
 
 

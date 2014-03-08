@@ -119,7 +119,7 @@ class TestProcessThread(unittest.TestCase):
 
         verify(self.db, times=1).find_one_by('link', self.t01.link())
         verify(self.db, times=0).saveThread(any())
-        verify(self.listener, times=1).skippingUnmodifiedThread(self.t01)
+        verify(self.listener, times=1).skippingUnmodifiedThread(any(), any())
 
 
     def test_hilo_igual_es_no_modificado(self):

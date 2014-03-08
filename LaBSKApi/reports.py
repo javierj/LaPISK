@@ -28,7 +28,7 @@ class ReportBuilder(object):
     def _check_request(self, report_request):
         if 'keywords' not in report_request or len(report_request['keywords']) is 0:
             raise ValueError("No keywords in report: " + str(report_request))
-            return
+        return
 
     def build_report(self, report_request):
         self._check_request(report_request)
@@ -41,7 +41,6 @@ class ReportBuilder(object):
         self._add_empty_keywords(report_request['keywords'])
         return self.report
 
-    # not tested
     def _add_empty_keywords(self, keywords):
         for word in keywords:
             if word not in self.report:
@@ -85,17 +84,6 @@ class ReportBuilder(object):
         if keyword not in self.report:
             self.report[keyword] = list()
         self.report[keyword].append(thread)
-
-    # Deprecated. delete it
-    def _thread_contains_keywords(self, thread, keywords):
-        """ True if any of the keywords is in thread's title.
-            Case sensitive (fix this).
-            Use the [ x for..] notation
-        """
-        for word in keywords:
-            if word in thread['title']:
-                return True
-        return False
 
     def _create_report(self):
         """ Creates a new report using the name of the report request as title.

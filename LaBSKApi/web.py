@@ -48,6 +48,8 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=53.0;desc", "Juego del mes"),
         URL("http://labsk.net/index.php?board=207.0", "Wargames, por periodos"),
         URL("http://labsk.net/index.php?board=37.0", "Humor grafico"),
+        URL("http://labsk.net/index.php?board=45.0", "Quedadas en Madrid"),
+        URL("http://labsk.net/index.php?board=39.0", "Salon de te / De jugon a jugon"),
         URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces")
 )
 

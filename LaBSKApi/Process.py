@@ -28,7 +28,7 @@ class VoidListener(object):
         """
         pass
 
-    def skippingUnmodifiedThread(self, obj):
+    def skippingUnmodifiedThread(self, old, new):
         """ Old thread seems to be the same one than the new thread
         """
         pass
@@ -124,7 +124,7 @@ class ProcessThread(object):
 
         #print "old_thread: ", old_thread
         if old_thread is not None and self._is_unmodified(new_objthread, old_thread):
-            self.listener.skippingUnmodifiedThread(new_objthread)
+            self.listener.skippingUnmodifiedThread(old_thread, new_objthread)
             return
 
         self._enter_in_thread(new_objthread)
