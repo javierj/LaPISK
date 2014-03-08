@@ -41,8 +41,9 @@ def when_generating_report(context, word):
 @then('el informe contiene el hilo "{titulo_del_hilo}"')
 def assert_titulo_del_hilo(context, titulo_del_hilo):
     threads = context.informe[context.keyword]
-    title = threads[0]['title']
+    title = threads[1]['title']
     #title.should.equal(titulo_del_hilo)
+    print threads
     expect(title).to.equal(titulo_del_hilo)
 
 

@@ -74,14 +74,15 @@ def reports():
 
 @app.route("/reports/asylum-games")
 def static_asylum_games():
-    register_access("/reports/asylum-games")
+    register_access(request.path)
     return render_template('static_asylum_games.html')
 
 
 @app.route("/reports/devir")
 def static_devir_games():
-    register_access("/reports/devir")
+    register_access(request.path)
     return render_template('static_devir.html')
+
 
 
 # Dynamic behaviour

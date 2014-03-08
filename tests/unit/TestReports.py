@@ -10,7 +10,7 @@ class TestReportBuilder(unittest.TestCase):
         self.mock = MockMongo()
         self.builder = ReportBuilder(self.mock)
         self.report = {'name': "TestReport" ,'keywords':['key', 'word']}
-        self.thread = {'title': (self.report['keywords'][0]), 'msgs': []}
+        self.thread = {'title': (self.report['keywords'][0]), 'msgs': []}.copy()
         self.keyword = self.report['keywords'][0]
         self.builder.report_request = self.report
 
@@ -28,16 +28,6 @@ class TestReportBuilder(unittest.TestCase):
         self.builder.build_report(self.report)
 
         self.assertEquals(self.mock.threadscalled, 1)
-    """
-    def test_thread_contains_keywords_return_false_when_no_keywords(self):
-        thread = {'title': "no"}
-        result = self.builder._thread_contains_keywords(thread, self.report['keywords'])
-        self.assertFalse(result)
-
-    def test_thread_contains_keywords_return_true_when_keywords(self):
-        result = self.builder._thread_contains_keywords(self.thread, self.report['keywords'])
-        self.assertTrue(result)
-    """
 
     def test_report_has_title(self):
         self.builder._create_report()
@@ -53,12 +43,12 @@ class TestReportBuilder(unittest.TestCase):
         self.builder._add_thead_to_report('key', self.thread)
         result = self.builder.report
 
-        self.assertIn(self.keyword , result)
+        self.assertIn(self.keyword, result)
         self.assertLen(1, result[self.keyword ])
 
     def test_when_add_second_therad_report_contains_both(self):
-        self.builder._add_thead_to_report(self.keyword , self.thread)
-        self.builder._add_thead_to_report(self.keyword , self.thread)
+        self.builder._add_thead_to_report(self.keyword, self.thread)
+        self.builder._add_thead_to_report(self.keyword, self.thread)
         result = self.builder.report
 
         self.assertLen(2, result[self.keyword])
@@ -122,6 +112,28 @@ class TestReportBuilder(unittest.TestCase):
         self.assertIn('creation_date', self.thread)
         self.assertEquals('yes', self.thread['creation_date'])
 
+    def when_thread_already_has_creation_date_then_exit(self):
+        self.thread['creation_date'] = "Already exists"
+        self.builder._add_creation_date(self.thread)
+
+        self.assertEqual("Already exists", self.thread['creation_date'])
+
+    def test_sorts_threads_by_creation_date_and_hour(self):
+        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]},
+                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
+        self.builder._sorts_threads(['key'], report)
+        self.assertEqual(report['key'][0]['title'], "a")
+        self.assertEqual(report['key'][1]['title'], "b")
+
+    def test_hilo_con_mas_de_una_keyword(self):
+        thread = {u'title': u'Guardian cross para Android/Iphone/Ipad', u'answers': 1, 'creation_date': u' 03 de Junio de 2013, 10:55:11 am \xbb', u'source': u'LaBSK', u'link': u'http://labsk.net/index.php?topic=111335.0', u'location': u'Videojuegos'}
+        #threadobj = ThreadModel(thread)
+
+        self.builder._find_keywords(thread, ["iphone", "ios", "android", "tablet"])
+        report = self.builder.report
+        self.assertEquals(1, len(report["iphone"]))
+        self.assertEquals(1, len(report["android"]))
+
 
 class TestWordIn(unittest.TestCase):
     def test_word_with_itsfel(self):
@@ -132,6 +144,10 @@ class TestWordIn(unittest.TestCase):
         self.assertFalse(_word_in("a", "aa"))
     def test_word_dont_find_fragments_one_letter(self):
         self.assertFalse(_word_in("a", "a"))
+
+
+class TestReportModel(unittest.TestCase):
+    pass
 
 if __name__ == '__main__':
     unittest.main()

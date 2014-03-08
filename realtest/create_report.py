@@ -19,10 +19,8 @@ def write(filename, html_text):
 
 
 db = MongoDB(col="labsk_merge")
-#db = MockMongo()
 
 starttime = datetime.now()
-
 builder = ReportBuilder(db)
 text = Text()
 
@@ -30,31 +28,20 @@ env = Environment(loader=FileSystemLoader('../webgui/templates'))
 template = env.get_template("_static_report.html")
 
 
-report = builder.build_report(PreGeneratedReports.report_asylum_games)
-# No funciona
-#text.change_newline_in_report(PreGeneratedReports.report_asylum_games['keywords'], report)
-#post_report = report
-xhtml = template.render(keywords=Reports.asylum_keywords,
-                        report=report,
-                        links=get_all_descs(),
-                        last_update="24/02/2014 16:30")
 
-html = UnicodeDammit(xhtml).unicode_markup
-write('../webgui/templates/static_asylum_games.html', html)
+def generate_report(name, report_schema):
+    report = builder.build_report(report_schema)
+    text.change_newline_in_report(report_schema['keywords'], report)
+    xhtml = template.render(keywords=report_schema['keywords'],
+                            report=report,
+                            links=get_all_descs()
+                            )
 
+    html = UnicodeDammit(xhtml).unicode_markup
 
-
-report = builder.build_report(PreGeneratedReports.report_devir)
-# No funciona
-text.change_newline_in_report(PreGeneratedReports.report_devir['keywords'], report)
-xhtml = template.render(keywords=['Devir'],
-                        report=report,
-                        links=get_all_descs(),
-                        last_update="24/02/2014 16:30")
-
-html = UnicodeDammit(xhtml).unicode_markup
-
-write('../webgui/templates/static_devir.html', html)
+    write('../webgui/templates/static_'+name+'.html', html)
 
 
-
+generate_report("asylum", PreGeneratedReports.report_asylum_games)
+generate_report("devir", PreGeneratedReports.report_devir)
+generate_report("moviles", PreGeneratedReports.report_moviles)

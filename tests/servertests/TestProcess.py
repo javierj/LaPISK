@@ -5,7 +5,7 @@ from LaBSKApi.MongoDB import MongoDB
 from LaBSKApi.Process import ProcessThread
 from tests.Harness import Reports
 from LaBSKApi.modelobjects import ThreadModel
-from mockito import mock, verify
+from mockito import mock, verify, any
 
 
 class TestPorcessWithMongo(unittest.TestCase):
@@ -45,14 +45,10 @@ class TestPorcessWithMongo(unittest.TestCase):
         link = 'http://labsk.net/index.php?topic=127734.0'
         newT = ThreadModel({'link':link, 'msgs': [{}], 'answers':'0'})
 
-        #print "Answers: ", newT.answers()
-        tmp_col = "labsk_temp_temp"
-        #db.insert(tmp_col)
-
         process = self._create_process()
         self.assertIsNotNone(process._search_thread(newT))
         process._evaluate_thread(newT)
-        verify(self.mock_listener).skippingUnmodifiedThread(newT)
+        verify(self.mock_listener).skippingUnmodifiedThread(any(), newT)
 
 if __name__ == '__main__':
     unittest.main()

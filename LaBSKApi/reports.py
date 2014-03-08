@@ -17,6 +17,9 @@ class PreGeneratedReports(object):
                             'keywords': ["Asylum Games", "Polis", "Mutinies", "Banjooli"]}
     report_devir = {'name': 'Informe de Devir',
                             'keywords': ["Devir"]}
+    report_moviles = {'name': 'Juegos en dispositivos moviles',
+                            'keywords': ["iphone", "ios", "android", "tablet"]}
+
 
 class ReportBuilder(object):
 
@@ -39,6 +42,7 @@ class ReportBuilder(object):
             self._find_keywords(thread, report_request['keywords'])
 
         self._add_empty_keywords(report_request['keywords'])
+        self._sorts_threads(report_request['keywords'], self.report)
         return self.report
 
     def _add_empty_keywords(self, keywords):
@@ -57,12 +61,14 @@ class ReportBuilder(object):
                 self._add_thead_to_report(word, thread)
             else:
                 messagesWithKeyword = self._word_in_msgs(word, thread)
-                if (len(messagesWithKeyword) > 0):
+                if len(messagesWithKeyword) > 0:
                     # Add to report
                     self._add_creation_date(thread)
                     self._add_msgs_to_report(word, thread, messagesWithKeyword)
 
     def _add_creation_date(self, thread):
+        if 'creation_date' in thread:
+            return
         msgs = thread['msgs']
         if len(msgs) == 0:
             thread['creation_date'] = "No messages"
@@ -125,4 +131,14 @@ class ReportBuilder(object):
         thread['msgs'] = msgs
         self._add_thead_to_report(keyword, thread)
 
+    def _sorts_threads(self, keywords, report):
+        for kword in keywords:
+            threads = report[kword]
+            report[kword] = sorted(threads, key=lambda t:self._get_date_for_thread(t))
 
+    def _get_date_for_thread(self, thread):
+        """ A better way would be to use the therad object instead
+        """
+        if 'msgs' not in thread:
+            return "ZZZ"
+        return thread['msgs'][0]['date']

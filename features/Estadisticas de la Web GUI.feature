@@ -23,17 +23,3 @@ Feature: obtener estadisticas del uso de HootBoardGame
 		When obtengo las estadisticas
 		Then no veo ninguna visita desde la IP del administrador
 
-
-"""
-
-
-    # Ya mas adelante porcesaremos esta informacion
-
-    Scenario: informes consultados
-		Given dado un visitante de la aplicacion
-		When solicita el informe de 'Asylum-Games'
-         And son las '12:05' del '01/01/2013'
-		Then las estadisticas me muestran la hora y el dia que solicito el informe
-         And las estadisticas memmuestra el informe de 'Asylum-Games'
-         And las estadisticas me muestra el resultado del informe de 'Asylum-Games'
-"""

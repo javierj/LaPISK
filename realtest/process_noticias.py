@@ -36,23 +36,18 @@ class StdListener(object):
         self.msgs += 1
 
     def newURL(self, url):
-        """ url is a web.URL object
-        """
+        """ url is a web.URL object        """
         print "----------------------------------------------"
         print "---  ", url.desc, " ", url.url
         self.urls += 1
 
-    def skippingUnmodifiedThread(self, obj):
-        """ Old thread seems to be the same one than the new thread
-        """
+    def skippingUnmodifiedThread(self, old, new):
+        """ Old thread seems to be the same one than the new thread        """
         self.skiped += 1
-        print "No modification. Skipping ", obj.title(), " / ", obj.link()
+        print old.answers(), "==", new.answers(), ". Skipping ", old.title(), " / ", old.link()
 
     def __str__(self):
         return "Urls: " + str(self.urls) + ". Threads: " + str(self.thread) + ". Messages readed: " + str(listener.msgs) + ". Threads skipped: " + str(self.skiped)
-
-"""
-"""
 
 
 db = MongoDB()
@@ -64,13 +59,17 @@ starttime = datetime.now()
 listener = StdListener()
 threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(listener)
-threads.setPageLimit(3)
+threads.setPageLimit(1)
 threads.setMsgPageLimit(80) # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
-print "Page limit ", threads.pagelimit, " Msg page limit ", threads.msgpagelimit
+
 
 threads.scrapListOfURL(labsk_urls)
 delta = datetime.now() - starttime
 
 print "----------------------------------------------"
 print "Total time: ", delta
+print "Page limit ", threads.pagelimit, " Msg page limit ", threads.msgpagelimit
 print str(listener)
+
+mr = db.merge('link')
+print str(mr)
