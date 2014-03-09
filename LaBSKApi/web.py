@@ -51,6 +51,8 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=45.0", "Quedadas en Madrid"),
         URL("http://labsk.net/index.php?board=39.0", "Salon de te / De jugon a jugon"),
         URL("http://labsk.net/index.php?board=182.0", "Ayudadme a elegir"),
+        URL("http://labsk.net/index.php?board=55.0", "Sondeos"),
+        URL("http://labsk.net/index.php?board=199.0", "Que os parece"),
         URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces")
 )
 

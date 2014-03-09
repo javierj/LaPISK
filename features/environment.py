@@ -2,11 +2,10 @@ __author__ = 'Javier'
 
 from webgui import flaskweb
 
-
 my_context = None
 
+
 def mock_render_template(template_name_or_list, **context):
-    global my_context
     my_context.render_context = context
     return "Ok"
 
