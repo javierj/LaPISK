@@ -46,13 +46,14 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=27.0;desc", "Ezines"),
         URL("http://labsk.net/index.php?board=212.0;desc", "Podcasts"),
         URL("http://labsk.net/index.php?board=53.0;desc", "Juego del mes"),
-        URL("http://labsk.net/index.php?board=207.0", "Wargames, por periodos"),
-        URL("http://labsk.net/index.php?board=37.0", "Humor grafico"),
-        URL("http://labsk.net/index.php?board=45.0", "Quedadas en Madrid"),
-        URL("http://labsk.net/index.php?board=39.0", "Salon de te / De jugon a jugon"),
-        URL("http://labsk.net/index.php?board=182.0", "Ayudadme a elegir"),
-        URL("http://labsk.net/index.php?board=55.0", "Sondeos"),
-        URL("http://labsk.net/index.php?board=199.0", "Que os parece"),
+        URL("http://labsk.net/index.php?board=207.0;desc", "Wargames, por periodos"),
+        URL("http://labsk.net/index.php?board=37.0;desc", "Humor grafico"),
+        URL("http://labsk.net/index.php?board=45.0;desc", "Quedadas en Madrid"),
+        URL("http://labsk.net/index.php?board=39.0;desc", "Salon de te / De jugon a jugon"),
+        URL("http://labsk.net/index.php?board=182.0;desc", "Ayudadme a elegir"),
+        URL("http://labsk.net/index.php?board=55.0;desc", "Sondeos"),
+        URL("http://labsk.net/index.php?board=199.0;desc", "Que os parece"),
+        URL("http://labsk.net/index.php?board=1.0;desc", "Cajon desastre"),
         URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces")
 )
 

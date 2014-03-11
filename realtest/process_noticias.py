@@ -2,9 +2,8 @@ __author__ = 'Javier'
 
 from LaBSKApi.Process import ProcessThreads
 from LaBSKApi.MongoDB import MongoDB
-from LaBSKApi.HTML2Objects import MsgPageFactory, AsuntoFactory
+from LaBSKApi.HTML2Objects import MsgPageFactory
 from LaBSKApi.web import labsk_urls
-from tests.Harness import MockMongo
 from datetime import datetime
 
 class StdListener(object):

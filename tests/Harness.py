@@ -298,6 +298,95 @@ src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/ic
               <a class="navPages" href="http://labsk.net/index.php?board=18.20">>></a>  &nbsp;&nbsp;<a href="#bot"><strong>Ir Abajo</strong></a></div>
             """
 
+    msg_with_html = BeautifulSoup("""
+ <div class="post_wrapper">
+						<div class="poster">
+							<h4>
+								<a href="http://labsk.net/index.php?action=profile;u=22803" title="Ver perfil de LudoNoticias">LudoNoticias</a>
+							</h4>
+							<ul class="reset smalltext" id="msg_1240391_extra_info">
+								<li class="postgroup">Recien Llegado</li>
+								<li class="stars">
+								<img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/star.gif" alt="*" /></li>
+								<li class="postcount">Mensajes: 8</li>
+								<li class="profile">
+									<ul>
+										<li><a href="http://labsk.net/index.php?action=profile;u=22803">
+										<img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/icons/profile_sm.gif" alt="Ver Perfil" title="Ver Perfil" /></a></li>
+										<li><a href="http://labsk.net/index.php?action=emailuser;sa=email;msg=1240391"
+										rel="nofollow"><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/email_sm.gif" alt="Email" title="Email" /></a></li>
+										<li><a href="http://labsk.net/index.php?action=pm;sa=send;u=22803" title="Mensaje Privado (Desconectado)"><img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/im_off.gif" alt="Mensaje Privado (Desconectado)" /></a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<div class="postarea">
+							<div class="flow_hidden">
+								<div class="keyinfo">
+									<div class="messageicon">
+										<img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/post/novedad.gif" alt="" />
+									</div>
+									<h5 id="subject_1240391">
+										<a href="http://labsk.net/index.php?topic=128950.msg1240391#msg1240391" rel="nofollow">
+										Osprey Publishing crea su division de juegos </a>
+									</h5>
+									<div class="smalltext">&#171; <strong> en:</strong> 08 de Marzo de 2014, 05:00:13 pm &#187;</div>
+									<div id="msg_1240391_quick_mod"></div>
+								</div>
+								<ul class="reset smalltext quickbuttons">
+									<li class="quote_button"><a href="http://labsk.net/index.php?action=post;quote=1240391;topic=128950.0;last_msg=1240391" onclick="return oQuickReply.quote(1240391);">Citar</a></li>
+					<li class="thank_you_button"><span id="buttonThxID1240391" style="display: inline;"><a id="buttonThxHrefID1240391" href="http://labsk.net/index.php?action=thankyou;topic=128950.0;msg=1240391">Gracias</a></span></li>
+								</ul>
+							</div>
+							<div class="post">
+								<div class="inner" id="msg_1240391"><strong>Osprey Publishing crea su division de juegos</strong><br /><br />
+								<p><a rel="nofollow" target="_blank" href="http://ludonoticias.com/2014/03/08/osprey-publishing-crea-su-division-de-juegos/">Osprey Publishing crea su divisipn de juegos</a></p><p><strong>Osprey publishing</strong>
+								aumenta su linea de productos, y para ello ha creado una division dedicada a los juegos.
+								<strong>Osprey Games</strong> se encargara de publicar nuevos productos, siguiendo la linea de sus exitosos wargames
+								de miniaturas, al mismo tiempo que incluira juegos de tablero y de cartas;
+								lo que permitira a la c fortalecer y diversificar su posicion.<span id="more-7857"></span></p
+								><p><img class="aligncenter size-full wp-image-7861" alt="Field of Glory de osprey publishing"
+								src="http://ludonoticias.com/wp-content/uploads/2014/03/Osprey-rules-001.jpg" width="585" height="250"/></p>
+								<p>En 2008 <strong>Osprey publishing</strong> lanzo al mercado junto a <strong>Slitherine Strategies</strong> el
+								wargame historico de miniaturas <strong>Field of Glory</strong>, comenzando a centrarse en un hobby con el que tenia
+								mucho en comun. Los libros militares de la companyia inglesa han sido fuente
+								de inspiracion para pintores, disenyadores
+								de escenarios y jugadores de wargames de todas las epocas, siendo <strong>Field of Glory</strong> el primer juego
+								creado por la editorial para este publico. El exito de este juego les llevo a publicar otros proyectos como
+								<strong>Force on Force</strong> (en colaboracion con <strong>Ambush Alley Games</strong>) y las versiones ambientadas
+								en el renacimiento y las guerras napoleonicas de <strong>Field of Glory</strong>.
+								a <strong>Warlord games</strong> de las reglas de <strong>Bolt Action</strong> y la serie de pequenyos libros de reglas de
+								la serie <strong>Osprey Wargames</strong>, han situado a la companya como
+								una de las mayores editoriales de
+								juegos de estrategia.</p><p><img class="aligncenter size-full wp-image-7859" alt="Reglas para wargames modernos de Osprey Publishing"
+								src="http://ludonoticias.com/wp-content/uploads/2014/03/Osprey-rules-002.jpg" width="390" height="248"/>
+								</p><p>&nbsp;</p>
+								<div class="wpInsert wpInsertInPostAd wpInsertBelow" style="margin:5px auto;padding:0px;width:468px;"> &nbsp;</div>
+								<p>La entrada <a rel="nofollow" target="_blank"
+								href="http://ludonoticias.com/2014/03/08/osprey-publishing-crea-su-division-de-juegos/">
+								Osprey Publishing crea su division de juegos</a> aparece primero en
+								<a rel="nofollow" target="_blank" href="http://ludonoticias.com">LudoNoticias, todo sobre juegos de mesa y simulacion</a>.</p><br />Source:
+								<a href="
+								http://ludonoticias.com/2014/03/08/osprey-publishing-crea-su-division-de-juegos/?utm_source=rss&utm_medium=rss&utm_campaign=osprey-publishing-crea-su-division-de-juegos" class="bbc_link"
+								target="_blank">Osprey Publishing crea su division de juegos</a><br />
+								<br />Noticia gracias a: <a href="http://www.ludonoticias.com" class="bbc_link"
+								target="_blank">http://www.ludonoticias.com</a></div>
+							</div>
+						</div>
+						<div class="moderatorbar">
+							<div class="smalltext modified" id="modified_1240391">
+							</div>
+							<div class="smalltext reportlinks"><g:plusone href="http://labsk.net/index.php?topic=128950" size="small"></g:plusone>
+			<script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script><a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+								<a href="http://labsk.net/index.php?action=reporttm;topic=128950.0;msg=1240391">Reportar al moderador</a> &nbsp;
+								<img src="http://h2212313.stratoserver.net/Themes/SMFSimple_Theme_Skin_Samp/images/ip.gif" alt="" />
+								<a href="http://labsk.net/index.php?action=helpadmin;help=see_member_ip" onclick="return reqWin(this.href);" class="help">En </a>
+							</div>
+						</div>
+					</div>
+					<span class="botslice"><span></span></span>
+        """
+)
 
 class MockWebClient(object):
     def __init__(self, code = ""):

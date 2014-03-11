@@ -64,7 +64,7 @@ listener = StdListener()
 threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(listener)
 threads.setPageLimit(3)
-threads.setMsgPageLimit(100) # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
+threads.setMsgPageLimit(110) # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
 
 
 threads.scrapListOfURL(labsk_urls)

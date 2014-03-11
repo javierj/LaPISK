@@ -4,7 +4,6 @@ __author__ = 'Javier'
 # Creates an static report
 
 from jinja2 import FileSystemLoader, Environment
-from tests.Harness import Reports
 from bs4 import UnicodeDammit
 from LaBSKApi.web import get_all_descs
 from LaBSKApi.MongoDB import MongoDB

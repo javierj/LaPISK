@@ -5,6 +5,7 @@ from LaBSKApi.HTML2Objects import MsgFactory, AsuntoFactory, MsgPageFactory
 from LaBSKApi.modelobjects import MsgModel, ThreadModel
 from LaBSKApi.web import URL
 from tests.Harness import MockWebClient, HTMLFactory
+from bs4 import BeautifulSoup
 
 
 class TestMsgFactory(unittest.TestCase):
@@ -13,6 +14,7 @@ class TestMsgFactory(unittest.TestCase):
         webclient = MockWebClient(HTMLFactory.msg_html())
         self.factory = MsgFactory(webclient)
         self.msg_from_fragment = self.factory.createMsg(self.fragment)
+        self.extected_content = u'Content\n'
 
     def test_user(self):
         self.assertEqual(self.msg_from_fragment['user'], "flOrO")
@@ -28,11 +30,6 @@ class TestMsgFactory(unittest.TestCase):
 
     def test_id(self):
         self.assertEqual(self.msg_from_fragment['id'], "msg_1169262")
-
-    def test_create_with_webclient(self):
-        res = self.factory.create()
-        self.assertEqual(res['date'], u' 25 de Octubre de 2013, 12:12:00 pm \xbb')
-        self.assertEqual(res['user'], "flOrO")
 
     def test_create_list_of_msgs(self):
         msgs = self.factory.createListOfMsgs()
@@ -50,6 +47,38 @@ class TestMsgFactory(unittest.TestCase):
         self.factory.changeUrl(url)
 
         self.assertEqual(url, webclient.url)
+
+    def test_msg_with_HTML_inside(self):
+        self.factory = MsgFactory(MockWebClient(HTMLFactory.msg_html()))
+        res = self.factory.createMsg(HTMLFactory.msg_with_html)
+        self.assertEqual(res['user'], "LudoNoticias")
+        msg = MsgModel(res)
+        self.assertEqual(msg.body()[:10], "Osprey Pub")
+
+    def test_get_content_recursively_no_tags(self):
+        html = BeautifulSoup("Content")
+        res = self.factory._get_content_recursively(html)
+        self.assertEqual(self.extected_content, res)
+
+    def test_get_content_recursively_one_tag(self):
+        html = BeautifulSoup("<strong>Content</strong>")
+        res = self.factory._get_content_recursively(html)
+        self.assertEqual(self.extected_content, res)
+
+    def test_get_content_recursively_two_tags(self):
+        html = BeautifulSoup("<strong><i>Content</i></strong>")
+        res = self.factory._get_content_recursively(html)
+        self.assertEqual(self.extected_content, res)
+
+    def test_get_content_recursively_list_of_tags(self):
+        html = BeautifulSoup("<strong>Content</strong> <i>Content</i>")
+        res = self.factory._get_content_recursively(html)
+        self.assertEqual(u'Content\n \nContent\n', res)
+
+    def test_get_content_recursively_empty(self):
+        html = BeautifulSoup("")
+        res = self.factory._get_content_recursively(html)
+        self.assertEqual("", res)
 
 
 class TestAsuntoFactory(unittest.TestCase):

@@ -14,25 +14,16 @@ class MsgFactory(object):
     # Private method
     def createMsg(self, soupfragment):
         result = {"user": soupfragment.find('a').contents[0],
-                  "date": soupfragment.find('div', 'smalltext').contents[2],
-                  "body": self._build_msg(soupfragment),
-                  "id": soupfragment.find('div', 'inner')['id']
-                 }
+                    "date": soupfragment.find('div', 'smalltext').contents[2],
+                    "body": self._build_msg(soupfragment),
+                    "id": soupfragment.find('div', 'inner')['id']
+        }
         return result
 
     def _build_msg(self, fullmsg):
         body = ""
         contents = fullmsg.find("div", "inner")
-        for content in contents:
-            if type(content) is not Tag:
-                ud = UnicodeDammit(content)
-                body = body + ud.unicode_markup + '\n'
-        return body
-
-    # Deprecated. dont cll his methid
-    def create(self):
-        soup = BeautifulSoup(self.webclient.sourceCode())
-        return self.createMsg(soup)
+        return self._get_content_recursively(contents)
 
     def createListOfMsgs(self):
         l = list()
@@ -53,6 +44,17 @@ class MsgFactory(object):
     def changeUrl(self, url):
         self.webclient.load(url)
         self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
+
+    def _get_content_recursively(self, bs):
+        result = ""
+        for c in bs.contents:
+            if type(c) is not Tag:
+                ud = UnicodeDammit(c)
+                result += ud.unicode_markup + '\n'
+            else:
+                ud = UnicodeDammit(self._get_content_recursively(c))
+                result += ud.unicode_markup
+        return result
 
 
 class MsgPageFactory(object):
@@ -131,7 +133,7 @@ class AsuntoFactory(object):
             content = str(link.contents[0])
             #print "Search: ", content
             if  content == ">>":
-		        return link['href']
+                return link['href']
         return ""
 
     def changeUrl(self, url):

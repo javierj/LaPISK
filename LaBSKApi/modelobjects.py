@@ -1,6 +1,5 @@
 __author__ = 'Javier'
 
-import json
 
 class ReportModel(object):
     def __init__(self, json):

@@ -58,6 +58,8 @@ class MongoDB(object):
         #criterion = {field:doc[field]}
         for doc in source.find():
             self.saveDocIn(target, doc)
+            count += 1
+        return count
 
     """
         def merge(self, source_col, target_col, field):
