@@ -1,6 +1,7 @@
 __author__ = 'Javier'
 
 from datetime import datetime
+import re
 
 # Not in use
 def _word_in(word, line):
@@ -134,11 +135,48 @@ class ReportBuilder(object):
     def _sorts_threads(self, keywords, report):
         for kword in keywords:
             threads = report[kword]
-            report[kword] = sorted(threads, key=lambda t:self._get_date_for_thread(t))
+            report[kword] = sorted(threads, key=lambda t:self._get_date_for_thread(t), reverse=True)
+
+
+    #
+    # This is aandidate to be in MsgModel class or ina  diferent class
+    #
+    meses = {"Enero": 1,
+             "Febrero": 2,
+            "Marzo": 3,
+            "Abril": 4,
+             "Mayo": 5,
+             "Junio": 6,
+             "Julio": 7,
+             "Agosto": 8,
+             "Septiembre": 9,
+             "Octubre": 10,
+             "Noviembre": 11,
+             "Diciembre": 12
+    }
 
     def _get_date_for_thread(self, thread):
         """ A better way would be to use the therad object instead
+            If msg has no date, it is assigned year 1900 so it will appear at the end of the report.
+            Warning, some mesagges have date with empty spaces.
         """
+        #or thread['msgs'][0]['date'] is ""
         if 'msgs' not in thread:
-            return "ZZZ"
-        return thread['msgs'][0]['date']
+            return datetime(1900,1,1)
+        s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', thread['msgs'][0]['date'])
+
+        #print int(s.group(6)), type(int(s.group(6)))
+
+        if s is None:
+            print "Date does nor match: ", thread['link'], " / ", thread['msgs'][0]['date'], "<<"
+            return datetime(1900,1,1, 1, 1, 1)
+
+
+        return datetime(int(s.group(3)),
+                        ReportBuilder.meses[s.group(2)],
+                        int(s.group(1)),
+                        int(s.group(4)),
+                        int(s.group(5)),
+                        int(s.group(6))
+        )
+

@@ -119,11 +119,41 @@ class TestReportBuilder(unittest.TestCase):
         self.assertEqual("Already exists", self.thread['creation_date'])
 
     def test_sorts_threads_by_creation_date_and_hour(self):
+        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]},
+                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]}]}
+        self.builder._sorts_threads(['key'], report)
+        self.assertEqual(report['key'][0]['title'], "a")
+        self.assertEqual(report['key'][1]['title'], "b")
+
+    def test_sorts_threads_by_second(self):
+        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:28:36 am \xbb'}]},
+                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:28:37 am \xbb'}]}]}
+        self.builder._sorts_threads(['key'], report)
+        self.assertEqual(report['key'][0]['title'], "a")
+        self.assertEqual(report['key'][1]['title'], "b")
+
+    def test_sorts_threads_by_creation_date_and_moth(self):
         report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]},
+                           {'title':'a', 'msgs':[{'date':u' 21 de Diciembre de 2012, 10:18:38 am \xbb'}]}]}
+        self.builder._sorts_threads(['key'], report)
+        self.assertEqual(report['key'][0]['title'], "a")
+        self.assertEqual(report['key'][1]['title'], "b")
+
+    def test_sorts_threads_by_creation_date_year(self):
+        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}]},
                            {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
         self.builder._sorts_threads(['key'], report)
         self.assertEqual(report['key'][0]['title'], "a")
         self.assertEqual(report['key'][1]['title'], "b")
+
+    def test_sorts_threads_by_creation_date_without_date(self):
+        report = {'key': [ {'title':'b', 'msgs':[{'date':u'  \xbb'}], 'link': "Test data"},
+                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
+        self.builder._sorts_threads(['key'], report)
+        self.assertEqual(report['key'][0]['title'], "a")
+        self.assertEqual(report['key'][1]['title'], "b")
+
+
 
     def test_hilo_con_mas_de_una_keyword(self):
         thread = {u'title': u'Guardian cross para Android/Iphone/Ipad', u'answers': 1, 'creation_date': u' 03 de Junio de 2013, 10:55:11 am \xbb', u'source': u'LaBSK', u'link': u'http://labsk.net/index.php?topic=111335.0', u'location': u'Videojuegos'}
