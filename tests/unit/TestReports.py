@@ -153,6 +153,24 @@ class TestReportBuilder(unittest.TestCase):
         self.assertEqual(report['key'][0]['title'], "a")
         self.assertEqual(report['key'][1]['title'], "b")
 
+    def test_msg_has_a_link(self):
+        self.thread['msgs'] = [{'id':'xxx'}]
+        self.thread['link'] = 'yyy'
+        self.builder._add_link(self.thread, self.thread['msgs'])
+
+        msg = self.thread['msgs'][0]
+        self.assertIn('link', msg)
+        self.assertEquals(msg['link'], 'yyy#xxx')
+
+    def test_msg_has_a_link_no_msg_id(self):
+        self.thread['msgs'] = [{}]
+        self.thread['link'] = 'yyy'
+        self.builder._add_link(self.thread, self.thread['msgs'])
+
+        msg = self.thread['msgs'][0]
+        self.assertNotIn('link', msg)
+
+
 
 
     def test_hilo_con_mas_de_una_keyword(self):

@@ -26,4 +26,10 @@ Feature: generar informe de menciones
 		When solicito el informe del juego "Castle Rising"
 		Then el informe esta vacio
 
+    Scenario: sin mensajes anteriores al 2.013
+   		Given Las noticias de LaBSK
+		When solicito el informe de la palabra clave "ANTerpryse" del hilo http://labsk.net/index.php?topic=89024.0
+		Then el informe contiene un unico mensaje de "2013"
+
+
 # AD&D no lo encuentra, no se por que

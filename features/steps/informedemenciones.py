@@ -5,7 +5,7 @@ from LaBSKApi.MongoDB import MongoDB
 from presenter.ReportPresenter import ReportPresenter
 from expects import expect
 
-
+# doc: https://expects.readthedocs.org/en/0.2.0/
 #
 # Helppers
 #
@@ -118,4 +118,29 @@ def assert_informe_vacio(context):
     threads = context.informe[context.keyword]
     #threads.should.have.length_of(0)
     expect(threads).to.have.length(0)
+
+"""
+   Scenario: sin mensajes anteriores al 2.013
+   		Given Las noticias de LaBSK
+		When solicito el informe de la palabra clave "ANTerpryse" del hilo http://labsk.net/index.php?topic=89024.0
+		Then el informe contiene un mensaje de "2013"
+"""
+
+@when('solicito el informe de la palabra clave "{keyword}" del hilo http://labsk.net/index.php?topic=89024.0')
+def when_generating_report_from_keyword(context, keyword):
+    presenter = ReportPresenter()
+    presenter.database = context.db
+    informe = crea_informe(keywords=[keyword])
+    context.informe = presenter.generateReport(informe, data_filter = "2013")
+    context.keyword = keyword
+
+@then(u'el informe contiene un unico mensaje de "{year}"')
+def assert_informe_contiene_2013(context, year):
+    threads = context.informe[context.keyword]
+    #threads.should.have.length_of(0)
+    #print threads
+    msgs = threads[0]['msgs'][0]
+    expect(threads).to.have.length(1)
+    expect(msgs).to.have.length(1)
+    expect(msgs[0]['date']).to.have.property(year)
 

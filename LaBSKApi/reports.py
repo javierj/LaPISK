@@ -65,6 +65,7 @@ class ReportBuilder(object):
                 if len(messagesWithKeyword) > 0:
                     # Add to report
                     self._add_creation_date(thread)
+                    self._add_link(thread, messagesWithKeyword)
                     self._add_msgs_to_report(word, thread, messagesWithKeyword)
 
     def _add_creation_date(self, thread):
@@ -124,6 +125,13 @@ class ReportBuilder(object):
         #normalword = " "+normal.strip() + " "
         #print "'"+normalword, "' / '", line.lower()+"' "
         return normal in line.lower()
+
+
+    def _add_link(self, thread, messagesWithKeyword):
+        # msg should be an object
+        for msg in messagesWithKeyword:
+            if 'id' in msg:
+                msg['link'] = thread['link'] + "#" + msg['id']
 
     def _add_msgs_to_report(self, keyword, thread, msgs):
         """ Adds a list of messages to a report's keyword that does not contain the hread

@@ -65,7 +65,7 @@ Ordenado por fecha de más actual a más antiguo.
         Creado el: {{ thread['creation_date'] }}. Respuestas: {{ thread['answers'] }}  <br/>
         {% for msg in thread['msgs'] %}
             <br/>
-            {{ msg['date'] }}  / {{ msg['link'] }}
+            {{ msg['date'] }}  / <a href=" {{ msg['link'] }}"> {{ msg['link'] }} </a>
             <br/>
             {{msg['body'] }}
             <br/>
