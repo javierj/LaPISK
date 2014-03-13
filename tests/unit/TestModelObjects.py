@@ -1,7 +1,7 @@
 __author__ = 'Javier'
 
 import unittest
-from LaBSKApi.modelobjects import ReportModel, ThreadModel, MsgListModel
+from LaBSKApi.modelobjects import ReportModel, ThreadModel, MsgListModel, MsgModel
 from tests.Harness import Reports
 
 
@@ -41,16 +41,6 @@ class TestMsgListModel(unittest.TestCase):
     def test_json(self):
         self.assertEqual(self.threat['msgs'], self.msglist.json())
 
-    """ - Use Text class instead
-    def test_replace_newline(self):
-        #self.pre("\n" in Reports.asylum_threat['msgs'])
-        #self.pre("<br/>" not in Reports.asylum_threat['msgs'])
-        self.msglist.replaceNewLineWith("<br/>")
-        msg = self.msglist.getMsg(0)['body']
-        self.assertIn("<br/>", msg)
-        self.assertNotIn("\n", msg)
-    """
-
     def test_append_one_msg(self):
         self.pre(self.msglist.size() == 1)
         self.msglist.append_msg(dict())
@@ -76,14 +66,6 @@ class TestThreadModel(unittest.TestCase):
         result_id = self.empty_thread.id_last_msg()
         self.assertIsNone(result_id)
 
-    """ - Metodo incompleto
-    def test_update_msg(self):
-        thread = ThreadModel(Reports.threats_with_newline)
-        newmsg = [{"body": "xxx"}]
-        thread.update_msgs(newmsg)
-        self.assertEqual(2, thread.msgList().size())
-    """
-
     def test_date_last_msg(self):
         self.assertEqual(u' 24 de Octubre de 2013, 08:22:36 am \xbb', self.thread.date_last_msg())
 
@@ -102,6 +84,24 @@ class TestThreadModel(unittest.TestCase):
     def test_answers_is_numer(self):
         #print type(self.thread.answers())
         self.assertIsInstance(self.thread.answers(), int)
+
+
+class TestMsgModel(unittest.TestCase):
+
+    def setUp(self):
+        self.empty_thread = ThreadModel({"msgs": [{}], 'answers': '0'})
+        self.thread = ThreadModel(Reports.threats_with_newline.copy())
+
+    def test_when_msg_has_no_datetime_return_none(self):
+        msg = {}
+        msg_obj = MsgModel(msg)
+        self.assertIsNone(msg_obj.datetime())
+
+    def test_year(self):
+        msg = {u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb'}
+        msg_obj = MsgModel(msg)
+        self.assertEquals(msg_obj.year(), 2013)
+
 
 if __name__ == '__main__':
     unittest.main()

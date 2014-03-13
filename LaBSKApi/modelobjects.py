@@ -1,5 +1,36 @@
 __author__ = 'Javier'
 
+import re
+from datetime import datetime
+
+meses = {"Enero": 1,
+             "Febrero": 2,
+            "Marzo": 3,
+            "Abril": 4,
+             "Mayo": 5,
+             "Junio": 6,
+             "Julio": 7,
+             "Agosto": 8,
+             "Septiembre": 9,
+             "Octubre": 10,
+             "Noviembre": 11,
+             "Diciembre": 12
+}
+
+
+class ReportQueryModel(object):
+    """ Nodels the set of jwyword and related infor
+    for building a report.
+    """
+    def __init__(self, json):
+        self.jsondoc = json
+
+    def json(self):
+        return self.jsondoc
+
+    def getKeywords(self):
+        return self.jsondoc['keywords']
+
 
 class ReportModel(object):
     def __init__(self, json):
@@ -51,7 +82,32 @@ class MsgModel(object):
         return self.jsondoc['id']
 
     def date(self):
+        """ returns date in string format
+        """
         return self.jsondoc['date']
+
+    def year(self):
+        return self.datetime().year
+
+    def datetime(self):
+        if 'date' not in self.jsondoc:
+            return None
+        s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', self.date())
+
+        #print int(s.group(6)), type(int(s.group(6)))
+
+        if s is None:
+            print "Date does nor match: ", self.json(), "<<"
+            return datetime(1900,1,1, 1, 1, 1)
+
+
+        return datetime(int(s.group(3)),
+                        meses[s.group(2)],
+                        int(s.group(1)),
+                        int(s.group(4)),
+                        int(s.group(5)),
+                        int(s.group(6))
+        )
 
 
 class ThreadModel(object):
@@ -120,6 +176,18 @@ class ThreadModel(object):
     def date_last_msg(self):
         return self.msgs.lastmsg_object().date()
 
+    def replace_msgs_objs(self, msgs_objs):
+        msgs = []
+        for msg_obj in msgs_objs:
+            msgs.append(msg_obj.json() )
+        self.jsondoc['msgs'] = msgs
+
+    def msgs_objs(self):
+        objs = []
+        for m in self.jsondoc['msgs']:
+            objs.append(MsgModel(m))
+        return objs
+
 
 class MsgListModel(object):
 
@@ -155,3 +223,4 @@ class MsgListModel(object):
 
     def size(self):
         return len(self.jsondoc)
+

@@ -131,7 +131,7 @@ def when_generating_report_from_keyword(context, keyword):
     presenter = ReportPresenter()
     presenter.database = context.db
     informe = crea_informe(keywords=[keyword])
-    context.informe = presenter.generateReport(informe, data_filter = "2013")
+    context.informe = presenter.generateReport(informe, data_filter = "2012")
     context.keyword = keyword
 
 @then(u'el informe contiene un unico mensaje de "{year}"')
@@ -139,8 +139,9 @@ def assert_informe_contiene_2013(context, year):
     threads = context.informe[context.keyword]
     #threads.should.have.length_of(0)
     #print threads
-    msgs = threads[0]['msgs'][0]
     expect(threads).to.have.length(1)
+    msgs = threads[0]['msgs']
     expect(msgs).to.have.length(1)
-    expect(msgs[0]['date']).to.have.property(year)
+    #expect(msgs[0]['date']).to.be.within(year)
+    assert year in msgs[0]['date']
 
