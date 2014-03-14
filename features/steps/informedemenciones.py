@@ -12,6 +12,11 @@ from expects import expect
 def crea_informe(name="Name", keywords=None):
     return {'name': name, 'keywords': (keywords or [])}
 
+def create_report(context):
+    presenter = ReportPresenter()
+    presenter.database = context.db
+    return presenter
+
 """
 	Scenario encontrar hilos que mencionan un juego
 		given Las noticias de LaBSK
@@ -31,8 +36,7 @@ def given_labsk(context):
 
 @when('solicito el informe del juego "{word}"')
 def when_generating_report(context, word):
-    presenter = ReportPresenter()
-    presenter.database = context.db
+    presenter = create_report(context)
     informe = crea_informe(keywords=[word])
     context.informe = presenter.generateReport(informe)
     context.keyword = word
@@ -55,8 +59,7 @@ def assert_titulo_del_hilo(context, titulo_del_hilo):
 """
 @when('solicito el informe de la editorial "{word}"')
 def when_generating_report_from_editor(context, word):
-    presenter = ReportPresenter()
-    presenter.database = context.db
+    presenter = create_report(context)
     informe = crea_informe(keywords=[word])
     context.informe = presenter.generateReport(informe)
     context.keyword = word
@@ -88,7 +91,6 @@ def assert_hilos_con_mensajes(context, numero):
 @then(u'obtengo el hilo con enlace "{URL}"')
 def assert_Url(context, URL):
     keyword = context.keyword
-    #print  context.informe
     threads = context.informe[keyword]
     #threads.should.have.length_of(1)
     expect(threads).to.have.length(1)
@@ -128,8 +130,7 @@ def assert_informe_vacio(context):
 
 @when('solicito el informe de la palabra clave "{keyword}" del hilo http://labsk.net/index.php?topic=89024.0')
 def when_generating_report_from_keyword(context, keyword):
-    presenter = ReportPresenter()
-    presenter.database = context.db
+    presenter = create_report(context)
     informe = crea_informe(keywords=[keyword])
     context.informe = presenter.generateReport(informe, data_filter = "2012")
     context.keyword = keyword
@@ -137,11 +138,30 @@ def when_generating_report_from_keyword(context, keyword):
 @then(u'el informe contiene un unico mensaje de "{year}"')
 def assert_informe_contiene_2013(context, year):
     threads = context.informe[context.keyword]
-    #threads.should.have.length_of(0)
-    #print threads
     expect(threads).to.have.length(1)
     msgs = threads[0]['msgs']
     expect(msgs).to.have.length(1)
-    #expect(msgs[0]['date']).to.be.within(year)
+    # Esto no se como hacerlo en expect
     assert year in msgs[0]['date']
 
+"""
+    Scenario: estadistcas de mensajes e hijos
+   		Given Las noticias de LaBSK
+	    When solicito las estadisticas del juego "Grenadier" con enlace "http://labsk.net/index.php?topic=127181.0"
+		Then el informe contiene "1" asunto y "3" mensajes
+"""
+
+@when('solicito las estadisticas del juego "{keyword}" con enlace "http://labsk.net/index.php?topic=127181.0"')
+def when_generating_report_and_stats_from_keyword(context, keyword):
+    presenter = create_report(context)
+    informe = crea_informe(keywords=[keyword])
+    context.report_and_stats = presenter.report_and_stats(informe)
+
+@then(u'el informe contiene "{threads}" asunto y "{msgs}" mensajes')
+def assert_informe_contiene_asuntos_y_mensajes(context, threads, msgs):
+    print context.report_and_stats
+    reportstats = context.report_and_stats.report_stats
+    text = reportstats.get_text()
+    expect(text).to.have.length(2)
+    expect(text[0]).to.equal(u'Asuntos encontrados: '+threads)
+    expect(text[1]).to.equal(u'Mensajes encontrados: '+msgs)

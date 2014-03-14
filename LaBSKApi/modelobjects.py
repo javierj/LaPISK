@@ -62,6 +62,10 @@ class ReportModel(object):
     def firstthread(self, key):
         return ThreadModel(self.jsondoc[key][0])
 
+    def threads_in(self, key):
+        threads = [ThreadModel(t) for t in self.jsondoc[key]]
+        return threads
+
 
 class MsgModel(object):
     """ Wraps a JSon containing a msg
@@ -161,6 +165,9 @@ class ThreadModel(object):
 
     def msgList(self):
         return self.msgs
+
+    def msg_count(self):
+        return self.msgList().size()
 
     def replace_msgs(self, msgs):
         self.jsondoc['msgs'] = msgs.json()

@@ -8,11 +8,16 @@ class Text(object):
         if firsttext is not None:
             self.addText(firsttext)
 
+    def get_text(self):
+        return self.text
+
     def addText(self, txt):
         self.text.append(txt)
 
+
     def addNextText(self, textObj):
         self.nexttext.append(textObj)
+
 
     def insert_br(self, text):
         """ Replaces \n for <br/>

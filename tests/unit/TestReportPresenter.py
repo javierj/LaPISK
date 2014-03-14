@@ -5,7 +5,7 @@ from presenter.ReportPresenter import ReportPresenter
 from tests.Harness import Reports, MockMongo
 from LaBSKApi.reports import PreGeneratedReports
 from LaBSKApi.modelobjects import MsgModel
-from mockito import mock, when
+from mockito import mock, when, any
 
 
 class TestReportPresenter(unittest.TestCase):
@@ -17,6 +17,10 @@ class TestReportPresenter(unittest.TestCase):
         self.presenter = ReportPresenter()
         self.asylum = Reports.asylum
         pre = post = self
+        self.builder = mock()
+        when(self.builder).build_report(any()).thenReturn("Valid")
+        self.presenter.set_builder(self.builder)
+
 
     def test_when_transform_a_report_to_gui_first_text_is_report_name(self):
         result = self.presenter._toGUIMode(self.asylum, Reports.asylum_keywords)
@@ -31,6 +35,21 @@ class TestReportPresenter(unittest.TestCase):
         mongo_mock = MockMongo()
         self.presenter.database = mongo_mock
         self.assertEquals(self.presenter.database, mongo_mock)
+
+    def test_report_and_stats_returns_a_report_and_stats(self):
+        result = self.presenter.report_and_stats({'keywords':[]})
+        post.assertIsNotNone(result)
+        post.assertIsNotNone(result.report)
+        post.assertIsNotNone(result.report_stats)
+
+    def test_report_and_stats_returns_a_valid_report(self):
+        result = self.presenter.report_and_stats({'keywords':[]})
+        post.assertEquals(result.report, "Valid")
+
+    def test_report_and_stats_returns_a_valid_stats(self):
+        text_stats = self.presenter.generateStats(PreGeneratedReports.report_asylum_games, Reports.asylum)
+        post.assertEquals(text_stats.text[0], "Asuntos encontrados: 4")
+        post.assertEquals(text_stats.text[1], "Mensajes encontrados: 8")
 
 
 class TestReportPresenter_FilteringMsgs(unittest.TestCase):

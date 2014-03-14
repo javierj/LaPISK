@@ -31,5 +31,9 @@ Feature: generar informe de menciones
 		When solicito el informe de la palabra clave "ANTerpryse" del hilo http://labsk.net/index.php?topic=89024.0
 		Then el informe contiene un unico mensaje de "2013"
 
+    Scenario: estadistcas de mensajes e hijos
+   		Given Las noticias de LaBSK
+	    When solicito las estadisticas del juego "Grenadier" con enlace "http://labsk.net/index.php?topic=127181.0"
+		Then el informe contiene "1" asunto y "1" mensajes
 
 # AD&D no lo encuentra, no se por que

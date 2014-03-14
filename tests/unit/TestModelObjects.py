@@ -85,6 +85,12 @@ class TestThreadModel(unittest.TestCase):
         #print type(self.thread.answers())
         self.assertIsInstance(self.thread.answers(), int)
 
+    def test_num_of_msgs(self):
+        t = {u'source': u'LaBSK', u'link': u'http://labsk.net/index.php?topic=127181.0', u'msgs': [{u'date': u' 07 de Febrero de 2014, 01:00:21 pm \xbb', u'body': u'', u'user': u'LudoNoticias'},
+                                                                                                   {u'date': u' 07 de Febrero de 2014, 05:00:54 pm \xbb', u'body': u'Recuerdo haber jugado hace mucho tiempo con las miniaturas aquellas, de la marca Grenadier si mi memoria no falla... lo cierto es que al ser un juego mas interpretativo y no tan tactico como pudiera ser un D&D las dejamos de usar, asi que para mi, en cuanto a una partida de rol, me parecen mas objeto de coleccionismo que otra cosa, salvo que las quieras usar para un Mansiones o un Arkham\xa0 ', u'user': u'Ech-Pi-El'},
+                                                                                                   {u'date': u' 08 de Febrero de 2014, 03:34:44 am \xbb', u'body': u'Sinceramente chicos, si quer\xe9is miniaturas chulas de Cthulhu y sus colegas, huid de estas... cosas e iros a por las de Cthulhu Wars Es que no hay comparaci\xf3n alguna, da hasta verg\xfcenza ajena...Vs', u'user': u'Torke'}], u'title': u'Call of Cthulhu, las miniaturas para sus m\xf3dulos'}
+        thread = ThreadModel(t)
+        self.assertEqual(3, thread.msg_count())
 
 class TestMsgModel(unittest.TestCase):
 

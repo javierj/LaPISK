@@ -3,8 +3,8 @@ __author__ = 'Javier'
 
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
-from presenter.ReportPresenter import ReportPresenter, PreGeneratedReports
-from datetime import datetime
+from presenter.ReportPresenter import ReportPresenter
+from LaBSKApi.reports import PreGeneratedReports
 
 ##def create_app():
 app = Flask(__name__)

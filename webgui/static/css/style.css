@@ -114,6 +114,59 @@ h1 {
 	font-weight:normal;
 	line-height:30px;
 }
+h2 {
+	margin:0px;
+	padding:10px 10px 10px 30px;
+	font-family:"Times New Roman", Times, serif;
+	font-size:26px;
+	text-decoration:none;
+	color:#811335;
+	font-weight:normal;
+	line-height:30px;
+}
+h3 {
+	margin:0px;
+	padding:10px 10px 10px 30px;
+	font-family:"Times New Roman", Times, serif;
+	font-size:20px;
+	text-decoration:none;
+	color:#811305;
+	font-weight:normal;
+	line-height:30px;
+}
+.h4 {
+	margin:0px;
+	font-family:"Times New Roman", Times, serif;
+	font-size:15px;
+	text-decoration:none;
+	color:#811385;
+	font-weight:normal;
+}
+.h5 {
+	margin:0px;
+	font-family:"Times New Roman", Times, serif;
+	font-size:12px;
+	text-decoration:none;
+	color:#816385;
+	font-weight:normal;
+}
+td {
+	margin:0px;
+	padding:10px 10px 10px 30px;
+	font-family:"Times New Roman", Times, serif;
+	font-size:15px;
+	text-decoration:none;
+	font-weight:normal;
+}
+a.mini {
+	margin:0px;
+	padding:10px 30px 10px 40px;
+	font-family:"Times New Roman", Times, serif;
+	font-size:10px;
+	text-decoration:none;
+	font-weight:normal;
+	line-height:30px;
+}
 p.txt-1 {
 	margin:0px 0px 0px 0px;
 	padding:5px 30px 10px 40px;
@@ -123,16 +176,6 @@ p.txt-1 {
 	color:#000;
 	font-weight:normal;
 	line-height:24px;
-}
-h3 {
-	margin:0px;
-	padding:10px 10px 10px 30px;
-	font-family:"Times New Roman", Times, serif;
-	font-size:24px;
-	text-decoration:none;
-	color:#811305;
-	font-weight:normal;
-	line-height:30px;
 }
 ul.left-item {
 	margin:0px;
@@ -182,4 +225,9 @@ p.copyright-text {
 	border:0px;
 	height:1px;
 	width:1px;
+}
+.smalltext
+{
+	font-size: 13px;
+	font-family: Helvetica, Arial, Sans-Serif;
 }
