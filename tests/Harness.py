@@ -482,6 +482,7 @@ class Reports(object):
         return thread
 
 
+
 class MockDatetime(object):
     def __init__(self, date = None):
         self.dt = self.set_datetime("01/01/2014", "14:10")

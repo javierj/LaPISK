@@ -1,7 +1,8 @@
 __author__ = 'Javier'
 
 from datetime import datetime
-import re
+from LaBSKApi.modelobjects import MsgModel
+
 
 # Not in use
 def _word_in(word, line):
@@ -11,15 +12,14 @@ def _word_in(word, line):
     return normalword in line.lower()
 
 
-
 class PreGeneratedReports(object):
 
     report_asylum_games = {'name': 'Informe de Asylum Games',
-                            'keywords': ["Asylum Games", "Polis", "Mutinies", "Banjooli"]}
+                           'keywords': ["Asylum Games", "Polis", "Mutinies", "Banjooli"]}
     report_devir = {'name': 'Informe de Devir',
-                            'keywords': ["Devir"]}
+                    'keywords': ["Devir"]}
     report_moviles = {'name': 'Juegos en dispositivos moviles',
-                            'keywords': ["iphone", "ios", "android", "tablet"]}
+                      'keywords': ["iphone", "ios", "android", "tablet"]}
 
 
 class ReportBuilder(object):
@@ -54,7 +54,6 @@ class ReportBuilder(object):
     def _find_keywords(self, thread, keywords):
         """
         """
-        messagesWithKeyword = None
         for word in keywords:
             if self._word_in(word, thread['title']):
                 self._add_creation_date(thread)
@@ -104,7 +103,6 @@ class ReportBuilder(object):
         # Untested feature
         self.report['report_date'] = datetime.date(datetime.now())
 
-
     def _word_in_msgs(self, keyword, thread):
         """ Retur a list with the msgs in the therad tan contains the kwyord
             or an empry list if no message contains keyword.
@@ -126,7 +124,6 @@ class ReportBuilder(object):
         #print "'"+normalword, "' / '", line.lower()+"' "
         return normal in line.lower()
 
-
     def _add_link(self, thread, messagesWithKeyword):
         # msg should be an object
         for msg in messagesWithKeyword:
@@ -143,48 +140,18 @@ class ReportBuilder(object):
     def _sorts_threads(self, keywords, report):
         for kword in keywords:
             threads = report[kword]
-            report[kword] = sorted(threads, key=lambda t:self._get_date_for_thread(t), reverse=True)
-
-
-    #
-    # This is aandidate to be in MsgModel class or ina  diferent class
-    #
-    meses = {"Enero": 1,
-             "Febrero": 2,
-            "Marzo": 3,
-            "Abril": 4,
-             "Mayo": 5,
-             "Junio": 6,
-             "Julio": 7,
-             "Agosto": 8,
-             "Septiembre": 9,
-             "Octubre": 10,
-             "Noviembre": 11,
-             "Diciembre": 12
-    }
+            report[kword] = sorted(threads, key=lambda t: self._get_date_for_thread(t), reverse=True)
 
     def _get_date_for_thread(self, thread):
         """ A better way would be to use the therad object instead
             If msg has no date, it is assigned year 1900 so it will appear at the end of the report.
             Warning, some mesagges have date with empty spaces.
         """
-        #or thread['msgs'][0]['date'] is ""
         if 'msgs' not in thread:
-            return datetime(1900,1,1)
-        s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', thread['msgs'][0]['date'])
+            return datetime(1900, 1, 1)
 
-        #print int(s.group(6)), type(int(s.group(6)))
-
-        if s is None:
-            print "Date does nor match: ", thread['link'], " / ", thread['msgs'][0]['date'], "<<"
-            return datetime(1900,1,1, 1, 1, 1)
+        msg_obj=MsgModel(thread['msgs'][0])
 
 
-        return datetime(int(s.group(3)),
-                        ReportBuilder.meses[s.group(2)],
-                        int(s.group(1)),
-                        int(s.group(4)),
-                        int(s.group(5)),
-                        int(s.group(6))
-        )
+        return msg_obj.datetime()
 
