@@ -177,6 +177,16 @@ p.txt-1 {
 	font-weight:normal;
 	line-height:24px;
 }
+p.txt-2 {
+	margin:0px 0px 0px 0px;
+	padding:5px 30px 10px 40px;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:13px;
+	text-decoration:none;
+	color:#019395;
+	font-weight:normal;
+	line-height:24px;
+}
 ul.left-item {
 	margin:0px;
 	padding:0px 5px 0px 30px;

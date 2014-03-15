@@ -92,6 +92,13 @@ class TestThreadModel(unittest.TestCase):
         thread = ThreadModel(t)
         self.assertEqual(3, thread.msg_count())
 
+    def test_when_thread_has_no_msgs_key_then_the_count_of_msgs_is_0(self):
+        """ LaBSK doe snot count the first msg
+        """
+        thread = ThreadModel({})
+        self.assertEqual(0, thread.msg_count())
+
+
 class TestMsgModel(unittest.TestCase):
 
     def setUp(self):

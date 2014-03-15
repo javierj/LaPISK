@@ -14,7 +14,7 @@ class ReportPresenter(object):
         self.builder = builder
 
     def _get_builder(self):
-        if self.builder == None:
+        if self.builder is None:
             self.builder = ReportBuilder(self.db)
         return self.builder
 
@@ -58,18 +58,6 @@ class ReportPresenter(object):
         #    return None
         return msgs
 
-
-    """
-    # Untested method
-    def generatePreReport_AsylumGames(self):
-        report = self.generateReport(PreGeneratedReports.report_asylum_games)
-        return self._toGUIMode(report, PreGeneratedReports.report_asylum_games)
-
-    def getReportFor_AsylumGames(self):
-        json = self.generateReport(PreGeneratedReports.report_asylum_games)
-        return ReportModel(json)
-    """
-
     # Unused by now.
     def _toGUIMode(self, report, keywords):
         """ Translates a report from model domain to GUI domain
@@ -86,7 +74,7 @@ class ReportPresenter(object):
         for key in reportDescription['keywords']:
             for thread_obj in report_obj.threads_in(key):
                 threads += 1
-                print thread_obj.msg_count()
+                #print thread_obj.msg_count()
                 msgs += thread_obj.msg_count()
 
         result = Text(u"Asuntos encontrados: " + str(threads))

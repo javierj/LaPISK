@@ -128,27 +128,6 @@ class ProcessThread(object):
             return
 
         self._enter_in_thread(new_objthread)
-    """
-        if old_thread is None:
-            # Reaf ull thread
-            self._enter_in_thread(objthread)
-            print "A"
-            return
-
-        obj_old_thread = ThreadModel(old_thread)
-        self.listener.oldThreadFound(objthread)
-        if self._is_unmodified(objthread, obj_old_thread):
-            # Dont read the therad, is the same
-
-            print "B"
-            return
-
-        print "C"
-        # Code sould not achive this pint using an empty collection
-        #This part of the method should create the URL fro starting
-        # the new messages.
-        self._addNewMsgsIbThread(obj_old_thread)
-    """
 
     """ Not in use
     def _are_msgs_benetah_pagelimit(self, thread_obj):

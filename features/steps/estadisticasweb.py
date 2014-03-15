@@ -4,12 +4,9 @@ __author__ = 'Javier'
 from expects import expect
 from LaBSKApi.statistics import Statistics
 from tests.Harness import MockDatetime, MockMongo
-from werkzeug.contrib.fixers import ProxyFix
-
 
 ##
 # Fixtures
-
 
 def create_stats():
     mockMongo = MockMongo()
@@ -19,7 +16,6 @@ def create_stats():
 
 # This feature uses the before_scenario method in enviroment to set-up
 # a flaskweb instance and overrides the render_template method
-
 
 
 """
@@ -45,7 +41,7 @@ def obtengo_las_estadisticas(context):
     pass
 
 @then('veo una visita a "{url}" a la hora de la visita')
-def veo_una_visita_a_main(context, url):
+def veo_una_visita_a_la_hora_de_visita(context, url):
     context.webapp.get('/stats')
     expect(context.render_context).to.have.key('stats_list')
     visits = context.render_context['stats_list']
@@ -84,7 +80,7 @@ def given_visitante_que_accede_a_la_pagina_principal(context, ip):
                                           'HTTP_X_FORWARDED_HOST': 'x'})
 
 @then('veo una visita a "{url}" desde la IP del visitante')
-def veo_una_visita_a_main(context, url):
+def veo_una_visita_desde_ip_visitante(context, url):
     context.webapp.get('/stats')
     expect(context.render_context).to.have.key('stats_list')
     visits = context.render_context['stats_list']

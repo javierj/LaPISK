@@ -124,7 +124,7 @@ class ThreadModel(object):
             self.msgs = MsgListModel(json['msgs'])
         else:
             #print "Thread without msgs: ", json
-            self.msgs = None
+            self.msgs =  MsgListModel([])
 
     def json(self):
         return self.jsondoc

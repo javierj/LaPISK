@@ -15,19 +15,17 @@ class TestReportPresenter(unittest.TestCase):
     def setUp(self):
         global pre, post
         self.presenter = ReportPresenter()
-        self.asylum = Reports.asylum
         pre = post = self
         self.builder = mock()
         when(self.builder).build_report(any()).thenReturn("Valid")
         self.presenter.set_builder(self.builder)
 
-
     def test_when_transform_a_report_to_gui_first_text_is_report_name(self):
-        result = self.presenter._toGUIMode(self.asylum, Reports.asylum_keywords)
-        post.assertEqual(result.text[0], self.asylum['title'])
+        result = self.presenter._toGUIMode(Reports.asylum, Reports.asylum_keywords)
+        post.assertEqual(result.text[0], Reports.asylum['title'])
 
     def test_when_transform_a_report_to_gui_has_as_many_nexttext_as_keywords(self):
-        result = self.presenter._toGUIMode(self.asylum, Reports.asylum_keywords)
+        result = self.presenter._toGUIMode(Reports.asylum, Reports.asylum_keywords)
         print result.nexttext
         post.assertEqual(len(result.nexttext), 4)
 

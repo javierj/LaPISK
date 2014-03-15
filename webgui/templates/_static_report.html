@@ -54,8 +54,14 @@ Ordenado por fecha de más actual a más antiguo.
     Si los términos están contenidos en el título del asunto, no se muestra ninguno de los mensajes
     </p>
 <br/>
+    <p class="txt-2">
+        {% for line in stats %}
+            {{ line }}
+            <br/>
+        {% endfor %}
+    </p>
 
-
+    <br/>
 {% for keyword in keywords %}
 <h3>Keyword: {{ keyword }} </h3>
 
