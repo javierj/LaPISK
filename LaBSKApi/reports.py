@@ -1,7 +1,7 @@
 __author__ = 'Javier'
 
 from datetime import datetime
-from LaBSKApi.modelobjects import MsgModel, ThreadModel
+from LaBSKApi.modelobjects import ThreadModel
 
 
 # Not in use
@@ -14,12 +14,35 @@ def _word_in(word, line):
 
 class PreGeneratedReports(object):
 
+    # Editoriales
+
     report_asylum_games = {'name': 'Informe de Asylum Games',
                            'keywords': ["Asylum Games", "Polis", "Mutinies", "Banjooli"]}
     report_devir = {'name': 'Informe de Devir',
                     'keywords': ["Devir"]}
     report_moviles = {'name': 'Juegos en dispositivos moviles',
                       'keywords': ["iphone", "ios", "android", "tablet"]}
+
+    # Tiendas: 9
+
+    tienda_planeton = {'name': 'Tienda Planeton Games',
+                      'keywords': ["planeton"]}
+    tienda_100_doblones = {'name': 'Tienda 100 Doblones',
+                      'keywords': ["100 doblones"]}
+    tienda_zacatrus = {'name': 'Tienda Zacatrus',
+                      'keywords': ["zacatrus"]}
+    tienda_finplay = {'name': 'Tienda Finplay',
+                      'keywords': ["finplay"]}
+    tienda_tablerum = {'name': 'Tienda Tablerum',
+                      'keywords': ["tablerum"]}
+    tienda_evolution_goya = {'name': 'Tienda Evolution Goya',
+                      'keywords': ["evolution", "goya"]}
+    tienda_dungeon_marvels = {'name': 'Tienda Dungeon Marvels',
+                      'keywords': ["dungeon marvels"]}
+    tienda_mas_que_oca = {'name': 'Tienda Mas Que Oca',
+                      'keywords': ["mas que oca", "masqueoca", "mqo"]}
+    tienda_click_and_rol = {'name': 'Tienda Clickandrol',
+                      'keywords': ["click and rol", "clickandrol", "car"]}
 
 
 class ReportBuilder(object):
@@ -138,17 +161,5 @@ class ReportBuilder(object):
             report[kword] = sorted(threads, key=lambda t: self._get_date_for_thread(t), reverse=True)
 
     def _get_date_for_thread(self, thread):
-        """ A better way would be to use the therad object instead
-            If msg has no date, it is assigned year 1900 so it will appear at the end of the report.
-            Warning, some mesagges have date with empty spaces.
-        """
-        """
-        if 'msgs' not in thread:
-            return datetime(1900, 1, 1)
-
-        msg_obj = MsgModel(thread['msgs'][0])
-
-        return msg_obj.datetime()
-        """
         thread_obj = ThreadModel(thread)
         return thread_obj.last_msg_date_as_datetime()

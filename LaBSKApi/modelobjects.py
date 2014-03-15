@@ -210,8 +210,9 @@ class ThreadModel(object):
 
     def msgs_objs(self):
         objs = []
-        for m in self.jsondoc['msgs']:
-            objs.append(MsgModel(m))
+        if 'msgs' in self.jsondoc:
+            for m in self.jsondoc['msgs']:
+                objs.append(MsgModel(m))
         return objs
 
     def year_last_msg(self):
@@ -236,7 +237,6 @@ class ThreadModel(object):
         if 'last_msg_date' not in self.jsondoc:
             self.jsondoc['last_msg_date'] = self.date_last_msg()
         return MsgModel.build_datetime(self.jsondoc['last_msg_date'])
-
 
 
 class MsgListModel(object):

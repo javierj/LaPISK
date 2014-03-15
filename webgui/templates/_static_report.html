@@ -28,16 +28,16 @@
 <h3>Herramientas<br>
 </h3>
 <ul class="left-item">
-  <li>Menciones<br>
-    </li>
-  <li>Preguntas y respuestas<br>
-    </li>
+  <li><a href="http://phorumledge-hootboardgame.rhcloud.com/reports">Menciones<br>
+    </a></li>
+  <li><a href="http://phorumledge-hootboardgame.rhcloud.com/faqs">Preguntas y respuestas<br>
+    </a></li>
 </ul>
 </div>
 <div class="mid-right">
 <h1>Informe de menciones</h1>
     <p class="txt-1">
-        HootBoardGame. Prototype 0.02 / 2014/03/07  <br/>
+        HootBoardGame. Prototype 0.03 / 2014/03/16  <br/>
         <hr/>
     </p>
     <br/>
@@ -68,10 +68,12 @@ Ordenado por fecha de más actual a más antiguo.
     {% for thread in report[keyword] %}
         <table border ='1' width ="98%">
             <tr> <td>
-                <p class="h4"> {{ thread['location'] }} /
+                <p class="h4">
+                    {{ thread['location'] }} /
                     <a href=" {{ thread['link'] }}"> {{ thread['title'] }} </a>
                 </p>
-        Creado el: <i>{{ thread['creation_date'] }}.</i>
+                Último mensaje: <i>{{ thread['last_msg_date'] }}.</i> <br/>
+                Creado el: <i>{{ thread['creation_date'] }}.</i> <br/>
                 Respuestas totales: <b>{{ thread['answers'] }} </b> <br/>
         </td></tr>
         {% for msg in thread['msgs'] %}

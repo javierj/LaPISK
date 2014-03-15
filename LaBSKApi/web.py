@@ -54,11 +54,18 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=199.0;desc", "Que os parece"),
         URL("http://labsk.net/index.php?board=204.0;desc", "Analizando a..."),
         URL("http://labsk.net/index.php?board=182.0;desc", "Ayudadme a elegir"),
-
+        URL("http://labsk.net/index.php?board=23.0;desc", "BSK"),
+        URL("http://labsk.net/index.php?board=159.0;desc", "Besequero de la semana"),
         URL("http://labsk.net/index.php?board=55.0;desc", "Sondeos"),
-        URL("http://labsk.net/index.php?board=92.0;desc", "Print and Play"),
 
         URL("http://labsk.net/index.php?board=45.0;desc", "Quedadas en Madrid"),
+
+        URL("http://labsk.net/index.php?board=92.0;desc", "Print and Play"),
+        URL("http://labsk.net/index.php?board=40.0;desc", "Talleres"),
+        URL("http://labsk.net/index.php?board=47.0;desc", "Talleres"),
+
+        #URL("http://labsk.net/index.php?board=177.0;desc", "Valoraciones de tiendas"), -- Tiene un HTML distinto
+
         URL("http://labsk.net/index.php?board=1.0;desc", "Cajon desastre"),
         URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces")
 )

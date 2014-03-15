@@ -25,6 +25,13 @@ class ReportPresenter(object):
         rr = ReportResult()
         rr.report = self.generateReport(reportDescription, data_filter, filter_year)
         rr.report_stats = self.generateStats(reportDescription, rr.report)
+        if data_filter is not None:
+            prev_year = int(data_filter) +1
+            rr.report_stats.addText("Se omiten mensajes desde el "+str(prev_year)+" o posteriores")
+        if filter_year is not None:
+            prev_year = int(filter_year) +1
+            rr.report_stats.addText("Se omiten asuntos sin mensajes desde el "+str(prev_year)+" o posteriores")
+
         return rr
 
     def generateReport(self, reportDescription, data_filter = None, filter_year = None):

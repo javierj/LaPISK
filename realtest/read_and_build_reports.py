@@ -56,7 +56,7 @@ listener = StdListener()
 threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(listener)
 threads.setPageLimit(2)
-threads.setMsgPageLimit(200) # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
+threads.setMsgPageLimit(200)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
 
 threads.scrapListOfURL(labsk_urls)
 delta = datetime.now() - starttime
@@ -72,6 +72,7 @@ print str(mr)
 #------------------------------------------------
 # Build reports
 
+
 def write(filename, html_text):
     with open(filename, 'w') as template_file:
         template_file.write(html_text.encode('utf8'))
@@ -85,8 +86,9 @@ text = Text()
 env = Environment(loader=FileSystemLoader('../webgui/templates'))
 template = env.get_template("_static_report.html")
 
-def generate_report(name, report_schema):
-    result = builder.report_and_stats(report_schema)
+
+def generate_report(name, report_schema, filter=None):
+    result = builder.report_and_stats(report_schema, filter_year=filter)
     text.change_newline_in_report(report_schema['keywords'], result.report)
     xhtml = template.render(keywords=report_schema['keywords'],
                             report=result.report,
@@ -94,11 +96,20 @@ def generate_report(name, report_schema):
                             stats=result.report_stats.get_text()
                             )
 
-    html = UnicodeDammit(xhtml).unicode_markup
+    #html = UnicodeDammit(xhtml).unicode_markup
 
-    write('../webgui/templates/static_'+name+'.html', html)
+    write('../webgui/templates/static_'+name+'.html', xhtml)
 
 
 generate_report("asylum_games", PreGeneratedReports.report_asylum_games)
-generate_report("devir", PreGeneratedReports.report_devir)
-generate_report("moviles", PreGeneratedReports.report_moviles)
+generate_report("devir", PreGeneratedReports.report_devir, '2013')
+generate_report("tienda_planeton", PreGeneratedReports.tienda_planeton, '2013')
+generate_report("tienda_100_doblones", PreGeneratedReports.tienda_100_doblones, '2013')
+generate_report("tienda_zacatrus", PreGeneratedReports.tienda_zacatrus, '2013')
+generate_report("tienda_finplay", PreGeneratedReports.tienda_finplay, '2013')
+generate_report("tienda_tablerum", PreGeneratedReports.tienda_tablerum, '2013')
+generate_report("tienda_evolution_goya", PreGeneratedReports.tienda_evolution_goya, '2013')
+generate_report("tienda_dungeon_marvels", PreGeneratedReports.tienda_dungeon_marvels, '2013')
+generate_report("tienda_mas_que_oca", PreGeneratedReports.tienda_mas_que_oca, '2013')
+generate_report("tienda_click_and_rol", PreGeneratedReports.tienda_click_and_rol, '2013')
+#generate_report("moviles", PreGeneratedReports.report_moviles)

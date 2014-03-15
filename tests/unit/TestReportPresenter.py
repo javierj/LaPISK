@@ -48,6 +48,13 @@ class TestReportPresenter(unittest.TestCase):
         text_stats = self.presenter.generateStats(PreGeneratedReports.report_asylum_games, Reports.asylum)
         post.assertEquals(text_stats.text[0], "Asuntos encontrados: 4")
         post.assertEquals(text_stats.text[1], "Mensajes encontrados: 8")
+        post.assertEquals(len(text_stats.text), 2)
+
+    def test_when_filtering_the_stats_includes_a_msg_describibg_the_filter(self):
+        result = self.presenter.report_and_stats({'keywords':[]}, filter_year='2015')
+        stats = result.report_stats
+        post.assertEquals(len(stats.text), 3)
+        post.assertEquals(stats.text[2], "Se omiten asuntos sin mensajes desde el 2016 o posteriores")
 
 
 class TestReportPresenter_FilteringMsgs(unittest.TestCase):
@@ -112,9 +119,6 @@ class TestReportPresenter_FilteringThreads(unittest.TestCase):
         self.asylum = Reports.get_asylum_report()
         pre = post = self
         self.polis_msgs = self.asylum['Polis'][0]['msgs']
-        #self.add_2014_msg(self.polis_msgs)
-        self.msgs = [MsgModel({u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb'}),
-                     MsgModel({u'date': u' 24 de Octubre de 2012, 08:22:36 am \xbb'})]
 
     def test_when_report_has_no_threads_with_year_return_same_report(self):
         polis = len(self.polis_msgs)
