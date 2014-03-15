@@ -4,12 +4,13 @@ import unittest
 from tests.Harness import MockMongo, Reports
 from LaBSKApi.reports import ReportBuilder, _word_in
 
+
 class TestReportBuilder(unittest.TestCase):
 
     def setUp(self):
         self.mock = MockMongo()
         self.builder = ReportBuilder(self.mock)
-        self.report = {'name': "TestReport" ,'keywords':['key', 'word']}
+        self.report = {'name': "TestReport", 'keywords': ['key', 'word']}
         self.thread = {'title': (self.report['keywords'][0]), 'msgs': []}.copy()
         self.keyword = self.report['keywords'][0]
         self.builder.report_request = self.report
@@ -44,7 +45,7 @@ class TestReportBuilder(unittest.TestCase):
         result = self.builder.report
 
         self.assertIn(self.keyword, result)
-        self.assertLen(1, result[self.keyword ])
+        self.assertLen(1, result[self.keyword])
 
     def test_when_add_second_therad_report_contains_both(self):
         self.builder._add_thead_to_report(self.keyword, self.thread)
@@ -105,9 +106,9 @@ class TestReportBuilder(unittest.TestCase):
         self.assertEquals(first_thread['creation_date'], Reports.asylum_msg_list[0]['date'])
 
     def test_add_creation_date_two_messages(self):
-        self.thread['msgs'].append({'date':'yes'})
-        self.thread['msgs'].append({'date':'no'})
-        self.builder._add_creation_date(self.thread)
+        self.thread['msgs'].append({'date': 'yes'})
+        self.thread['msgs'].append({'date': 'no'})
+        self.builder._add_creation_and_last_msg_date(self.thread)
 
         self.assertIn('creation_date', self.thread)
         self.assertEquals('yes', self.thread['creation_date'])
@@ -118,43 +119,19 @@ class TestReportBuilder(unittest.TestCase):
 
         self.assertEqual("Already exists", self.thread['creation_date'])
 
-    def test_sorts_threads_by_creation_date_and_hour(self):
-        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]},
-                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]}]}
-        self.builder._sorts_threads(['key'], report)
-        self.assertEqual(report['key'][0]['title'], "a")
-        self.assertEqual(report['key'][1]['title'], "b")
+    def test_report_includes_date_of_last_msg(self):
+        self.thread['msgs'] = Reports.asylum_msg_list
+        self.mock.saveThread(self.thread)
+        self.assertLen(1, self.mock.threads())
 
-    def test_sorts_threads_by_second(self):
-        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:28:36 am \xbb'}]},
-                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:28:37 am \xbb'}]}]}
-        self.builder._sorts_threads(['key'], report)
-        self.assertEqual(report['key'][0]['title'], "a")
-        self.assertEqual(report['key'][1]['title'], "b")
-
-    def test_sorts_threads_by_creation_date_and_moth(self):
-        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]},
-                           {'title':'a', 'msgs':[{'date':u' 21 de Diciembre de 2012, 10:18:38 am \xbb'}]}]}
-        self.builder._sorts_threads(['key'], report)
-        self.assertEqual(report['key'][0]['title'], "a")
-        self.assertEqual(report['key'][1]['title'], "b")
-
-    def test_sorts_threads_by_creation_date_year(self):
-        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}]},
-                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
-        self.builder._sorts_threads(['key'], report)
-        self.assertEqual(report['key'][0]['title'], "a")
-        self.assertEqual(report['key'][1]['title'], "b")
-
-    def test_sorts_threads_by_creation_date_without_date(self):
-        report = {'key': [ {'title':'b', 'msgs':[{'date':u'  \xbb'}], 'link': "Test data"},
-                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
-        self.builder._sorts_threads(['key'], report)
-        self.assertEqual(report['key'][0]['title'], "a")
-        self.assertEqual(report['key'][1]['title'], "b")
+        result = self.builder.build_report(self.report)
+        # print result
+        self.assertLen(1, result[self.keyword])
+        first_thread = result[self.keyword][0]
+        self.assertEquals(first_thread['last_msg_date'], Reports.asylum_msg_list[0]['date'])
 
     def test_msg_has_a_link(self):
-        self.thread['msgs'] = [{'id':'xxx'}]
+        self.thread['msgs'] = [{'id': 'xxx'}]
         self.thread['link'] = 'yyy'
         self.builder._add_link(self.thread, self.thread['msgs'])
 
@@ -162,16 +139,13 @@ class TestReportBuilder(unittest.TestCase):
         self.assertIn('link', msg)
         self.assertEquals(msg['link'], 'yyy#xxx')
 
-    def test_msg_has_a_link_no_msg_id(self):
+    def test_when_msg_has_no_id_link_is_the_same_than_the_thread(self):
         self.thread['msgs'] = [{}]
         self.thread['link'] = 'yyy'
         self.builder._add_link(self.thread, self.thread['msgs'])
 
         msg = self.thread['msgs'][0]
         self.assertNotIn('link', msg)
-
-
-
 
     def test_hilo_con_mas_de_una_keyword(self):
         thread = {u'title': u'Guardian cross para Android/Iphone/Ipad', u'answers': 1, 'creation_date': u' 03 de Junio de 2013, 10:55:11 am \xbb', u'source': u'LaBSK', u'link': u'http://labsk.net/index.php?topic=111335.0', u'location': u'Videojuegos'}
@@ -183,19 +157,66 @@ class TestReportBuilder(unittest.TestCase):
         self.assertEquals(1, len(report["android"]))
 
 
+class TestSortingThreads(unittest.TestCase):
+
+    def setUp(self):
+        self.mock = MockMongo()
+        self.builder = ReportBuilder(self.mock)
+        self.report = {'name': "TestReport", 'keywords': ['key', 'word']}
+        self.thread = {'title': (self.report['keywords'][0]), 'msgs': []}.copy()
+        self.keyword = self.report['keywords'][0]
+        self.builder.report_request = self.report
+
+    def test_sorts_threads_by_creation_date_and_hour(self):
+        report = {'key': [ {'title':'b', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]},
+                           {'title':'a', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]}]}
+        self.builder._sorts_threads(['key'], report)
+        self.assertEqual(report['key'][0]['title'], "a")
+        self.assertEqual(report['key'][1]['title'], "b")
+
+    def test_sorts_threads_by_second(self):
+        report = {'key': [{'title': 'b', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:36 am \xbb'}]},
+                           {'title': 'a', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:37 am \xbb'}]}]}
+        self.builder._sorts_threads(['key'], report)
+        self.assertEqual(report['key'][0]['title'], "a")
+        self.assertEqual(report['key'][1]['title'], "b")
+
+    def test_sorts_threads_by_creation_date_and_moth(self):
+        report = {'key': [{'title': 'b', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]},
+                           {'title': 'a', 'msgs': [{'date': u' 21 de Diciembre de 2012, 10:18:38 am \xbb'}]}]}
+        self.builder._sorts_threads(['key'], report)
+        self.assertEqual(report['key'][0]['title'], "a")
+        self.assertEqual(report['key'][1]['title'], "b")
+
+    def test_sorts_threads_by_creation_date_year(self):
+        report = {'key': [{'title': 'b', 'msgs':[{'date':u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}]},
+                           {'title': 'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
+        self.builder._sorts_threads(['key'], report)
+        self.assertEqual(report['key'][0]['title'], "a")
+        self.assertEqual(report['key'][1]['title'], "b")
+
+    def test_sorts_threads_by_creation_date_without_date(self):
+        report = {'key': [ {'title':'b', 'msgs':[{'date':u'  \xbb'}], 'link': "Test data"},
+                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
+        self.builder._sorts_threads(['key'], report)
+        self.assertEqual(report['key'][0]['title'], "a")
+        self.assertEqual(report['key'][1]['title'], "b")
+
+
 class TestWordIn(unittest.TestCase):
+
     def test_word_with_itsfel(self):
         self.assertTrue(_word_in("a", " a "))
+
     def test_word_ignore_case(self):
         self.assertTrue(_word_in("a", " A "))
+
     def test_word_dont_find_fragments(self):
         self.assertFalse(_word_in("a", "aa"))
+
     def test_word_dont_find_fragments_one_letter(self):
         self.assertFalse(_word_in("a", "a"))
 
-
-class TestReportModel(unittest.TestCase):
-    pass
 
 if __name__ == '__main__':
     unittest.main()

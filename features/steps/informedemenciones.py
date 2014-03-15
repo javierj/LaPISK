@@ -28,7 +28,7 @@ def create_report(context):
 @given('las noticias de LaBSK')
 def given_labsk(context):
     #context.db = MockMongo()
-    context.db = MongoDB()
+    context.db = MongoDB(col="labsk_test")
     # cuendo uso MongoDB falla y no se por que
     # no es que me de un error la clase, sino que lanza una
     # excepcion y behave no puede tratarla bien y me sala otra
@@ -45,7 +45,7 @@ def when_generating_report(context, word):
 @then('el informe contiene el hilo "{titulo_del_hilo}"')
 def assert_titulo_del_hilo(context, titulo_del_hilo):
     threads = context.informe[context.keyword]
-    title = threads[1]['title']
+    title = threads[0]['title']
     #title.should.equal(titulo_del_hilo)
     print threads
     expect(title).to.equal(titulo_del_hilo)
@@ -159,9 +159,44 @@ def when_generating_report_and_stats_from_keyword(context, keyword):
 
 @then(u'el informe contiene "{threads}" asunto y "{msgs}" mensajes')
 def assert_informe_contiene_asuntos_y_mensajes(context, threads, msgs):
-    print context.report_and_stats
     reportstats = context.report_and_stats.report_stats
     text = reportstats.get_text()
     expect(text).to.have.length(2)
     expect(text[0]).to.equal(u'Asuntos encontrados: '+threads)
     expect(text[1]).to.equal(u'Mensajes encontrados: '+msgs)
+
+
+"""
+    find_title('Devir')
+    find_one('http://labsk.net/index.php?topic=122738.0') -- Mensajes de 2013 y 2014.
+    find_one('http://labsk.net/index.php?topic=121657.0') -- Solo mensajes de 2013
+
+    Scenario: sin hilos anteriores al 2.013
+   		Given Las noticias de LaBSK
+		When solicito el informe de la palabra clave "Devir"
+         And filtro por el anyo "2013"
+         Then solo aparece "4" asuntos con mensajes del "2014"
+
+
+		Then solo aparece el asunto "http://labsk.net/index.php?topic=122738.0" en el resultado
+         And el asunto contiene "X" mensajes, todos de 2.014
+"""
+
+@when('solicito el informe de la palabra clave "{keyword}"')
+def when_storing_keyword_in_context(context, keyword):
+    context.keyword = keyword
+
+@when('filtro por el anyo "{year}"')
+def when_filterinf_by_year(context, year):
+    presenter = create_report(context)
+    query_informe = crea_informe(keywords=[context.keyword])
+    context.report_and_stats = presenter.report_and_stats(query_informe, filter_year = year)
+
+@then(u'solo aparece "{thread_count}" asuntos con mensajes del "{year}"')
+def assert_solo_aparece_asunto(context, thread_count, year):
+    report = context.report_and_stats.report
+    expect(report[context.keyword]).to.have.length(int(thread_count))
+    for t in report[context.keyword]:
+        #print year, ', ', t['last_msg_date'], "<<<"
+        #if t['last_msg_date'] <> " ":
+        assert year in t['last_msg_date']

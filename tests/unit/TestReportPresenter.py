@@ -57,7 +57,7 @@ class TestReportPresenter_FilteringMsgs(unittest.TestCase):
     def setUp(self):
         global pre, post
         self.presenter = ReportPresenter()
-        self.asylum = Reports.asylum
+        self.asylum = Reports.get_asylum_report()
         pre = post = self
         self.polis_msgs = self.asylum['Polis'][0]['msgs']
         self.msgs = [MsgModel({u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb'}),
@@ -96,6 +96,62 @@ class TestReportPresenter_FilteringMsgs(unittest.TestCase):
     def test_filer_msgs_in_delete_0_msgs(self):
         newlist = self.presenter._filer_msgs_in(self.thread_mock, '2011')
         post.assertEqual(len(newlist), 2)
+
+
+class TestReportPresenter_FilteringThreads(unittest.TestCase):
+
+    pre = post = None
+
+    def add_2014_msg(self, msg_list):
+        msg_list.append({u'date': u' 21 de Noviembre de 2014, 10:28:38 am \xbb',
+                         u'body': u'Cuerpo'})
+
+    def setUp(self):
+        global pre, post
+        self.presenter = ReportPresenter()
+        self.asylum = Reports.get_asylum_report()
+        pre = post = self
+        self.polis_msgs = self.asylum['Polis'][0]['msgs']
+        #self.add_2014_msg(self.polis_msgs)
+        self.msgs = [MsgModel({u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb'}),
+                     MsgModel({u'date': u' 24 de Octubre de 2012, 08:22:36 am \xbb'})]
+
+    def test_when_report_has_no_threads_with_year_return_same_report(self):
+        polis = len(self.polis_msgs)
+        pre.assertGreater(polis, 0)
+        banjooli = len(self.asylum['Banjooli'][0]['msgs'])
+        asylum = len(self.asylum['Asylum Games'][0]['msgs'])
+        self.presenter._filter_threads_using_year(PreGeneratedReports.report_asylum_games, self.asylum, '2011')
+        self.presenter._filter_threads_using_year(PreGeneratedReports.report_asylum_games, self.asylum, '2012')
+        post.assertEqual(len(self.polis_msgs), polis)
+        post.assertEqual(len(self.asylum['Banjooli'][0]['msgs']), banjooli)
+        post.assertEqual(len(self.asylum['Asylum Games'][0]['msgs']), asylum)
+
+    def test_when_deleting_2013_all_threads_are_deleted(self):
+        self.asylum = self.presenter._filter_threads_using_year(PreGeneratedReports.report_asylum_games, self.asylum, '2013')
+        post.assertEqual(len(self.asylum['Polis']), 0)
+        post.assertEqual(len(self.asylum['Banjooli']), 0)
+        post.assertEqual(len(self.asylum['Asylum Games']), 0)
+
+    def test_when_deleting_2013_(self):
+        polis = len(self.polis_msgs)
+        self.add_2014_msg(self.polis_msgs)
+        pre.assertEqual(len(self.polis_msgs), polis+1)
+        #print self.asylum['Banjooli']
+        self.asylum = self.presenter._filter_threads_using_year(PreGeneratedReports.report_asylum_games, self.asylum, '2013')
+        post.assertEqual(len(self.asylum['Polis']), 1)
+        post.assertEqual(len(self.asylum['Banjooli']), 0)
+        post.assertEqual(len(self.asylum['Asylum Games']), 0)
+
+    def test_when_therad_has_no_msgs_is_not_deleted(self):
+        report =  {'Polis':
+                  [{u'source': u'LaBSK',
+                    u'link': u'http://labsk.net/index.php?topic=97887.0',
+                    u'msgs': [], u'title': u'CYCLADES (DUDAS)'}],
+              'title': 'Result for report Informe de Asylum Games'}
+        self.asylum = self.presenter._filter_threads_using_year({'keywords':['Polis']}, report, '2013')
+        post.assertEqual(len(report['Polis']), 1)
+
 
 if __name__ == '__main__':
     unittest.main()

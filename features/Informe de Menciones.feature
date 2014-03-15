@@ -26,10 +26,19 @@ Feature: generar informe de menciones
 		When solicito el informe del juego "Castle Rising"
 		Then el informe esta vacio
 
+
     Scenario: sin mensajes anteriores al 2.013
    		Given Las noticias de LaBSK
 		When solicito el informe de la palabra clave "ANTerpryse" del hilo http://labsk.net/index.php?topic=89024.0
 		Then el informe contiene un unico mensaje de "2013"
+
+
+    Scenario: sin hilos anteriores al 2.013
+   		Given Las noticias de LaBSK
+		When solicito el informe de la palabra clave "Devir"
+         And filtro por el anyo "2013"
+		Then solo aparece "3" asuntos con mensajes del "2014"
+
 
     Scenario: estadistcas de mensajes e hijos
    		Given Las noticias de LaBSK

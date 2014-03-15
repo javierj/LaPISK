@@ -18,21 +18,23 @@ class ReportPresenter(object):
             self.builder = ReportBuilder(self.db)
         return self.builder
 
-    def report_and_stats(self, reportDescription, data_filter=None):
+    def report_and_stats(self, reportDescription, data_filter=None, filter_year = None):
         """ Retrurns an object with the result of the query incuding
         the generated report and starts woth the reuslts
         """
         rr = ReportResult()
-        rr.report = self.generateReport(reportDescription, data_filter)
+        rr.report = self.generateReport(reportDescription, data_filter, filter_year)
         rr.report_stats = self.generateStats(reportDescription, rr.report)
         return rr
 
-    def generateReport(self, reportDescription, data_filter = None):
+    def generateReport(self, reportDescription, data_filter = None, filter_year = None):
         #assert self.db is not None
         informeBuilder = self._get_builder()
         report = informeBuilder.build_report(reportDescription)
         if data_filter is not None:
             self._filter_report_using_year(reportDescription, report, data_filter)
+        if filter_year is not None:
+            report = self._filter_threads_using_year(reportDescription, report, filter_year)
         return report
 
     def _filter_report_using_year(self, reportDescription, report, year):
@@ -41,9 +43,7 @@ class ReportPresenter(object):
             for thread in report[kword]:
                 threadobj = ThreadModel(thread)
                 new_msgs = self._filer_msgs_in(threadobj, year)
-                #if new_msgs is not None:
                 threadobj.replace_msgs_objs(new_msgs)
-                    #pass
 
     def _filer_msgs_in(self, threadobj, year):
         msgs = []
@@ -54,9 +54,25 @@ class ReportPresenter(object):
                 #print "Bigger"
                 msgs.append(msgobj)
                 #modifed = true
-        #if len(msgs) == 0:
-        #    return None
         return msgs
+
+    def _filter_threads_using_year(self, reportDescription, report, year):
+        """ Previous method filter messages of a thread.
+            this method filters therads in a report.
+            Don't word modifyng directy the report so I retorn the JSon again
+        """
+        year_int = int(year)
+        query = ReportQueryModel(reportDescription)
+        for kword in query.getKeywords():
+            threats = list()
+            for thread in report[kword]:
+                threadobj = ThreadModel(thread)
+                #print kword, ":", threadobj.year_last_msg(), ", ", year_int
+                if threadobj.year_last_msg() > year_int:
+                    threats.append(threadobj.json())
+            query.set_threads_to(kword,threats)
+        return query.json()
+
 
     # Unused by now.
     def _toGUIMode(self, report, keywords):

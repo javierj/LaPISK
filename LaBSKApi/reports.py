@@ -1,7 +1,7 @@
 __author__ = 'Javier'
 
 from datetime import datetime
-from LaBSKApi.modelobjects import MsgModel
+from LaBSKApi.modelobjects import MsgModel, ThreadModel
 
 
 # Not in use
@@ -56,27 +56,22 @@ class ReportBuilder(object):
         """
         for word in keywords:
             if self._word_in(word, thread['title']):
-                self._add_creation_date(thread)
+                self._add_creation_and_last_msg_date(thread)
                 self._drop_msgs_from_thread(thread)
                 self._add_thead_to_report(word, thread)
             else:
                 messagesWithKeyword = self._word_in_msgs(word, thread)
                 if len(messagesWithKeyword) > 0:
                     # Add to report
-                    self._add_creation_date(thread)
+                    self._add_creation_and_last_msg_date(thread)
                     self._add_link(thread, messagesWithKeyword)
                     self._add_msgs_to_report(word, thread, messagesWithKeyword)
 
-    def _add_creation_date(self, thread):
+    def _add_creation_and_last_msg_date(self, thread):
         if 'creation_date' in thread:
             return
-        msgs = thread['msgs']
-        if len(msgs) == 0:
-            thread['creation_date'] = "No messages"
-            return
-        first = msgs[0]
-        date = first['date']
-        thread['creation_date'] = date
+        thread_obj = ThreadModel(thread)
+        thread_obj.add_creation_and_last_update_dates()
 
     def _drop_msgs_from_thread(self, thread):
         if 'msgs' in thread:
@@ -147,11 +142,13 @@ class ReportBuilder(object):
             If msg has no date, it is assigned year 1900 so it will appear at the end of the report.
             Warning, some mesagges have date with empty spaces.
         """
+        """
         if 'msgs' not in thread:
             return datetime(1900, 1, 1)
 
-        msg_obj=MsgModel(thread['msgs'][0])
-
+        msg_obj = MsgModel(thread['msgs'][0])
 
         return msg_obj.datetime()
-
+        """
+        thread_obj = ThreadModel(thread)
+        return thread_obj.last_msg_date_as_datetime()

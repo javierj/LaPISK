@@ -4,11 +4,11 @@ import re
 from datetime import datetime
 
 meses = {"Enero": 1,
-             "Febrero": 2,
-            "Marzo": 3,
-            "Abril": 4,
-             "Mayo": 5,
-             "Junio": 6,
+         "Febrero": 2,
+         "Marzo": 3,
+         "Abril": 4,
+          "Mayo": 5,
+          "Junio": 6,
              "Julio": 7,
              "Agosto": 8,
              "Septiembre": 9,
@@ -31,6 +31,10 @@ class ReportQueryModel(object):
     def getKeywords(self):
         return self.jsondoc['keywords']
 
+    def set_threads_to(self, keyw, threads):
+        #print keyw, ":", len(threads)
+        self.jsondoc[keyw] = threads
+
 
 class ReportModel(object):
     def __init__(self, json):
@@ -44,7 +48,7 @@ class ReportModel(object):
         for key in self.jsondoc.keys():
             if key.lower() != 'title' and key != "report_date":
                 words.append(key)
-        return  words
+        return words
 
     def replaceNewLineWith(self, newline):
         for keyword in self.getKeywords():
@@ -57,7 +61,6 @@ class ReportModel(object):
                 thread.replace_msgs(msgs)
                 threads.append(thread)
             self.jsondoc[keyword] = threads
-
 
     def firstthread(self, key):
         return ThreadModel(self.jsondoc[key][0])
@@ -91,17 +94,23 @@ class MsgModel(object):
         return self.jsondoc['date']
 
     def year(self):
+        #print self.datetime().year
         return self.datetime().year
 
     def datetime(self):
         if 'date' not in self.jsondoc:
             return None
-        s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', self.date())
+
+        return MsgModel.build_datetime(self.date())
+
+    @staticmethod
+    def build_datetime(date):
+        s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', date)
 
         #print int(s.group(6)), type(int(s.group(6)))
 
         if s is None:
-            print "Date does nor match: ", self.json(), "<<"
+            #print "Date does nor match: ", self.json(), "<<"
             return datetime(1900,1,1, 1, 1, 1)
 
 
@@ -156,6 +165,8 @@ class ThreadModel(object):
         return self.jsondoc['link']
 
     def date(self):
+        """ Text plain date
+        """
         if 'date' not in self.jsondoc:
             return None
         return self.jsondoc['date']
@@ -173,15 +184,23 @@ class ThreadModel(object):
         self.jsondoc['msgs'] = msgs.json()
 
     def firstmsg(self):
-        print "Fisrt msg: ", self.jsondoc['msgs']
-        return MsgModel(self.jsondoc['msgs'][0])
+        #print "Fisrt msg: ", self.jsondoc['msgs']
+        #return MsgModel(self.jsondoc['msgs'][0])
+        return self.msgs.firstmsg_object()
 
     def id_last_msg(self):
         msg = self.msgs.lastmsg_object()
         return msg.id()
 
     def date_last_msg(self):
+        """ Date in plain text
+        """
         return self.msgs.lastmsg_object().date()
+
+    def date_first_msg(self):
+        """ Date in plain text
+        """
+        return self.msgs.firstmsg_object().date()
 
     def replace_msgs_objs(self, msgs_objs):
         msgs = []
@@ -194,6 +213,30 @@ class ThreadModel(object):
         for m in self.jsondoc['msgs']:
             objs.append(MsgModel(m))
         return objs
+
+    def year_last_msg(self):
+        #print "year_last_msg:", self.link(), ", ", self.msgList().size()
+        if 'last_msg_date' in self.jsondoc:
+            return self.last_msg_date_as_datetime().year
+        if self.msgList().size() == 0:
+            return None
+        return self.msgList().lastmsg_object().year()
+
+    def add_creation_and_last_update_dates(self):
+        """ Use this mathod only generating reports
+        """
+        if self.msg_count() == 0:
+            self.jsondoc['creation_date'] = "No messages"
+            self.jsondoc['last_msg_date'] = "No messages"
+            return
+        self.jsondoc['creation_date'] = self.date_first_msg()
+        self.jsondoc['last_msg_date'] = self.date_last_msg()
+
+    def last_msg_date_as_datetime(self):
+        if 'last_msg_date' not in self.jsondoc:
+            self.jsondoc['last_msg_date'] = self.date_last_msg()
+        return MsgModel.build_datetime(self.jsondoc['last_msg_date'])
+
 
 
 class MsgListModel(object):
@@ -223,11 +266,15 @@ class MsgListModel(object):
         return self.jsondoc[index]
 
     def lastmsg_object(self):
+        if self.size() == 0:
+            return None
         return MsgModel(self.getMsg(self.size()-1))
+
+    def firstmsg_object(self):
+        return MsgModel(self.getMsg(0))
 
     def append_msg(self, msg):
         self.jsondoc.append(msg)
 
     def size(self):
         return len(self.jsondoc)
-
