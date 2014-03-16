@@ -16,13 +16,12 @@
 <div class="nav-area">
 <ul class="nav">
   <li style="border: medium none ;"><a href='http://phorumledge-hootboardgame.rhcloud.com/'>HootBoardGame</a></li>
-  <li style="border: medium none ;"><a href='http://phorumledge-hootboardgame.rhcloud.com/'>HootBoardGame</a></li>
-  <li><a href='{{ url_for("reports") }}'>Menciones</a></li>
-  <li>Comparativas</li>
-     <li>Líderes de opinión</li>
+   <li><a href='{{ url_for("reports") }}'>Menciones</a></li>
+  <li>Comparativa</li>
+  <li>Líderes de opinión</li>
   <li>Seguimiento</li>
   <li><a href='{{ url_for("faqs") }}'>Preguntas y respuestas</a></li>
-    <li>Contacto</li>
+  <li>Contacto</li>
 </ul>
 </div>
 <div class="banner-area"><img src="{{ url_for('static', filename='images/banner-1.jpg') }}" alt="#"
@@ -33,7 +32,7 @@
 <h3>Herramientas<br>
 </h3>
 <ul class="left-item">
-  <li><a href="{{ url_for('reports') }}">Menciones<br>
+ <li><a href="{{ url_for('reports') }}">Menciones<br>
     </a></li>
   <li><a href="{{ url_for('comparatives') }}">Comparativas<br>
     </a></li>
@@ -41,6 +40,7 @@
     </a></li>
       <li><a href='{{ url_for("following") }}'>Seguimiento<br>
     </a></li>
+
   <li><a href='{{ url_for("faqs") }}'>Preguntas y respuestas<br>
     </a></li>
   <li><a href='{{ url_for("contact") }}'>Contacto<br>
@@ -48,58 +48,24 @@
 </ul>
 </div>
 <div class="mid-right">
-<h1>Menciones</h1>
+<h1>Contacto</h1>
 <p class="txt-1">
+
 Prototype 0.03 / 2014/03/16  <br/>
 <hr/>
 </p>
-    <p class="txt-1">
-    <b>Fuentes de información: </b> <br/>
-    <ul>
-    <li> LaBSK: 2.304 hilos con 66.429 mensajes.
-     </li>
-    </ul
-</p>
-<p class="txt-1">
-    <b>Informes de menciones: </b> <br/>
-    <ul>
-    <li><a href='{{ url_for("static_asylum_games") }}'> Editorial Asylum Games y sus juegos. </a>
-     </li>
-    <li><a href='{{ url_for("static_devir_games") }}'> Editorial Devir (informe de más de 300 Kb). </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_100_doblones") }}'> Tienda 100 Doblones. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_click_and_rol") }}'> Tienda Clickandrol. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_dungeon_marvels") }}'> Tienda Dungeon Marvels. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_evolution_goya") }}'> Tienda Evolution Goya. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_finplay") }}'> Tienda Finplay. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_mas_que_oca") }}'> Tienda Más que Oca. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_planeton") }}'> Tienda Planetón. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_tablerum") }}'> Tienda Tablerum. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_zacatrus") }}'> Tienda Zacatrus. </a>
-    </li>
-    </ul>
-</p>
-<br>
+    <br/>
 
-<br/>
-    <p class="txt-1">
-        HootBoardGame busca las menciones de un conjunto de palabras claves en las fuentes de informacion indexadas y devuelve un resultado con las menciones de dichas palabras.
-<br/>
-        Las herramientas definir búsquedas no están implementadas aún. Mientras puedes consultar alguno de los informes disponibles o solicitar que incluyamos un nuevo informe via correo electronico.
+    <p class="txt-1"> Puedes ponerte en contacto con HootBoardGame a través
+        del correo electrónico <b>hootboardgame(arroba)yahoo.es</b></p>
+    <p class="txt-1"> También puedes contactar con nosotros a través de LaBSK <i>(próximamente)</i>
     </p>
+    <p class="txt-1"> Tenemos un tablero Trello público en el que puedes proponer nueva funcionalidad.
+        Puedes consultarlo aquí: <a href="https://trello.com/b/x5dF9MFd/hootboardgame"> https://trello.com/b/x5dF9MFd/hootboardgame</a>
+    </p>
+    <br/>
+
 </div>
-    <br/>
-    <hr/>
-    <br/>
-    <p class="txt-1"> Puedes ponerte en contacto con HootBoardGame en esta dirección: hootboardgame_arroba_yahoo.es</p>
 </div>
 <div class="footer">
 <p class="copyright-text">Copyright 2010. Designed by <a target="_blank"

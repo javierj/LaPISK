@@ -158,6 +158,10 @@ td {
 	text-decoration:none;
 	font-weight:normal;
 }
+table {
+    border:1;
+    width:98%;
+}
 a.mini {
 	margin:0px;
 	padding:10px 30px 10px 40px;

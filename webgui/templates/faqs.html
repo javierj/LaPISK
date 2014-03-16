@@ -16,8 +16,12 @@
 <div class="nav-area">
 <ul class="nav">
   <li style="border: medium none ;"><a href='http://phorumledge-hootboardgame.rhcloud.com/'>HootBoardGame</a></li>
-  <li><a href='{{ url_for("reports") }}'>Menciones</a></li>
+   <li><a href='{{ url_for("reports") }}'>Menciones</a></li>
+  <li>Comparativa</li>
+  <li>Líderes de opinión</li>
+  <li>Seguimiento</li>
   <li><a href='{{ url_for("faqs") }}'>Preguntas y respuestas</a></li>
+  <li>Contacto</li>
 </ul>
 </div>
 <div class="banner-area"><img src="{{ url_for('static', filename='images/banner-1.jpg') }}" alt="#"
@@ -28,9 +32,18 @@
 <h3>Herramientas<br>
 </h3>
 <ul class="left-item">
-  <li><a href="{{ url_for('reports') }}">Menciones<br>
+ <li><a href="{{ url_for('reports') }}">Menciones<br>
     </a></li>
+  <li><a href="{{ url_for('comparatives') }}">Comparativas<br>
+    </a></li>
+    <li><a href="{{ url_for('people') }}">Líderes de opinión<br>
+    </a></li>
+      <li><a href='{{ url_for("following") }}'>Seguimiento<br>
+    </a></li>
+
   <li><a href='{{ url_for("faqs") }}'>Preguntas y respuestas<br>
+    </a></li>
+  <li><a href='{{ url_for("contact") }}'>Contacto<br>
     </a></li>
 </ul>
 </div>
@@ -41,8 +54,10 @@
 Prototype 0.03 / 2014/03/16  <br/>
 <hr/>
 </p>
+    <br/>
 <p class="txt-1">
-¿Qué es HootBoardGame?<br/>
+
+<i>¿Qué es HootBoardGame?</i><br/>
 HootBoardGame es un sistema de monitorización de fuentes de información de juegos de mesa.
     El objetivo es extraer información de foros, blogs, tec. que hablen de juegos de mesa y presentarlos
 de manera útil.</p>
@@ -58,7 +73,14 @@ Actualmente es un minimo producto viable para estudiar la mejor manera de aborda
  <i>¿Cuál es el calendario de desarrollo de HootBoardGame?</i><br/>
     Continuar implementando nueva funcionalidad y evolucionando el producto viable.
 </p>
-<br>
+<br/>
+<p class="txt-1">
+ <i>¿Quién es el equipo detrás de HootBoardGame?</i><br/>
+    Este es un proyecto personal que desarrolla principalmente una persona en su tiempo libre con una pequeña ayuda de sus amigos.
+    Los que participamos no tenemos en la actualidad ningún vínculo con el mundo de los juegos de mesa más allá de
+    nuestra afición y ganas de poner en marcha nuevas ideas.
+</p>
+<br/>
     <p class="txt-1">
     <i>¿Qué fuentes de información indexa HootBoardGame?</i><br/>
     Queremos indexar todas las fuentes de información (foros, blogs, etc.) que emitan información sobre juegos de mesa.

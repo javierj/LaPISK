@@ -17,7 +17,11 @@
 <ul class="nav">
   <li style="border: medium none ;"><a href='http://phorumledge-hootboardgame.rhcloud.com/'>HootBoardGame</a></li>
   <li><a href='{{ url_for("reports") }}'>Menciones</a></li>
+  <li>Comparativa</li>
+  <li>Líderes de opinión</li>
+  <li>Seguimiento</li>
   <li><a href='{{ url_for("faqs") }}'>Preguntas y respuestas</a></li>
+  <li>Contacto</li>
 </ul>
 </div>
 <div class="banner-area"><img src="{{ url_for('static', filename='images/banner-1.jpg') }}" alt="#"
@@ -30,8 +34,18 @@
 <ul class="left-item">
   <li><a href="{{ url_for('reports') }}">Menciones<br>
     </a></li>
+  <li><a href="{{ url_for('comparatives') }}">Comparativas<br>
+    </a></li>
+    <li><a href="{{ url_for('people') }}">Líderes de opinión<br>
+    </a></li>
+      <li><a href='{{ url_for("following") }}'>Seguimiento<br>
+    </a></li>
+
   <li><a href='{{ url_for("faqs") }}'>Preguntas y respuestas<br>
     </a></li>
+  <li><a href='{{ url_for("contact") }}'>Contacto<br>
+    </a></li>
+
 </ul>
 </div>
 <div class="mid-right">
@@ -45,7 +59,11 @@ Prototype 0.03 / 2014/03/16  <br/>
     <h2>Descripción de nuestras herramientas: </h2> <br/>
     <p class="txt-1">
 <i>Menciones:</i> busca las palabras claves en todas las fuentes de información indexadas.<br/>
-  <i>Preguntas y repsuestas:</i> descubre qué es HootBoardGame y el estado del proyecto.
+<i>Comparativas:</i> descubre a primera vista de qué tiendas y editoriales se habla más en las fuentes indexadas.<br/>
+<i>Líderes de opinión:</i> usuarios de foros y bloggers que más veces mencionan palabras clave.<br/>
+<i>Seguimiento:</i> evolución de algunos asuntos de foros y blogs.<br/>
+  <i>Preguntas y respuestas:</i> descubre qué es HootBoardGame y el estado del proyecto.<br/>
+  <i>Contacto:</i> agradecemos cualquier petición o propuesta para quejorar HootBoardGame.<br/>
         </p>
 </p>
 <br>

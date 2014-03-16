@@ -54,12 +54,12 @@
         <hr/>
     </p>
     <br/>
-    <h2>{{ report['title'] }}. </h2>
+    <h2>Result for report Tienda Tablerum. </h2>
     <p class="txt-1">
 
- Generado el {{ report['report_date'] }}
+ Generado el 2014-03-16
 <br/>
-Para este informe se han consultado los siguientes hilos de LaBSK: {{ links }} hasta la fecha.
+Para este informe se han consultado los siguientes hilos de LaBSK: ['Novedades / Actualidad', 'Jornadas', 'Juegos de mesa en los medios', 'Ayudas de juegos', 'Variantes', 'Dudas de reglas', 'Componentes y erratas', 'Software', 'Videojuegos', 'Resenyas escritas', 'Videoresenyas', 'Otras resenyas', 'Sesiones de juego', 'Divulgacion ludica', 'Recomendados', 'Ezines', 'Podcasts', 'Juego del mes', 'Wargames', 'Humor grafico', 'Curiosidades', 'Pasatiempos', 'De jugon a jugon', 'Que os parece', 'Analizando a...', 'Ayudadme a elegir', 'BSK', 'Besequero de la semana', 'Sondeos', 'Quedadas', 'Quedadas en Madrid', 'Quedadas en Barcelona', 'Quedadas en Sevilla', 'Jugar en Linea', 'Print and Play', 'Talleres', 'Concurso', 'Compro-Vendo-Cambio', 'Ofertas', 'Pedidos masivos y Preorders', 'Cajon desastre', 'Enlaces'] hasta la fecha.
 <br/>
 Ordenado por fecha de más actual a más antiguo.
     <br/>
@@ -68,43 +68,23 @@ Ordenado por fecha de más actual a más antiguo.
     </p>
 <br/>
     <p class="txt-2">
-        {% for line in stats %}
-            {{ line }}
+        
+            Asuntos encontrados: 0
             <br/>
-        {% endfor %}
+        
+            Mensajes encontrados: 0
+            <br/>
+        
     </p>
 
     <br/>
-{% for keyword in keywords %}
-<h3>Keyword: {{ keyword }} </h3>
 
-    {% for thread in report[keyword] %}
-        <table border ='1' width ="98%">
-            <tr> <td>
-                <p class="h4">
-                    {{ thread['location'] }} /
-                    <a href=" {{ thread['link'] }}"> {{ thread['title'] }} </a>
-                </p>
-                Último mensaje: <i>{{ thread['last_msg_date'] }}.</i> <br/>
-                Creado el: <i>{{ thread['creation_date'] }}.</i> <br/>
-                Respuestas totales: <b>{{ thread['answers'] }} </b> <br/>
-        </td></tr>
-        {% for msg in thread['msgs'] %}
-            <tr> <td>
-            <p class="h5">
-            {{ msg['date'] }}  / <a href=" {{ msg['link'] }}"> {{ msg['link'] }} </a>
-            </p>
-            {{msg['body'] }}
-            <br/>
-            </td> </tr>
-        {% endfor %}
-            </table>
-        <br/>
-        <br/>
-    {% endfor %}
+<h3>Keyword: tablerum </h3>
+
+    
     </p>
     <hr/>
-{% endfor %}
+
 
 
 

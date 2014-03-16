@@ -36,13 +36,13 @@ class PreGeneratedReports(object):
     tienda_tablerum = {'name': 'Tienda Tablerum',
                       'keywords': ["tablerum"]}
     tienda_evolution_goya = {'name': 'Tienda Evolution Goya',
-                      'keywords': ["evolution", "goya"]}
+                      'keywords': ["evolution goya", "Evolution Store"]}
     tienda_dungeon_marvels = {'name': 'Tienda Dungeon Marvels',
                       'keywords': ["dungeon marvels"]}
     tienda_mas_que_oca = {'name': 'Tienda Mas Que Oca',
-                      'keywords': ["mas que oca", "masqueoca", "mqo"]}
+                      'keywords': ["que oca", "masqueoca", "mqo"]}
     tienda_click_and_rol = {'name': 'Tienda Clickandrol',
-                      'keywords': ["click and rol", "clickandrol", "car"]}
+                      'keywords': ["click and rol", "clickandrol"]}
 
 
 class ReportBuilder(object):

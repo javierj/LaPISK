@@ -54,12 +54,12 @@
         <hr/>
     </p>
     <br/>
-    <h2>{{ report['title'] }}. </h2>
+    <h2>Result for report Tienda Clickandrol. </h2>
     <p class="txt-1">
 
- Generado el {{ report['report_date'] }}
+ Generado el 2014-03-16
 <br/>
-Para este informe se han consultado los siguientes hilos de LaBSK: {{ links }} hasta la fecha.
+Para este informe se han consultado los siguientes hilos de LaBSK: ['Novedades / Actualidad', 'Jornadas', 'Juegos de mesa en los medios', 'Ayudas de juegos', 'Variantes', 'Dudas de reglas', 'Componentes y erratas', 'Software', 'Videojuegos', 'Resenyas escritas', 'Videoresenyas', 'Otras resenyas', 'Sesiones de juego', 'Divulgacion ludica', 'Recomendados', 'Ezines', 'Podcasts', 'Juego del mes', 'Wargames', 'Humor grafico', 'Curiosidades', 'Pasatiempos', 'De jugon a jugon', 'Que os parece', 'Analizando a...', 'Ayudadme a elegir', 'BSK', 'Besequero de la semana', 'Sondeos', 'Quedadas', 'Quedadas en Madrid', 'Quedadas en Barcelona', 'Quedadas en Sevilla', 'Jugar en Linea', 'Print and Play', 'Talleres', 'Concurso', 'Compro-Vendo-Cambio', 'Ofertas', 'Pedidos masivos y Preorders', 'Cajon desastre', 'Enlaces'] hasta la fecha.
 <br/>
 Ordenado por fecha de más actual a más antiguo.
     <br/>
@@ -68,43 +68,82 @@ Ordenado por fecha de más actual a más antiguo.
     </p>
 <br/>
     <p class="txt-2">
-        {% for line in stats %}
-            {{ line }}
+        
+            Asuntos encontrados: 3
             <br/>
-        {% endfor %}
+        
+            Mensajes encontrados: 1
+            <br/>
+        
     </p>
 
     <br/>
-{% for keyword in keywords %}
-<h3>Keyword: {{ keyword }} </h3>
 
-    {% for thread in report[keyword] %}
+<h3>Keyword: click and rol </h3>
+
+    
+    </p>
+    <hr/>
+
+<h3>Keyword: clickandrol </h3>
+
+    
         <table border ='1' width ="98%">
             <tr> <td>
                 <p class="h4">
-                    {{ thread['location'] }} /
-                    <a href=" {{ thread['link'] }}"> {{ thread['title'] }} </a>
+                    Ofertas /
+                    <a href=" http://labsk.net/index.php?topic=127432.0"> Reapertura de Clickandrol </a>
                 </p>
-                Último mensaje: <i>{{ thread['last_msg_date'] }}.</i> <br/>
-                Creado el: <i>{{ thread['creation_date'] }}.</i> <br/>
-                Respuestas totales: <b>{{ thread['answers'] }} </b> <br/>
+                Último mensaje: <i> 15 de Marzo de 2014, 09:25:53 pm ».</i> <br/>
+                Creado el: <i> 11 de Febrero de 2014, 03:20:46 pm ».</i> <br/>
+                Respuestas totales: <b>30 </b> <br/>
         </td></tr>
-        {% for msg in thread['msgs'] %}
-            <tr> <td>
-            <p class="h5">
-            {{ msg['date'] }}  / <a href=" {{ msg['link'] }}"> {{ msg['link'] }} </a>
-            </p>
-            {{msg['body'] }}
-            <br/>
-            </td> </tr>
-        {% endfor %}
+        
             </table>
         <br/>
         <br/>
-    {% endfor %}
+    
+        <table border ='1' width ="98%">
+            <tr> <td>
+                <p class="h4">
+                    Ofertas /
+                    <a href=" http://labsk.net/index.php?topic=122746.0"> Black Sunday en Click&Rol </a>
+                </p>
+                Último mensaje: <i> 01 de Diciembre de 2013, 01:26:41 pm ».</i> <br/>
+                Creado el: <i> 01 de Diciembre de 2013, 01:26:41 pm ».</i> <br/>
+                Respuestas totales: <b>1 </b> <br/>
+        </td></tr>
+        
+            <tr> <td>
+            <p class="h5">
+             01 de Diciembre de 2013, 01:26:41 pm »  / <a href=" http://labsk.net/index.php?topic=122746.0#msg_1187478"> http://labsk.net/index.php?topic=122746.0#msg_1187478 </a>
+            </p>
+            Buenas,<br/>Han puesto de ofertas bastantes cosas interesantes en <br/>http://www.clickandrol.com/black-sunday/<br/>.<br/>Saludos.<br/>
+            <br/>
+            </td> </tr>
+        
+            </table>
+        <br/>
+        <br/>
+    
+        <table border ='1' width ="98%">
+            <tr> <td>
+                <p class="h4">
+                    Ofertas /
+                    <a href=" http://labsk.net/index.php?topic=121765.0"> Oferta Gastos de envío en clickandrol.com </a>
+                </p>
+                Último mensaje: <i> 16 de Noviembre de 2013, 01:01:17 am ».</i> <br/>
+                Creado el: <i> 16 de Noviembre de 2013, 01:01:17 am ».</i> <br/>
+                Respuestas totales: <b>1 </b> <br/>
+        </td></tr>
+        
+            </table>
+        <br/>
+        <br/>
+    
     </p>
     <hr/>
-{% endfor %}
+
 
 
 

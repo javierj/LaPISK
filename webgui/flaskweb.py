@@ -59,6 +59,12 @@ def faqs():
     return render_template('faqs.html')
 
 
+@app.route("/contact")
+def contact():
+    register_access(request.path)
+    return render_template('contact.html')
+
+
 @app.route("/stats")
 def stats():
     stats_mod =  _get_stats_module()
@@ -71,6 +77,7 @@ def reports():
     #register_access("/reports")
     return render_template('reports.html')
 
+# Static reports
 
 @app.route("/reports/asylum-games")
 def static_asylum_games():
@@ -83,6 +90,77 @@ def static_devir_games():
     register_access(request.path)
     return render_template('static_devir.html')
 
+
+@app.route("/reports/tienda_100_doblones")
+def static_tienda_100_doblones():
+    register_access(request.path)
+    return render_template('static_tienda_100_doblones.html')
+
+
+@app.route("/reports/tienda_click_and_rol")
+def static_tienda_click_and_rol():
+    register_access(request.path)
+    return render_template('static_tienda_click_and_rol.html')
+
+
+@app.route("/reports/tienda_dungeon_marvels")
+def static_tienda_dungeon_marvels():
+    register_access(request.path)
+    return render_template('static_tienda_dungeon_marvels.html')
+
+
+@app.route("/reports/tienda_evolution_goya")
+def static_tienda_evolution_goya():
+    register_access(request.path)
+    return render_template('static_tienda_evolution_goya.html')
+
+
+@app.route("/reports/tienda_finplay")
+def static_tienda_finplay():
+    register_access(request.path)
+    return render_template('static_tienda_finplay.html')
+
+
+@app.route("/reports/tienda_mas_que_oca")
+def static_tienda_mas_que_oca():
+    register_access(request.path)
+    return render_template('static_tienda_mas_que_oca.html')
+
+
+@app.route("/reports/tienda_planeton")
+def static_tienda_planeton():
+    register_access(request.path)
+    return render_template('static_tienda_planeton.html')
+
+
+@app.route("/reports/tienda_tablerum")
+def static_tienda_tablerum():
+    register_access(request.path)
+    return render_template('static_tienda_tablerum.html')
+
+
+@app.route("/reports/tienda_zacatrus")
+def static_tienda_zacatrus():
+    register_access(request.path)
+    return render_template('static_tienda_zacatrus.html')
+
+
+# Mocks
+
+@app.route("/comparatives")
+def comparatives():
+    register_access(request.path)
+    return render_template('mock_comparatives.html')
+
+@app.route("/people")
+def people():
+    register_access(request.path)
+    return render_template('mock_people.html')
+
+@app.route("/following")
+def following():
+    register_access(request.path)
+    return render_template('mock_following.html')
 
 
 # Dynamic behaviour
