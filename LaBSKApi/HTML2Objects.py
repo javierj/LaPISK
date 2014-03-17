@@ -21,7 +21,6 @@ class MsgFactory(object):
         return result
 
     def _build_msg(self, fullmsg):
-        body = ""
         contents = fullmsg.find("div", "inner")
         return self._get_content_recursively(contents)
 
@@ -59,7 +58,7 @@ class MsgFactory(object):
 
 class MsgPageFactory(object):
 
-    def create(self, thread, last_msg_id = None):
+    def create(self, thread, last_msg_id=None):
         if last_msg_id is None:
             return self._create_without_id(thread)
         if thread['link'].endswith(".0"):
@@ -77,7 +76,7 @@ class AsuntoFactory(object):
 
     @staticmethod
     def createFromURLObject(urlobject):
-        factory = AsuntoFactory(url = urlobject.url)
+        factory = AsuntoFactory(url=urlobject.url)
         factory.urlobject = urlobject
         return factory
 
@@ -86,15 +85,32 @@ class AsuntoFactory(object):
         self.webclient = webclient
         self.soupfragment = None
         if webclient is not None:
-            #print webclient.sourceCode()
             self.soupfragment = BeautifulSoup(webclient.sourceCode())
         if url is not None:
             self.webclient = WebClient(url)
             #self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
 
+    # Untested
+    def _getfield_info(self, soupfragment):
+        info = soupfragment.find("td", "subject windowbg2")
+        if info is None:
+            # It is a closed thread
+            info = soupfragment.find("td", "subject lockedbg2")
+        if info is None:
+            print "Unkwon HTML for url: ", self.webclient
+        return info
+
+    def _get_answer_and_viewa_fragment(self, soupfragment):
+        fragment = soupfragment.find('td', 'stats windowbg')
+        if fragment is None:
+            fragment = soupfragment.find('td', 'stats stickybg')
+        if fragment is None:
+            fragment = soupfragment.find('td', 'stats lockedbg')
+        return fragment
+
     def create(self, soupfragment):
         result = dict()
-        field = soupfragment.find("td", "subject windowbg2")
+        field = self._getfield_info(soupfragment)
         title = ""
         result["link"] = ""
         result["answers"] = ""
@@ -106,10 +122,17 @@ class AsuntoFactory(object):
         #result['location'] = self.webclient.get_url_desc()
         if field is not None:
             title = UnicodeDammit(field.a.contents[0]).unicode_markup
-            result["link"] = soupfragment.find("td", "subject windowbg2").a['href']
-            result["answers"] = self._get_number_from(soupfragment.find('td', 'stats windowbg').contents[0].strip())
-            result["views"] = self._get_number_from(soupfragment.find('td', 'stats windowbg').contents[2].strip())
-        result["title"]= title.strip()
+            result["link"] = field.a['href']
+            fragment = self._get_answer_and_viewa_fragment(soupfragment)
+            if fragment is not None:
+                result["answers"] = self._get_number_from(fragment.contents[0].strip())
+                result["views"] = self._get_number_from(fragment.contents[2].strip())
+            else:
+                print "No answer and view bloq identified in thread: ", result["link"]
+                result["answers"] = -1
+                result["views"] = -1
+
+        result["title"] = title.strip()
 
         #result['next_url'] = _nextUrl(soupfragment)
         return result
@@ -118,7 +141,7 @@ class AsuntoFactory(object):
         if len(msg['link']) > 0:
             l.append(msg)
 
-    def createListOfAsuntos(self, soupFragment = None):
+    def createListOfAsuntos(self, soupFragment=None):
         if soupFragment is None:
             if self.soupfragment is None:
                 self.soupfragment = BeautifulSoup(self.webclient.sourceCode())
@@ -132,7 +155,7 @@ class AsuntoFactory(object):
         for link in self.soupfragment.find_all("a", "navPages"):
             content = str(link.contents[0])
             #print "Search: ", content
-            if  content == ">>":
+            if content == ">>":
                 return link['href']
         return ""
 
@@ -142,5 +165,3 @@ class AsuntoFactory(object):
 
     def _get_number_from(self, txt):
         return txt.split(' ')[0]
-
-

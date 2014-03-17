@@ -113,9 +113,9 @@ class TestReportBuilder(unittest.TestCase):
         self.assertIn('creation_date', self.thread)
         self.assertEquals('yes', self.thread['creation_date'])
 
-    def when_thread_already_has_creation_date_then_exit(self):
+    def test_when_thread_already_has_creation_date_then_exit(self):
         self.thread['creation_date'] = "Already exists"
-        self.builder._add_creation_date(self.thread)
+        self.builder._add_creation_and_last_msg_date(self.thread)
 
         self.assertEqual("Already exists", self.thread['creation_date'])
 

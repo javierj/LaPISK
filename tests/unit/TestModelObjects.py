@@ -16,20 +16,18 @@ class TestReportModel(unittest.TestCase):
         expected = ['Asylum Games', 'Banjooli', 'Mutinies', 'Polis']
         rm = ReportModel(Reports.asylum)
         keywords = rm.getKeywords()
-        print keywords
+        #print keywords
         self.assertEqual(len(expected), len(keywords))
         self.assertEqual(expected, keywords)
 
-    """ Use Text class instead
-    def test_replace_newline(self):
-        rm = ReportModel(Reports.asylum)
-        rm.replaceNewLineWith("<br/>")
-        thread = rm.firstthread("Banjooli")
-        msg = thread.firstmsg()
-
-        self.assertIn("<br/>", msg.body())
-        self.assertNotIn("\n", msg.body())
-    """
+    def test_get_keyword_dont_return_special_keys(self):
+        expected = ['Polis', 'Banjooli', 'Mutinies', 'Asylum Games']
+        report = {'Asylum Games':[], 'Banjooli':[], 'Mutinies':[], 'Polis':[], 'title':"", 'report_date':""}
+        rm = ReportModel(report)
+        keywords = rm.getKeywords()
+        print keywords
+        self.assertEqual(len(expected), len(keywords))
+        self.assertEqual(expected, keywords)
 
 
 class TestMsgListModel(unittest.TestCase):

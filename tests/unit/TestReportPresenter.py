@@ -147,14 +147,11 @@ class TestReportPresenter_FilteringThreads(unittest.TestCase):
         post.assertEqual(len(self.asylum['Banjooli']), 0)
         post.assertEqual(len(self.asylum['Asylum Games']), 0)
 
-    def test_when_therad_has_no_msgs_is_not_deleted(self):
-        report =  {'Polis':
-                  [{u'source': u'LaBSK',
-                    u'link': u'http://labsk.net/index.php?topic=97887.0',
-                    u'msgs': [], u'title': u'CYCLADES (DUDAS)'}],
-              'title': 'Result for report Informe de Asylum Games'}
-        self.asylum = self.presenter._filter_threads_using_year({'keywords':['Polis']}, report, '2013')
-        post.assertEqual(len(report['Polis']), 1)
+    def test_when_deleting_2013_report_has_creation_date(self):
+        self.asylum["report_date"] = "This"
+        pre.assertEqual(self.asylum["report_date"], "This")
+        self.asylum = self.presenter._filter_threads_using_year(PreGeneratedReports.report_asylum_games, self.asylum, '2013')
+        post.assertEqual(self.asylum["report_date"], "This")
 
 
 if __name__ == '__main__':

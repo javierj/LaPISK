@@ -31,10 +31,6 @@ class ReportQueryModel(object):
     def getKeywords(self):
         return self.jsondoc['keywords']
 
-    def set_threads_to(self, keyw, threads):
-        #print keyw, ":", len(threads)
-        self.jsondoc[keyw] = threads
-
 
 class ReportModel(object):
     def __init__(self, json):
@@ -46,21 +42,9 @@ class ReportModel(object):
     def getKeywords(self):
         words = list()
         for key in self.jsondoc.keys():
-            if key.lower() != 'title' and key != "report_date":
+            if key.lower() <> 'title' and key.lower() <> "report_date":
                 words.append(key)
         return words
-
-    def replaceNewLineWith(self, newline):
-        for keyword in self.getKeywords():
-            threadlist = self.jsondoc[keyword]
-            threads = list()
-            for json_thread in threadlist:
-                thread = ThreadModel(json_thread)
-                msgs = thread.msgList()
-                msgs.replaceNewLineWith(newline)
-                thread.replace_msgs(msgs)
-                threads.append(thread)
-            self.jsondoc[keyword] = threads
 
     def firstthread(self, key):
         return ThreadModel(self.jsondoc[key][0])
@@ -68,6 +52,10 @@ class ReportModel(object):
     def threads_in(self, key):
         threads = [ThreadModel(t) for t in self.jsondoc[key]]
         return threads
+
+    def set_threads_to(self, keyw, threads):
+        #print keyw, ":", len(threads)
+        self.jsondoc[keyw] = threads
 
 
 class MsgModel(object):

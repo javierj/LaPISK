@@ -14,14 +14,35 @@ def _word_in(word, line):
 
 class PreGeneratedReports(object):
 
-    # Editoriales
+    report_hootboardgame = {'name': 'HootBoardGame',
+                      'keywords': ["HootBoardGame", "HBG"]}
+
+    report_moviles = {'name': 'Juegos en dispositivos moviles',
+                      'keywords': ["iphone", "ios", "android", "tablet"]}
+
+    # Editoriales 6
 
     report_asylum_games = {'name': 'Informe de Asylum Games',
                            'keywords': ["Asylum Games", "Polis", "Mutinies", "Banjooli"]}
     report_devir = {'name': 'Informe de Devir',
                     'keywords': ["Devir"]}
-    report_moviles = {'name': 'Juegos en dispositivos moviles',
-                      'keywords': ["iphone", "ios", "android", "tablet"]}
+    report_ludonova = {'name': 'Editorial Ludonova',
+                    'keywords': ["Ludonova"]}
+    report_asmodee = {'name': 'Editorial Asmodee',
+                    'keywords': ["Asmodee"]}
+    report_lost_games = {'name': 'Editorial Ludonova',
+                    'keywords': ["Lost Games"]}
+    report_edge_entertainment = {'name': 'Editorial EDGE Entertainment',
+                    'keywords': ["Edge"]}
+    report_dizemo_entertainment = {'name': 'Editorial Dizemo Entertainment',
+                    'keywords': ["dizemo"]}
+    report_looping_games = {'name': 'Editorial Looping Games',
+                    'keywords': ["Looping Games", "1911 AMUNDSEN vs SCOTT"]}
+    report_nestor_games = {'name': 'Editorial Nestor Games',
+                    'keywords': ["Nestor"]}
+    report_morapiaf = {'name': 'Editorial Morapiaf',
+                    'keywords': ["Morapiaf"]}
+
 
     # Tiendas: 9
 
@@ -30,7 +51,7 @@ class PreGeneratedReports(object):
     tienda_100_doblones = {'name': 'Tienda 100 Doblones',
                       'keywords': ["100 doblones"]}
     tienda_zacatrus = {'name': 'Tienda Zacatrus',
-                      'keywords': ["zacatrus"]}
+                      'keywords': ["zacatrus", "coup"]}
     tienda_finplay = {'name': 'Tienda Finplay',
                       'keywords': ["finplay"]}
     tienda_tablerum = {'name': 'Tienda Tablerum',

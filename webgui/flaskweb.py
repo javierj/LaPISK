@@ -90,6 +90,47 @@ def static_devir_games():
     register_access(request.path)
     return render_template('static_devir.html')
 
+@app.route("/reports/ludonova")
+def static_ludonova_games():
+    register_access(request.path)
+    return render_template('static_ludonova.html')
+
+@app.route("/reports/asmodee")
+def static_asmodee_games():
+    register_access(request.path)
+    return render_template('static_asmodee.html')
+
+@app.route("/reports/lost_games")
+def static_lost_games_games():
+    register_access(request.path)
+    return render_template('static_lost_games.html')
+
+@app.route("/reports/edge_ent")
+def static_edge_ent():
+    register_access(request.path)
+    return render_template('static_edge_ent.html')
+
+@app.route("/reports/dizemo_ent")
+def static_dizemo_ent():
+    register_access(request.path)
+    return render_template('static_dizemo_ent.html')
+
+@app.route("/reports/looping_games")
+def static_looping_games():
+    register_access(request.path)
+    return render_template('static_looping_games.html')
+
+@app.route("/reports/nestor_games")
+def static_nestor_games():
+    register_access(request.path)
+    return render_template('static_nestor_games.html')
+
+@app.route("/reports/morapiaf")
+def static_morapiaf():
+    register_access(request.path)
+    return render_template('static_morapiaf.html')
+
+# e-shops
 
 @app.route("/reports/tienda_100_doblones")
 def static_tienda_100_doblones():

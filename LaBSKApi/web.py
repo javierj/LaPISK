@@ -13,6 +13,9 @@ class URL(object):
         """
         return self.desc
 
+    def __str__(self):
+        return str(self.desc) + ", " + str(self.url)
+
 
 class WebClient(object):
 
@@ -24,6 +27,9 @@ class WebClient(object):
 
     def load(self, url):
         self.url = url
+
+    def __str__(self):
+        return str(self.url)
 
 
 labsk_msgs_per_page = 15
@@ -74,6 +80,8 @@ labsk_urls = (
 
         URL("http://labsk.net/index.php?board=22.0;desc", "Compro-Vendo-Cambio"),
 
+        URL("http://labsk.net/index.php?board=15.0;desc", "Consulta de compras en tiendas"),
+        URL("http://labsk.net/index.php?board=2.0;desc", "Publicidad"),
         URL("http://labsk.net/index.php?board=71.0;desc", "Ofertas"),
         URL("http://labsk.net/index.php?board=179.0;desc", "Pedidos masivos y Preorders"),
 

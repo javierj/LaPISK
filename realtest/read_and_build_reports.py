@@ -4,13 +4,12 @@ from LaBSKApi.Process import ProcessThreads, VoidListener
 from LaBSKApi.HTML2Objects import MsgPageFactory
 from LaBSKApi.web import labsk_urls, get_all_descs
 from jinja2 import FileSystemLoader, Environment
-from bs4 import UnicodeDammit
 from LaBSKApi.MongoDB import MongoDB
 from LaBSKApi.reports import ReportBuilder, PreGeneratedReports
 from presenter.GUIModel import Text
 from presenter.ReportPresenter import ReportPresenter
 from datetime import datetime
-
+import shutil
 
 class StdListener(VoidListener):
     def __init__(self):
@@ -55,8 +54,9 @@ starttime = datetime.now()
 listener = StdListener()
 threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(listener)
-threads.setPageLimit(2)
+threads.setPageLimit(1)
 threads.setMsgPageLimit(200)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
+
 
 threads.scrapListOfURL(labsk_urls)
 delta = datetime.now() - starttime
@@ -73,9 +73,14 @@ print str(mr)
 # Build reports
 
 
-def write(filename, html_text):
-    with open(filename, 'w') as template_file:
+def write(name, html_text):
+    path = '../webgui/templates/'
+    filename = 'static_'+name+'.html'
+    phorumledge_path = "C:/code/workspaces/Github/phorumledge/wsgi/templates/"
+    print "Writing: ", path + filename
+    with open(path + filename, 'w') as template_file:
         template_file.write(html_text.encode('utf8'))
+    shutil.copyfile(path + filename, phorumledge_path + filename)
 
 
 starttime = datetime.now()
@@ -98,11 +103,22 @@ def generate_report(name, report_schema, filter=None):
 
     #html = UnicodeDammit(xhtml).unicode_markup
 
-    write('../webgui/templates/static_'+name+'.html', xhtml)
+    write(name, xhtml)
 
+
+generate_report("hootboardgame", PreGeneratedReports.report_hootboardgame)
 
 generate_report("asylum_games", PreGeneratedReports.report_asylum_games)
 generate_report("devir", PreGeneratedReports.report_devir, '2013')
+generate_report("ludonova", PreGeneratedReports.report_ludonova, '2013')
+generate_report("asmodee", PreGeneratedReports.report_asmodee, '2013')
+generate_report("lost_games", PreGeneratedReports.report_lost_games, '2013')
+generate_report("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')
+generate_report("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013')
+generate_report("looping_games", PreGeneratedReports.report_looping_games, '2013')
+generate_report("nestor_games", PreGeneratedReports.report_nestor_games, '2013')
+generate_report("morapiaf", PreGeneratedReports.report_morapiaf, '2013')
+
 generate_report("tienda_planeton", PreGeneratedReports.tienda_planeton, '2013')
 generate_report("tienda_100_doblones", PreGeneratedReports.tienda_100_doblones, '2013')
 generate_report("tienda_zacatrus", PreGeneratedReports.tienda_zacatrus, '2013')

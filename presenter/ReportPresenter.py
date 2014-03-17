@@ -70,15 +70,16 @@ class ReportPresenter(object):
         """
         year_int = int(year)
         query = ReportQueryModel(reportDescription)
+        report_obj = ReportModel(report)
         for kword in query.getKeywords():
             threats = list()
-            for thread in report[kword]:
-                threadobj = ThreadModel(thread)
+            for threadobj in report_obj.threads_in(kword):
+                #threadobj = ThreadModel(thread)
                 #print kword, ":", threadobj.year_last_msg(), ", ", year_int
                 if threadobj.year_last_msg() > year_int:
                     threats.append(threadobj.json())
-            query.set_threads_to(kword,threats)
-        return query.json()
+            report_obj.set_threads_to(kword,threats)
+        return report_obj.json()
 
 
     # Unused by now.
