@@ -140,7 +140,8 @@ class ReportBuilder(object):
         else:
             self.report['title'] = "Result for report."
         # Untested feature
-        self.report['report_date'] = datetime.date(datetime.now())
+        now = datetime.now()
+        self.report['report_date'] = str(datetime.date(now)) +", " + str(now.hour) + ":" + str(now.minute)
 
     def _word_in_msgs(self, keyword, thread):
         """ Retur a list with the msgs in the therad tan contains the kwyord

@@ -73,19 +73,23 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=200.0;desc", "Quedadas en Sevilla"),
 
         URL("http://labsk.net/index.php?board=14.0;desc", "Jugar en Linea"),
+
         URL("http://labsk.net/index.php?board=92.0;desc", "Print and Play"),
+
         URL("http://labsk.net/index.php?board=40.0;desc", "Talleres"),
 
         URL("http://labsk.net/index.php?board=47.0;desc", "Concurso"),
 
         URL("http://labsk.net/index.php?board=22.0;desc", "Compro-Vendo-Cambio"),
+        URL("http://labsk.net/index.php?board=131.0;desc", "Mathtrade"),
+        URL("http://labsk.net/index.php?board=171.0;desc", "Componentes y partes de juegos"),
 
         URL("http://labsk.net/index.php?board=15.0;desc", "Consulta de compras en tiendas"),
         URL("http://labsk.net/index.php?board=2.0;desc", "Publicidad"),
         URL("http://labsk.net/index.php?board=71.0;desc", "Ofertas"),
         URL("http://labsk.net/index.php?board=179.0;desc", "Pedidos masivos y Preorders"),
-
-        #URL("http://labsk.net/index.php?board=177.0;desc", "Valoraciones de tiendas"), -- Tiene un HTML distinto
+        #URL("http://labsk.net/index.php?board=177.0;desc", "Valoraciones de tiendas"), -- Solo para usuarios registrados
+        URL("http://labsk.net/index.php?board=178.0;desc", "Tiendas fisicas en el mundo"),
 
         URL("http://labsk.net/index.php?board=1.0;desc", "Cajon desastre"),
         URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces")

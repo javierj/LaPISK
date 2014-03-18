@@ -79,6 +79,13 @@ def reports():
 
 # Static reports
 
+
+@app.route("/reports/hootboardgame")
+def static_hootboardgame():
+    register_access(request.path)
+    return render_template('static_hootboardgame.html')
+
+
 @app.route("/reports/asylum-games")
 def static_asylum_games():
     register_access(request.path)
