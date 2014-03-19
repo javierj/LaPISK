@@ -3,7 +3,8 @@ __author__ = 'Javier'
 import re
 from datetime import datetime
 
-meses = {"Enero": 1,
+class DateManager(object):
+    meses = {"Enero": 1,
          "Febrero": 2,
          "Marzo": 3,
          "Abril": 4,
@@ -15,7 +16,14 @@ meses = {"Enero": 1,
              "Octubre": 10,
              "Noviembre": 11,
              "Diciembre": 12
-}
+    }
+
+    def __init__(self, now = datetime.now):
+        self.now = now
+
+    def hoy(self):
+        date = self.now()
+        return str(date.day) + " de " + DateManager.meses.keys()[DateManager.meses.values().index(date.month)] + " de " + str(date.year)
 
 
 class ReportQueryModel(object):
@@ -103,7 +111,7 @@ class MsgModel(object):
 
 
         return datetime(int(s.group(3)),
-                        meses[s.group(2)],
+                        DateManager.meses[s.group(2)],
                         int(s.group(1)),
                         int(s.group(4)),
                         int(s.group(5)),

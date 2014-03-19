@@ -1,7 +1,7 @@
 __author__ = 'Javier'
 
 import unittest
-from LaBSKApi.modelobjects import ReportModel, ThreadModel, MsgListModel, MsgModel
+from LaBSKApi.modelobjects import ReportModel, ThreadModel, MsgListModel, MsgModel, DateManager
 from tests.Harness import Reports
 from datetime import datetime
 
@@ -120,7 +120,6 @@ class TestThreadModel(unittest.TestCase):
         self.assertEqual(t['last_msg_date'], u' 08 de Febrero de 2014, 03:34:44 am \xbb')
 
 
-
 class TestMsgModel(unittest.TestCase):
 
     def setUp(self):
@@ -151,6 +150,17 @@ class TestMsgModel(unittest.TestCase):
         msg_obj = MsgModel(msg)
         self.assertEquals(msg_obj.datetime(), datetime(2013, 10, 24, 8, 22, 36))
         self.assertEquals(msg_obj.datetime().year, 2013)
+
+
+class TestDateManager(unittest.TestCase):
+
+    @staticmethod
+    def mock_hoy():
+        return datetime(2014, 01, 01)
+
+    def test_hoy(self):
+        res = DateManager(TestDateManager.mock_hoy).hoy()
+        self.assertEqual("1 de Enero de 2014", res)
 
 
 if __name__ == '__main__':

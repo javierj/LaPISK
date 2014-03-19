@@ -2,6 +2,7 @@ __author__ = 'Javier'
 
 from bs4 import UnicodeDammit, BeautifulSoup, Tag
 from web import WebClient
+from LaBSKApi.modelobjects import DateManager
 
 
 class MsgFactory(object):
@@ -10,15 +11,24 @@ class MsgFactory(object):
         self.webclient = webclient
         self.soup = None
         self.soupfragment = None
+        self.date_manager = DateManager()
 
     # Private method
     def createMsg(self, soupfragment):
         result = {"user": soupfragment.find('a').contents[0],
-                    "date": soupfragment.find('div', 'smalltext').contents[2],
+                    "date": self._get_date(soupfragment),
                     "body": self._build_msg(soupfragment),
                     "id": soupfragment.find('div', 'inner')['id']
         }
         return result
+
+    def _get_date(self, soupfragment):
+        """ If date is 'hoy' changes it for the actual date
+        """
+        date = soupfragment.find('div', 'smalltext').contents[2]
+        if date == ' ':
+            date = self.date_manager.hoy() + "," + soupfragment.find('div', 'smalltext').contents[4]
+        return date
 
     def _build_msg(self, fullmsg):
         contents = fullmsg.find("div", "inner")

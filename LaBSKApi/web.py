@@ -37,6 +37,9 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=18.0;sort=last_post;desc", "Novedades / Actualidad"),
         URL("http://labsk.net/index.php?board=19.0;desc", "Jornadas"),
         URL("http://labsk.net/index.php?board=158.0;desc", "Juegos de mesa en los medios"),
+        URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces"),
+        URL("http://labsk.net/index.php?board=10.0;desc", "Reglamentos"),
+
         URL("http://labsk.net/index.php?board=4.0;desc", "Ayudas de juegos"),
         URL("http://labsk.net/index.php?board=5.0;desc", "Variantes"),
         URL("http://labsk.net/index.php?board=11.0;desc", "Dudas de reglas"),
@@ -67,7 +70,6 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=23.0;desc", "BSK"),
         URL("http://labsk.net/index.php?board=159.0;desc", "Besequero de la semana"),
         URL("http://labsk.net/index.php?board=55.0;desc", "Sondeos"),
-
         URL("http://labsk.net/index.php?board=17.0;desc", "Quedadas"),
         URL("http://labsk.net/index.php?board=45.0;desc", "Quedadas en Madrid"),
         URL("http://labsk.net/index.php?board=46.0;desc", "Quedadas en Barcelona"),
@@ -85,6 +87,7 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=22.0;desc", "Compro-Vendo-Cambio"),
         URL("http://labsk.net/index.php?board=131.0;desc", "Mathtrade"),
         URL("http://labsk.net/index.php?board=171.0;desc", "Componentes y partes de juegos"),
+        URL("http://labsk.net/index.php?board=193.0;desc", "Pintores, escultores y artistas"),
 
         URL("http://labsk.net/index.php?board=15.0;desc", "Consulta de compras en tiendas"),
         URL("http://labsk.net/index.php?board=2.0;desc", "Publicidad"),
@@ -93,8 +96,8 @@ labsk_urls = (
         #URL("http://labsk.net/index.php?board=177.0;desc", "Valoraciones de tiendas"), -- Solo para usuarios registrados
         URL("http://labsk.net/index.php?board=178.0;desc", "Tiendas fisicas en el mundo"),
 
-        URL("http://labsk.net/index.php?board=1.0;desc", "Cajon desastre"),
-        URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces")
+        URL("http://labsk.net/index.php?board=1.0;desc", "Cajon desastre")
+
 )
 
 

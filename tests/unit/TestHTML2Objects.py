@@ -6,6 +6,7 @@ from LaBSKApi.modelobjects import MsgModel, ThreadModel
 from LaBSKApi.web import URL
 from tests.Harness import MockWebClient, HTMLFactory
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 
 class TestMsgFactory(unittest.TestCase):
@@ -79,6 +80,17 @@ class TestMsgFactory(unittest.TestCase):
         html = BeautifulSoup("")
         res = self.factory._get_content_recursively(html)
         self.assertEqual("", res)
+
+    def test_get_date_when_date_is_hoy(self):
+        html = BeautifulSoup("""<div class="smalltext">&#171; <strong>Respuesta #45 en:</strong> <strong>Hoy</strong> a las 12:05:56 pm &#187;</div>""")
+        self.factory.date_manager.now = TestMsgFactory.mock_hoy
+        res = self.factory._get_date(html)
+        self.assertEqual(u"1 de Enero de 2014, a las 12:05:56 pm \xbb", res)
+
+    @staticmethod
+    def mock_hoy():
+        return datetime(2014, 01, 01)
+
 
 
 class TestAsuntoFactory(unittest.TestCase):
