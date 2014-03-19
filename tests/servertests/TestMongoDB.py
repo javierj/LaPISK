@@ -92,6 +92,11 @@ class  TestMongoDB(unittest.TestCase):
 
         db.drop("to_delete")
 
+    def test_database_contains(self):
+        self.db = MongoDB(col = "labsk_merge")
+        result = self.db.find_one_by('link', "http://labsk.net/index.php?topic=129533.0")
+        self.assertEqual("http://labsk.net/index.php?topic=129533.0", result['link'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,14 +3,14 @@ __author__ = 'Javier'
 from datetime import datetime
 from LaBSKApi.modelobjects import ThreadModel
 
-
+"""
 # Not in use
 def _word_in(word, line):
     normal = word.lower().strip()
     normalword = " "+normal + " "
     print "'"+normalword, "' / '", line.lower()+"' "
     return normalword in line.lower()
-
+"""
 
 class PreGeneratedReports(object):
 
@@ -84,6 +84,8 @@ class ReportBuilder(object):
         self.report_request = report_request
         self._create_report()
         for thread in self.db.threads():
+            #print thread
+            #print "thread"
             self._find_keywords(thread, report_request['keywords'])
 
         self._add_empty_keywords(report_request['keywords'])
@@ -98,8 +100,11 @@ class ReportBuilder(object):
     def _find_keywords(self, thread, keywords):
         """
         """
+        #print keywords
         for word in keywords:
+            #print word in  thread['title']
             if self._word_in(word, thread['title']):
+                #print word in  thread['title']
                 self._add_creation_and_last_msg_date(thread)
                 self._drop_msgs_from_thread(thread)
                 self._add_thead_to_report(word, thread)
@@ -156,8 +161,7 @@ class ReportBuilder(object):
         return result
 
     def _word_in(self, word, line):
-        """
-        Returns true if word.lower() in line.lower()
+        """ Returns true if word.lower() in line.lower()
         """
         normal = word.lower()
         #normalword = " "+normal.strip() + " "

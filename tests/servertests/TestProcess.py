@@ -6,7 +6,8 @@ from LaBSKApi.Process import ProcessThread
 from tests.Harness import Reports
 from LaBSKApi.modelobjects import ThreadModel
 from mockito import mock, verify, any
-
+from LaBSKApi.reports import ReportBuilder, PreGeneratedReports
+from presenter.ReportPresenter import ReportPresenter
 
 class TestPorcessWithMongo(unittest.TestCase):
     """ this test suites verify tje coordination between two collections and the
@@ -49,6 +50,7 @@ class TestPorcessWithMongo(unittest.TestCase):
         self.assertIsNotNone(process._search_thread(newT))
         process._evaluate_thread(newT)
         verify(self.mock_listener).skippingUnmodifiedThread(any(), newT)
+
 
 if __name__ == '__main__':
     unittest.main()

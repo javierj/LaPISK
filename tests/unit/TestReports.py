@@ -2,7 +2,7 @@ __author__ = 'Javier'
 
 import unittest
 from tests.Harness import MockMongo, Reports
-from LaBSKApi.reports import ReportBuilder, _word_in
+from LaBSKApi.reports import ReportBuilder, PreGeneratedReports
 
 
 class TestReportBuilder(unittest.TestCase):
@@ -81,6 +81,11 @@ class TestReportBuilder(unittest.TestCase):
     def test_word_in_msgs_when_msg_is_empty(self):
         result = self.builder._word_in_msgs(self.keyword, self.thread)
         self.assertLen(0, result)
+
+    def test_word_in_with_zacatrus(self):
+        word = PreGeneratedReports.tienda_zacatrus['keywords'][0]
+        msg_title = u'Clash of Cultures a 33,75\x80 en Zacatrus (ZMAN)'
+        self.assertTrue(self.builder._word_in(word, msg_title))
 
     def test_add_msgs_to_report(self):
         msg = {'body': "Message"}
@@ -202,7 +207,7 @@ class TestSortingThreads(unittest.TestCase):
         self.assertEqual(report['key'][0]['title'], "a")
         self.assertEqual(report['key'][1]['title'], "b")
 
-
+"""
 class TestWordIn(unittest.TestCase):
 
     def test_word_with_itsfel(self):
@@ -217,6 +222,6 @@ class TestWordIn(unittest.TestCase):
     def test_word_dont_find_fragments_one_letter(self):
         self.assertFalse(_word_in("a", "a"))
 
-
+"""
 if __name__ == '__main__':
     unittest.main()
