@@ -519,7 +519,7 @@ class MockKimonoPlanetaLudicoAPI(object):
         "count": 15,
      "frequency": "hourly",
      "version": 13,
-  "newdata": false,
+  #"newdata": false,
   "lastrunstatus": "success",
   "lastsuccess": "Fri Mar 21 2014 20:57:35 GMT+0000 (UTC)",
   "nextrun": "Fri Mar 21 2014 21:57:35 GMT+0000 (UTC)",
@@ -528,23 +528,23 @@ class MockKimonoPlanetaLudicoAPI(object):
       {
         "title": {
           "href": "http://mijuegodelmes.com/2014/03/21/lla-partida-y-iii/",
-          "text": "LLA – Partida (y III)"
+          "text": u"LA  Partida y III"
         },
         "date": "21 marzo, 2014",
         "source": {
           "href": "http://planetaludico.es/author/mi-juego-del-mes/",
-          "text": "Mi Juego del Mes"
+          "text": u"Mi Juego del Mes"
         }
       },
       {
         "title": {
           "href": "http://feedproxy.google.com/~r/analisis-paralisis-web/~3/1SX8WcZVKBc/",
-          "text": "Desprecintando – Lewis & Clark"
+          "text": u"Desprecintando Lewis Clark"
         },
         "date": "21 marzo, 2014",
         "source": {
           "href": "http://planetaludico.es/author/ushikai/",
-          "text": "Ushikai"
+          "text": u"Ushikai"
         }
       }
     ]
