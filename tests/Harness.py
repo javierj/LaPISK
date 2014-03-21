@@ -510,3 +510,43 @@ class MockDatetime(object):
         self.dt = datetime(int(datos_fecha[2]), int(datos_fecha[1]), int(datos_fecha[0]),
                     int(datos_hora[0]), int(datos_hora[1]))
         return self.dt
+
+
+class MockKimonoPlanetaLudicoAPI(object):
+
+    json = {
+         "name": "planeta_ludico",
+        "count": 15,
+     "frequency": "hourly",
+     "version": 13,
+  "newdata": false,
+  "lastrunstatus": "success",
+  "lastsuccess": "Fri Mar 21 2014 20:57:35 GMT+0000 (UTC)",
+  "nextrun": "Fri Mar 21 2014 21:57:35 GMT+0000 (UTC)",
+  "results": {
+    "titles": [
+      {
+        "title": {
+          "href": "http://mijuegodelmes.com/2014/03/21/lla-partida-y-iii/",
+          "text": "LLA – Partida (y III)"
+        },
+        "date": "21 marzo, 2014",
+        "source": {
+          "href": "http://planetaludico.es/author/mi-juego-del-mes/",
+          "text": "Mi Juego del Mes"
+        }
+      },
+      {
+        "title": {
+          "href": "http://feedproxy.google.com/~r/analisis-paralisis-web/~3/1SX8WcZVKBc/",
+          "text": "Desprecintando – Lewis & Clark"
+        },
+        "date": "21 marzo, 2014",
+        "source": {
+          "href": "http://planetaludico.es/author/ushikai/",
+          "text": "Ushikai"
+        }
+      }
+    ]
+  }
+    }

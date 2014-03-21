@@ -1,8 +1,10 @@
 __author__ = 'Javier'
 
+
 # Untested class
 class Text(object):
-    def __init__(self, firsttext = None):
+
+    def __init__(self, firsttext=None):
         self.text = []
         self.nexttext = []
         if firsttext is not None:
@@ -14,10 +16,8 @@ class Text(object):
     def addText(self, txt):
         self.text.append(txt)
 
-
     def addNextText(self, textObj):
         self.nexttext.append(textObj)
-
 
     def insert_br(self, text):
         """ Replaces \n for <br/>
@@ -44,4 +44,4 @@ class Text(object):
             report[keyword] = new_threads
 
     def __str__(self):
-        return self.text.str()
+        return str(self.text)
