@@ -1,16 +1,10 @@
 __author__ = 'Javier'
 
 from datetime import datetime
-from LaBSKApi.modelobjects import ThreadModel
+from LaBSKApi.modelobjects import ThreadModel, ReportModel
+# change this dependence, maybe ReportResult should be in other place
+from presenter.ReportPresenter import ReportResult
 
-"""
-# Not in use
-def _word_in(word, line):
-    normal = word.lower().strip()
-    normalword = " "+normal + " "
-    print "'"+normalword, "' / '", line.lower()+"' "
-    return normalword in line.lower()
-"""
 
 class PreGeneratedReports(object):
 
@@ -189,3 +183,66 @@ class ReportBuilder(object):
     def _get_date_for_thread(self, thread):
         thread_obj = ThreadModel(thread)
         return thread_obj.last_msg_date_as_datetime()
+
+
+class ReportService(object):
+    """ This class creates and generated a report and stores thte stats in
+        a MomgoDB column
+    """
+
+    def __init__(self):
+        self._builder = ReportBuilder(None)
+        self._collection = None
+        self._now = datetime
+
+    def build_report(self, report_request):
+        result = self._builder.build_report(report_request)
+        stats = self._generateStats(report_request, result)
+        self._save_report_stats(report_request, stats)
+        return ReportResult(result, stats)
+
+    def _generateStats(self, reportDescription, report_json):
+        result = ReportStats()
+        report_obj = ReportModel(report_json)
+        for key in reportDescription['keywords']:
+            for thread_obj in report_obj.threads_in(key):
+                result.inc_threads()
+                result.inc_msgs( thread_obj.msg_count() )
+
+        return result
+
+    def _save_report_stats(self, report_request, report_stats):
+        """ I need two abtsractions here. first one a mediator between this class and
+            the collection that knows the structure of the json.
+            The second abstraction is an object fro report_request.
+        """
+        json_report = self._collection.find('name', report_request['name'])
+        if  json_report is None:
+            #self._collection.save({'stats': [], 'name': report_request['name']})
+            json_report = {'stats': [], 'name': report_request['name']}
+
+        json_stats = report_stats.json()
+        now = self._now.now()
+        json_stats['date'] = str(now.year) + "-" + str(now.month) + "-" + str(now.day)
+        json_report['stats'].append(json_stats)
+
+        print json_report
+        self._collection.save(json_report)
+
+
+class ReportStats(object):
+    """ Untested
+    """
+
+    def __init__(self):
+        self._threads = 0
+        self._msgs = 0
+
+    def inc_threads(self):
+        self._threads += 1
+
+    def inc_msgs(self, inc = 1):
+        self._msgs += inc
+
+    def json(self):
+        return {'threads':str(self._msgs), 'msgs':str(self._msgs), 'blogs':'0'}

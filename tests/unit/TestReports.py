@@ -1,8 +1,10 @@
 __author__ = 'Javier'
 
 import unittest
-from tests.Harness import MockMongo, Reports
-from LaBSKApi.reports import ReportBuilder, PreGeneratedReports
+from tests.Harness import MockMongo, Reports, MockDatetime
+from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, ReportService, ReportStats
+from mockito import mock, verify, when
+from presenter.ReportPresenter import ReportResult
 
 
 class TestReportBuilder(unittest.TestCase):
@@ -207,21 +209,54 @@ class TestSortingThreads(unittest.TestCase):
         self.assertEqual(report['key'][0]['title'], "a")
         self.assertEqual(report['key'][1]['title'], "b")
 
-"""
-class TestWordIn(unittest.TestCase):
 
-    def test_word_with_itsfel(self):
-        self.assertTrue(_word_in("a", " a "))
+class TestReportService(unittest.TestCase):
 
-    def test_word_ignore_case(self):
-        self.assertTrue(_word_in("a", " A "))
+    def create_report_stat(self):
+        report_stats = ReportStats()
+        report_stats.inc_msgs()
+        report_stats.inc_threads()
+        return report_stats
 
-    def test_word_dont_find_fragments(self):
-        self.assertFalse(_word_in("a", "aa"))
+    def setUp(self):
+        self.col = mock()
+        self.service = ReportService()
+        self.service._collection = self.col
+        self.service._builder = mock()
+        self.service._now = MockDatetime()
+        self.empty_report_request = {'name':'report', 'keywords':[]}
+        self.expected_stats_report = {'name':'report', 'stats':[
+            {'date':'2014-1-1', 'threads':'1', 'msgs':'1', 'blogs':'0'}]}
 
-    def test_word_dont_find_fragments_one_letter(self):
-        self.assertFalse(_word_in("a", "a"))
+    def test_when_creates_a_service_it_includes_the_report_builder(self):
+        self.service = ReportService()
+        self.assertIsInstance(self.service._builder, ReportBuilder)
 
-"""
+    def test_when_generating_a_report_report_builder_is_called(self):
+        self.service.build_report(self.empty_report_request)
+        verify(self.service._builder, 1).build_report(self.empty_report_request)
+
+    def test_when_stats_for_a_report_does_not_exist_then_create_it(self):
+        when(self.col).find('name', 'report').thenReturn(None)
+        self.service._save_report_stats(self.empty_report_request, self.create_report_stat())
+        verify(self.col).save(self.expected_stats_report)
+
+    def test_saving_report_stats(self):
+        when(self.col).find('name', 'report').thenReturn({'name':'report', 'stats':[]})
+        self.service._save_report_stats({'name':'report'}, self.create_report_stat())
+        verify(self.col).save(self.expected_stats_report)
+
+    def test_when_building_repot_a_report_and_stats_are_returned(self):
+        result = self.service.build_report(self.empty_report_request)
+        self.assertIsInstance(result, ReportResult)
+
+class TestReportStats(unittest.TestCase):
+
+    def test_json(self):
+        stats = ReportStats()
+        result = stats.json()
+        self.assertEqual(result, {'threads':'0', 'msgs':'0', 'blogs':'0'})
+
+
 if __name__ == '__main__':
     unittest.main()

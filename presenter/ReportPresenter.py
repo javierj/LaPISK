@@ -1,26 +1,22 @@
 __author__ = 'Javier'
 
-from LaBSKApi.reports import ReportBuilder
 from LaBSKApi.modelobjects import ReportQueryModel, ThreadModel, ReportModel
 from GUIModel import Text
 
 
 class ReportPresenter(object):
-    def __init__(self):
-        self.db = None
-        self.builder = None
+    def __init__(self, builder = None):
+        self.builder = builder
 
     def set_builder(self, builder):
         self.builder = builder
 
     def _get_builder(self):
-        if self.builder is None:
-            self.builder = ReportBuilder(self.db)
         return self.builder
 
     def report_and_stats(self, reportDescription, data_filter=None, filter_year = None):
         """ Retrurns an object with the result of the query incuding
-        the generated report and starts woth the reuslts
+            the generated report and starts woth the reuslts
         """
         rr = ReportResult()
         rr.report = self.generateReport(reportDescription, data_filter, filter_year)
@@ -34,6 +30,7 @@ class ReportPresenter(object):
 
         return rr
 
+
     def generateReport(self, reportDescription, data_filter = None, filter_year = None):
         #assert self.db is not None
         informeBuilder = self._get_builder()
@@ -43,6 +40,7 @@ class ReportPresenter(object):
         if filter_year is not None:
             report = self._filter_threads_using_year(reportDescription, report, filter_year)
         return report
+
 
     def _filter_report_using_year(self, reportDescription, report, year):
         query = ReportQueryModel(reportDescription)
@@ -105,20 +103,12 @@ class ReportPresenter(object):
         result.addText(u"Mensajes encontrados: " + str(msgs))
         return result
 
-    @property
-    def database(self):
-        return self.db
-
-    @database.setter
-    def database(self, value):
-        self.db = value
-
 
 class ReportResult(object):
 
-    def __init__(self):
-        self.thereport = None
-        self.stat = None
+    def __init__(self, report = None, stats = None):
+        self.thereport = report
+        self.stat = stats
 
     @property
     def report(self):

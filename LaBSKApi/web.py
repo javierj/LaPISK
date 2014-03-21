@@ -39,6 +39,7 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=158.0;desc", "Juegos de mesa en los medios"),
         URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces"),
         URL("http://labsk.net/index.php?board=10.0;desc", "Reglamentos"),
+        URL("http://labsk.net/index.php?board=41.0;desc", "Reglamentos / Traducciones en proceso"),
 
         URL("http://labsk.net/index.php?board=4.0;desc", "Ayudas de juegos"),
         URL("http://labsk.net/index.php?board=5.0;desc", "Variantes"),
@@ -54,6 +55,7 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=38.0;desc", "Recomendados"),
         URL("http://labsk.net/index.php?board=185.0;desc", "Recomendados / 10 juegos"),
         URL("http://labsk.net/index.php?board=144.0;desc", "Recomendados / Iniciacion"),
+        URL("http://labsk.net/index.php?board=149.0;desc", "Recomendados / Tiendas on-line"),
 
         URL("http://labsk.net/index.php?board=27.0;desc", "Ezines"),
         URL("http://labsk.net/index.php?board=212.0;desc", "Podcasts"),
@@ -73,6 +75,7 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=17.0;desc", "Quedadas"),
         URL("http://labsk.net/index.php?board=45.0;desc", "Quedadas en Madrid"),
         URL("http://labsk.net/index.php?board=46.0;desc", "Quedadas en Barcelona"),
+        URL("http://labsk.net/index.php?board=57.0;desc", "Quedadas en Zaragoza"),
 
         URL("http://labsk.net/index.php?board=200.0;desc", "Quedadas en Sevilla"),
 

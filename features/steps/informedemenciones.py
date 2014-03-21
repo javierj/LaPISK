@@ -2,6 +2,7 @@ __author__ = 'Javier'
 
 #import sure
 from LaBSKApi.MongoDB import MongoDB
+from LaBSKApi.reports import ReportBuilder
 from presenter.ReportPresenter import ReportPresenter
 from expects import expect
 
@@ -13,7 +14,7 @@ def crea_informe(name="Name", keywords=None):
     return {'name': name, 'keywords': (keywords or [])}
 
 def create_report(context):
-    presenter = ReportPresenter()
+    presenter = ReportPresenter(ReportBuilder(context.db))
     presenter.database = context.db
     return presenter
 
@@ -38,7 +39,7 @@ def given_labsk(context):
 def when_generating_report(context, word):
     presenter = create_report(context)
     informe = crea_informe(keywords=[word])
-    context.informe = presenter.generateReport(informe)
+    context.informe = presenter.report_and_stats(informe).report
     context.keyword = word
 
 
@@ -61,7 +62,7 @@ def assert_titulo_del_hilo(context, titulo_del_hilo):
 def when_generating_report_from_editor(context, word):
     presenter = create_report(context)
     informe = crea_informe(keywords=[word])
-    context.informe = presenter.generateReport(informe)
+    context.informe = presenter.report_and_stats(informe).report
     context.keyword = word
 
 @then('el informe contiene "{numero}" hilos que la mencionan en el titulo')
@@ -132,7 +133,8 @@ def assert_informe_vacio(context):
 def when_generating_report_from_keyword(context, keyword):
     presenter = create_report(context)
     informe = crea_informe(keywords=[keyword])
-    context.informe = presenter.generateReport(informe, data_filter = "2012")
+    context.informe = presenter.report_and_stats(informe, data_filter = "2012").report
+    #presenter.(informe).
     context.keyword = keyword
 
 @then(u'el informe contiene un unico mensaje de "{year}"')

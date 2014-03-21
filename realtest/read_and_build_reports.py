@@ -55,7 +55,7 @@ listener = StdListener()
 threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(listener)
 threads.setPageLimit(1)
-threads.setMsgPageLimit(200)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
+threads.setMsgPageLimit(210)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
 
 
 threads.scrapListOfURL(labsk_urls)
@@ -84,8 +84,8 @@ def write(name, html_text):
 
 
 starttime = datetime.now()
-builder = ReportPresenter()
-builder.set_builder(ReportBuilder(MongoDB(col="labsk_merge")))
+builder = ReportPresenter(ReportBuilder(MongoDB(col="labsk_merge")))
+#builder.set_builder()
 text = Text()
 
 env = Environment(loader=FileSystemLoader('../webgui/templates'))
