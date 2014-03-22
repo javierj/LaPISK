@@ -4,27 +4,11 @@ import unittest
 
 from LaBSKApi.MongoDB import MongoDB
 
-class  TestMongoDB(unittest.TestCase):
+class TestMongoDB(unittest.TestCase):
 
     def setUp(self):
         self.db = MongoDB()
         self.testcol = self.db.collection("labsk_test")
-
-    """
-    def test_merge_same_collection_zero_docs_merged(self):
-        db = self.db
-
-        col2 = db.collection("labsk_test")
-
-        self.assertEqual(60, db.len(self.testcol))
-        self.assertEqual(60, db.len(col2))
-
-        merged = db.merge(self.testcol, col2, 'link')
-
-        self.assertEqual(0, merged)
-        self.assertEqual(60, db.len(self.testcol))
-        self.assertEqual(60, db.len(col2))
-    """
 
     def test_merge_with_empty_collection_all_docs_merged(self):
         db = self.db
@@ -48,7 +32,6 @@ class  TestMongoDB(unittest.TestCase):
         self.assertEqual(0, merge_result.updated_threads)
         db.drop("empty_new_col")
 
-
     def test_merge_drops_insert_column_and_avoid_its_use(self):
         db = self.db
         db.copy("labsk_test", "query_delete")
@@ -62,8 +45,6 @@ class  TestMongoDB(unittest.TestCase):
         self.assertEqual(0, db.len("insert_delete"))
         self.assertEqual(60, db.len("query_delete"))
         db.drop("query_delete")
-
-
 
     def test_find_all_by(self):
         results = self.db.find_one_by('link', 'http://labsk.net/index.php?topic=119300.0')
@@ -96,6 +77,33 @@ class  TestMongoDB(unittest.TestCase):
         self.db = MongoDB(col = "labsk_merge")
         result = self.db.find_one_by('link', "http://labsk.net/index.php?topic=129533.0")
         self.assertEqual("http://labsk.net/index.php?topic=129533.0", result['link'])
+
+
+class TestCollection(unittest.TestCase):
+
+    def setUp(self):
+        self.db = MongoDB()
+        self.col = self.db.collection("stats_borrame")
+
+    def tearDown(self):
+        self.db.drop("stats_borrame")
+
+    def test_find_one_in_column(self):
+        stat = {u'stats': [{u'date': u'2014-3-22', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}], u'name': u'HootBoardGame'}
+        self.col.save(stat)
+        self.assertIsNotNone(self.col.find_one('name', 'HootBoardGame'))
+
+    def test_when_no_fin_returns_null(self):
+        self.assertIsNone(self.col.find_one('name', 'NoExiste'))
+
+    def test_update_stat(self):
+        stat = {u'stats': [{u'date': u'2014-3-22', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}], u'name': u'HootBoardGame'}
+        self.col.save(stat)
+        stat['stats'].append({u'date': u'2014-3-22', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'})
+        self.col.remove('name', 'HootBoardGame')
+        self.col.save(stat)
+        new_stats = self.col.find_one('name', 'HootBoardGame')
+        self.assertEqual(len(new_stats['stats']), 2)
 
 
 if __name__ == '__main__':

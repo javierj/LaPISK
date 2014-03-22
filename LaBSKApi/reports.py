@@ -186,13 +186,13 @@ class ReportBuilder(object):
 
 
 class ReportService(object):
-    """ This class creates and generated a report and stores thte stats in
+    """ This class creates and generated a report and stores the stats in
         a MomgoDB column
     """
 
-    def __init__(self):
-        self._builder = ReportBuilder(None)
-        self._collection = None
+    def __init__(self, db):
+        self._builder = ReportBuilder(db)
+        self._collection = db.report_stats_collection()
         self._now = datetime
 
     def build_report(self, report_request):
@@ -216,18 +216,32 @@ class ReportService(object):
             the collection that knows the structure of the json.
             The second abstraction is an object fro report_request.
         """
-        json_report = self._collection.find('name', report_request['name'])
-        if  json_report is None:
+
+        json_report = self._collection.find_one('name', report_request['name'])
+        if json_report is None:
             #self._collection.save({'stats': [], 'name': report_request['name']})
             json_report = {'stats': [], 'name': report_request['name']}
+        else:
+            self._collection.remove('name', report_request['name'])
+            self._delete_with_date_now(json_report)
 
         json_stats = report_stats.json()
         now = self._now.now()
         json_stats['date'] = str(now.year) + "-" + str(now.month) + "-" + str(now.day)
         json_report['stats'].append(json_stats)
 
-        print json_report
+        #print json_report
         self._collection.save(json_report)
+
+    def _delete_with_date_now(self, json_report):
+        now = self._now.now()
+        now_date = str(now.year) + "-" + str(now.month) + "-" + str(now.day)
+        new_stats = []
+        for stat in json_report['stats']:
+            if stat['date'] <> now_date:
+                new_stats.append(stat)
+        json_report['stats'] = new_stats
+
 
 
 class ReportStats(object):

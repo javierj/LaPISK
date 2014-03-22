@@ -220,8 +220,9 @@ class TestReportService(unittest.TestCase):
 
     def setUp(self):
         self.col = mock()
-        self.service = ReportService()
-        self.service._collection = self.col
+        self.mongo = mock()
+        when(self.mongo).report_stats_collection().thenReturn(self.col)
+        self.service = ReportService(self.mongo)
         self.service._builder = mock()
         self.service._now = MockDatetime()
         self.empty_report_request = {'name':'report', 'keywords':[]}
@@ -229,7 +230,7 @@ class TestReportService(unittest.TestCase):
             {'date':'2014-1-1', 'threads':'1', 'msgs':'1', 'blogs':'0'}]}
 
     def test_when_creates_a_service_it_includes_the_report_builder(self):
-        self.service = ReportService()
+        self.service = ReportService(self.mongo)
         self.assertIsInstance(self.service._builder, ReportBuilder)
 
     def test_when_generating_a_report_report_builder_is_called(self):
@@ -237,18 +238,33 @@ class TestReportService(unittest.TestCase):
         verify(self.service._builder, 1).build_report(self.empty_report_request)
 
     def test_when_stats_for_a_report_does_not_exist_then_create_it(self):
-        when(self.col).find('name', 'report').thenReturn(None)
+        when(self.col).find_one('name', 'report').thenReturn(None)
         self.service._save_report_stats(self.empty_report_request, self.create_report_stat())
         verify(self.col).save(self.expected_stats_report)
 
     def test_saving_report_stats(self):
-        when(self.col).find('name', 'report').thenReturn({'name':'report', 'stats':[]})
+        when(self.col).find_one('name', 'report').thenReturn({'name':'report', 'stats':[]})
         self.service._save_report_stats({'name':'report'}, self.create_report_stat())
         verify(self.col).save(self.expected_stats_report)
 
     def test_when_building_repot_a_report_and_stats_are_returned(self):
         result = self.service.build_report(self.empty_report_request)
         self.assertIsInstance(result, ReportResult)
+
+    def test_when_exists_a_stat_for_same_reort_and_date_delete_old_one(self):
+        pass
+
+    def test_find_stat_with_date_no_delete(self):
+        stats = {u'stats': [{u'date': u'2014-3-22', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}], u'name': u'HootBoardGame'}
+        stats_len = 1;
+        self.service._delete_with_date_now(stats)
+        self.assertEqual(len(stats['stats']), stats_len)
+
+    def test_find_stat_with_date_delete(self):
+        stats = {u'stats': [{u'date': u'2014-1-1', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}], u'name': u'HootBoardGame'}
+        self.service._delete_with_date_now(stats)
+        self.assertEqual(len(stats['stats']), 0)
+
 
 class TestReportStats(unittest.TestCase):
 

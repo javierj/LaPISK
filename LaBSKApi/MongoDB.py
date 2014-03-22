@@ -5,6 +5,9 @@ from pymongo import MongoClient
 
 class MongoDB(object):
 
+    COL_REPORT_STATS = "report_stats"
+
+
     def __init__(self, host="localhost", port=27017, db="labsk", col=None):
 
         #self.connection = MongoClient(host, port)
@@ -19,6 +22,9 @@ class MongoDB(object):
             self.col = self.db[col]
         self.query_col = self.insert_col = self.col
 
+    def report_stats_collection(self):
+        return Collection(MongoDB.COL_REPORT_STATS, self.db[MongoDB.COL_REPORT_STATS])
+
     def authenticate(self, name, passwd):
         self.db.authenticate(name, passwd)
 
@@ -31,6 +37,7 @@ class MongoDB(object):
     def saveThread(self, thread):
         self.insert_col.insert(thread)
 
+    # duplicated in collection
     def saveDocIn(self, colllection, doc):
         colllection.insert(doc)
 
@@ -38,7 +45,7 @@ class MongoDB(object):
         return self.col.find()
 
     def collection(self, name):
-        return Collection(name)
+        return Collection(name, self.db[name])
 
     def drop(self, collection_name):
         self.db[str(collection_name)].drop()
@@ -47,7 +54,6 @@ class MongoDB(object):
         """ For testing only
         """
         return self.db[str(col_name)].find().count()
-
 
     def copy(self, source_col, target_col):
         """ for testing only
@@ -60,22 +66,6 @@ class MongoDB(object):
             self.saveDocIn(target, doc)
             count += 1
         return count
-
-    """
-        def merge(self, source_col, target_col, field):
-        count = 0
-        source = self.db[str(source_col)]
-        target = self.db[str(target_col)]
-        #criterion = {field:doc[field]}
-        for doc in source.find():
-            found = target.find_one({field: doc[field]})
-            if found is None:
-                #print "A"
-                count += 1
-                #print count
-                self.saveDocIn(target, doc)
-        return count
-    """
 
     def merge(self, field):
         mr = self.merge_insert_wih_query(field)
@@ -97,8 +87,10 @@ class MongoDB(object):
                 target.save(doc)
                 mr.updated_thread()
         #print "New:", inserted, ". Replaced:", replaced
+        mr.total_threads(self.find_all().count())
         return mr
 
+    # Duplicate
     def find_one_by(self, field, value):
         return self.query_col.find_one({field: value})
 
@@ -107,19 +99,35 @@ class MongoDB(object):
 
 
 class Collection(object):
+    """ Duplicated methods are untested.
+    """
 
-    def __init__(self, name):
+    def __init__(self, name, col):
         self.name = name
+        self.col = col
 
     def __str__(self):
         return self.name
+
+    # duplicated in MongoDB
+    def save(self, doc):
+        self.col.insert(doc)
+
+    def remove(self, field, value):
+        self.col.remove({field: value})
+
+    # Duplicate
+    def find_one(self, field, value):
+        #print self.name, 'name', value+ "<<<"
+        return self.col.find_one({field: value})
 
 
 class MergeResult(object):
 
     def __init__(self):
-        self.new_threads=0
+        self.new_threads = 0
         self.updated_threads = 0
+        self.threads = 0
 
     def new_thread(self):
         self.new_threads += 1
@@ -127,5 +135,10 @@ class MergeResult(object):
     def updated_thread(self):
         self.updated_threads += 1
 
+    def total_threads(self, thread_num):
+        self.threads = thread_num
+
     def __str__(self):
-        return "New threads: " + str(self.new_threads) + ". Updated threads: " + str(self.updated_threads)
+        return "New threads: " + str(self.new_threads) \
+               + ". Updated threads: " + str(self.updated_threads) \
+               + ". Threads in collection: " + str(self.threads)

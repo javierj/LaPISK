@@ -80,10 +80,14 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=200.0;desc", "Quedadas en Sevilla"),
 
         URL("http://labsk.net/index.php?board=14.0;desc", "Jugar en Linea"),
+        URL("http://labsk.net/index.php?board=153.0;desc", "Jugar en Linea / Juegos por software"),
+        URL("http://labsk.net/index.php?board=154.0;desc", "Jugar en Linea / Juegos por web"),
 
         URL("http://labsk.net/index.php?board=92.0;desc", "Print and Play"),
+        URL("http://labsk.net/index.php?board=90.0;desc", "Print and Play / Juegos descatalogados"),
 
         URL("http://labsk.net/index.php?board=40.0;desc", "Talleres"),
+        URL("http://labsk.net/index.php?board=50.0;desc", "Talleres / Manualidades"),
 
         URL("http://labsk.net/index.php?board=47.0;desc", "Concurso"),
 

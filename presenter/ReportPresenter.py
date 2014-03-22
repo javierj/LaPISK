@@ -5,7 +5,7 @@ from GUIModel import Text
 
 
 class ReportPresenter(object):
-    def __init__(self, builder = None):
+    def __init__(self, builder=None):
         self.builder = builder
 
     def set_builder(self, builder):
@@ -18,28 +18,29 @@ class ReportPresenter(object):
         """ Retrurns an object with the result of the query incuding
             the generated report and starts woth the reuslts
         """
-        rr = ReportResult()
-        rr.report = self.generateReport(reportDescription, data_filter, filter_year)
-        rr.report_stats = self.generateStats(reportDescription, rr.report)
+        rr = self.generateReport(reportDescription, data_filter, filter_year)
+        #rr.report = self.generateReport(reportDescription, data_filter, filter_year)
+        #print rr
+        result = ReportAndStats()
+        result.report_stats = self.generateStats(reportDescription, rr.report)
         if data_filter is not None:
             prev_year = int(data_filter) +1
-            rr.report_stats.addText("Se omiten mensajes desde el "+str(prev_year)+" o posteriores")
+            result.report_stats.addText("Se omiten mensajes desde el "+str(prev_year)+" o posteriores")
         if filter_year is not None:
             prev_year = int(filter_year) +1
-            rr.report_stats.addText("Se omiten asuntos sin mensajes desde el "+str(prev_year)+" o posteriores")
-
-        return rr
-
+            result.report_stats.addText("Se omiten asuntos sin mensajes desde el "+str(prev_year)+" o posteriores")
+        result.report = rr.report
+        return result
 
     def generateReport(self, reportDescription, data_filter = None, filter_year = None):
         #assert self.db is not None
         informeBuilder = self._get_builder()
-        report = informeBuilder.build_report(reportDescription)
+        report_result = informeBuilder.build_report(reportDescription)
         if data_filter is not None:
-            self._filter_report_using_year(reportDescription, report, data_filter)
+            self._filter_report_using_year(reportDescription, report_result.report, data_filter)
         if filter_year is not None:
-            report = self._filter_threads_using_year(reportDescription, report, filter_year)
-        return report
+            self._filter_threads_using_year(reportDescription, report_result.report, filter_year)
+        return report_result
 
 
     def _filter_report_using_year(self, reportDescription, report, year):
@@ -76,7 +77,7 @@ class ReportPresenter(object):
                 #print kword, ":", threadobj.year_last_msg(), ", ", year_int
                 if threadobj.year_last_msg() > year_int:
                     threats.append(threadobj.json())
-            report_obj.set_threads_to(kword,threats)
+            report_obj.set_threads_to(kword, threats)
         return report_obj.json()
 
 
@@ -104,9 +105,32 @@ class ReportPresenter(object):
         return result
 
 
+class ReportAndStats(object):
+
+    def __init__(self, report=None, stats=None):
+        self.thereport = report
+        self.stat = stats
+
+    @property
+    def report(self):
+        return self.thereport
+
+    @report.setter
+    def report(self, value):
+        self.thereport = value
+
+    @property
+    def report_stats(self):
+        return self.stat
+
+    @report_stats.setter
+    def report_stats(self, value):
+        self.stat = value
+
+
 class ReportResult(object):
 
-    def __init__(self, report = None, stats = None):
+    def __init__(self, report=None, stats=None):
         self.thereport = report
         self.stat = stats
 
