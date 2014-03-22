@@ -129,14 +129,6 @@ class ProcessThread(object):
 
         self._enter_in_thread(new_objthread)
 
-    """ Not in use
-    def _are_msgs_benetah_pagelimit(self, thread_obj):
-        # Change the hardcode reference to LaBSK
-        #    Return true if there are new messages to read under my limit.
-        msg_limit = self.msgpagelimit * labsk_msgs_per_page
-        return thread_obj.msgList().size() < msg_limit
-    """
-
     def _search_thread(self, objthread):
         """ Serach if the new thread read from  the web is already stored
         """
@@ -144,7 +136,6 @@ class ProcessThread(object):
         if json_obj is None:
             return None
         return ThreadModel(json_obj)
-
 
     def _is_unmodified(self, new_thread, old_thread):
         """ Return true if thread is not modified

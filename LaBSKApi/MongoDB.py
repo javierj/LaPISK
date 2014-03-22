@@ -6,10 +6,9 @@ from pymongo import MongoClient
 class MongoDB(object):
 
     COL_REPORT_STATS = "report_stats"
-
+    COL_BLOGS = "blogs"
 
     def __init__(self, host="localhost", port=27017, db="labsk", col=None):
-
         #self.connection = MongoClient(host, port)
 
         MONGODB_URI = host+":"+str(port)
@@ -24,6 +23,9 @@ class MongoDB(object):
 
     def report_stats_collection(self):
         return Collection(MongoDB.COL_REPORT_STATS, self.db[MongoDB.COL_REPORT_STATS])
+
+    def blogs_collection(self):
+        return Collection(MongoDB.COL_BLOGS, self.db[MongoDB.COL_BLOGS])
 
     def authenticate(self, name, passwd):
         self.db.authenticate(name, passwd)

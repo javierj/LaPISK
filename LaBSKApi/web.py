@@ -1,4 +1,5 @@
 from urllib2 import urlopen
+import json
 
 __author__ = 'Javier'
 
@@ -30,6 +31,17 @@ class WebClient(object):
 
     def __str__(self):
         return str(self.url)
+
+
+class RESTReader(object):
+
+    @staticmethod
+    def read(url_obj):
+        page = urlopen(url_obj.url)
+        json_as_text = page.read().decode('utf-8')
+        return json.loads(json_as_text)
+
+# LaBSK URLS
 
 
 labsk_msgs_per_page = 15
@@ -107,6 +119,10 @@ labsk_urls = (
 
 )
 
+
+planetaludico_urls = [
+    URL("http://www.kimonolabs.com/api/6j0yuuni?apikey=4bac761d58acc84da9ccadf9e1ff2d8f", "Planeta Ludico")
+]
 
 def get_all_descs():
     result = list()

@@ -550,3 +550,15 @@ class MockKimonoPlanetaLudicoAPI(object):
     ]
   }
     }
+
+    entry_json =  {
+        "title": {
+          "href": "http://feedproxy.google.com/~r/analisis-paralisis-web/~3/1SX8WcZVKBc/",
+          "text": u"Desprecintando Lewis Clark"
+        },
+        "date": "21 marzo, 2014",
+        "source": {
+          "href": "http://planetaludico.es/author/mi-juego-del-mes/",
+          "text": u"Mi Juego del Mes"
+        }
+    }

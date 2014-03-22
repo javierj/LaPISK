@@ -2,14 +2,17 @@ __author__ = 'Javier'
 
 from LaBSKApi.Process import ProcessThreads, VoidListener
 from LaBSKApi.HTML2Objects import MsgPageFactory
-from LaBSKApi.web import labsk_urls, get_all_descs
+from LaBSKApi.web import get_all_descs, planetaludico_urls
 from jinja2 import FileSystemLoader, Environment
 from LaBSKApi.MongoDB import MongoDB
-from LaBSKApi.reports import ReportBuilder, PreGeneratedReports
+from LaBSKApi.reports import PreGeneratedReports, ReportService
 from presenter.GUIModel import Text
 from presenter.ReportPresenter import ReportPresenter
 from datetime import datetime
+from LaBSKApi.PlanetaLudico import PlanetaLudicoScrap
 import shutil
+import threading
+
 
 class StdListener(VoidListener):
     def __init__(self):
@@ -45,6 +48,26 @@ class StdListener(VoidListener):
         return "Urls: " + str(self.urls) + ". Threads: " + str(self.thread) + ". Messages readed: " + str(listener.msgs) + ". Threads skipped: " + str(self.skiped)
 
 
+# combinar con la anterior
+class BlogListener(VoidListener):
+    def __init__(self):
+        self.thread = 0
+
+    # Override
+    def enteringThread(self, obj_thread):
+        print "Thread ", obj_thread.title, ", ", obj_thread.date, " | ", obj_thread.link
+        self.thread += 1
+
+    # Override
+    def skippingUnmodifiedThread(self, old, new):
+        """ Old thread seems to be the same one than the new thread        """
+        self.thread -= 1
+        print "Skipping ", new.title, ", ", new.date, " | ", new.link
+
+    def __str__(self):
+        return ". Threads: " + str(self.thread) \
+
+
 db = MongoDB()
 db.query("labsk_merge")
 db.insert("labsk_" + str(datetime.now()))
@@ -57,7 +80,7 @@ threads.setListener(listener)
 threads.setPageLimit(1)
 threads.setMsgPageLimit(210)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
 
-
+"""
 threads.scrapListOfURL(labsk_urls)
 delta = datetime.now() - starttime
 
@@ -68,10 +91,22 @@ print str(listener)
 
 mr = db.merge('link')
 print str(mr)
+"""
+
+print "Scrapping planeta ludico"
+blogs = PlanetaLudicoScrap(db.blogs_collection())
+listener = BlogListener()
+blogs.setListener(listener)
+blogs.scrapListOfURL(planetaludico_urls)
+
+print "----------------------------------------------"
+#print "Total time: ", delta
+print str(listener)
 
 #------------------------------------------------
 # Build reports
 
+print "Building reports"
 
 def write(name, html_text):
     path = '../webgui/templates/'
@@ -82,17 +117,11 @@ def write(name, html_text):
         template_file.write(html_text.encode('utf8'))
     shutil.copyfile(path + filename, phorumledge_path + filename)
 
-
-starttime = datetime.now()
-builder = ReportPresenter(ReportBuilder(MongoDB(col="labsk_merge")))
-#builder.set_builder()
-text = Text()
-
-env = Environment(loader=FileSystemLoader('../webgui/templates'))
-template = env.get_template("_static_report.html")
-
-
 def generate_report(name, report_schema, filter=None):
+    builder = ReportPresenter(ReportService(MongoDB(col="labsk_merge")))
+    text = Text()
+    env = Environment(loader=FileSystemLoader('../webgui/templates'))
+    template = env.get_template("_static_report.html")
     result = builder.report_and_stats(report_schema, filter_year=filter)
     text.change_newline_in_report(report_schema['keywords'], result.report)
     xhtml = template.render(keywords=report_schema['keywords'],
@@ -102,22 +131,42 @@ def generate_report(name, report_schema, filter=None):
                             )
 
     #html = UnicodeDammit(xhtml).unicode_markup
-
     write(name, xhtml)
 
+# Multithread
 
-generate_report("hootboardgame", PreGeneratedReports.report_hootboardgame)
+def run_thread(name, report_schema, filter=None):
+    thread = threading.Thread(target=generate_report, args = (name, report_schema, filter))
+    thread.daemon = True
+    thread.start()
 
-generate_report("asylum_games", PreGeneratedReports.report_asylum_games)
-generate_report("devir", PreGeneratedReports.report_devir, '2013')
+run_thread("hootboardgame", PreGeneratedReports.report_hootboardgame)
+#generate_report("hootboardgame", PreGeneratedReports.report_hootboardgame)
+
+#generate_report("asylum_games", PreGeneratedReports.report_asylum_games)
+run_thread("asylum_games", PreGeneratedReports.report_asylum_games)
+
+#generate_report("devir", PreGeneratedReports.report_devir, '2013')
+run_thread("devir", PreGeneratedReports.report_devir, '2013')
+
 generate_report("ludonova", PreGeneratedReports.report_ludonova, '2013')
-generate_report("asmodee", PreGeneratedReports.report_asmodee, '2013')
-generate_report("lost_games", PreGeneratedReports.report_lost_games, '2013')
-generate_report("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')
-generate_report("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013')
-generate_report("looping_games", PreGeneratedReports.report_looping_games, '2013')
+#run_thread("ludonova", PreGeneratedReports.report_ludonova, '2013')
+
+# generate_report("asmodee", PreGeneratedReports.report_asmodee, '2013')
+run_thread("asmodee", PreGeneratedReports.report_asmodee, '2013')
+
+#generate_report("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')
+run_thread("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')
+
+#generate_report("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013')
+run_thread("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013')
+
+#generate_report("looping_games", PreGeneratedReports.report_looping_games, '2013')
 #generate_report("nestor_games", PreGeneratedReports.report_nestor_games, '2013')
-generate_report("morapiaf", PreGeneratedReports.report_morapiaf, '2013')
+#generate_report("lost_games", PreGeneratedReports.report_lost_games, '2013')
+
+#generate_report("morapiaf", PreGeneratedReports.report_morapiaf, '2013')
+run_thread("morapiaf", PreGeneratedReports.report_morapiaf, '2013')
 
 generate_report("tienda_planeton", PreGeneratedReports.tienda_planeton, '2013')
 generate_report("tienda_100_doblones", PreGeneratedReports.tienda_100_doblones, '2013')
