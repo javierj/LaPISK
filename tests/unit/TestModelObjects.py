@@ -119,6 +119,23 @@ class TestThreadModel(unittest.TestCase):
         self.assertEqual(t['creation_date'], u' 07 de Febrero de 2014, 01:00:21 pm \xbb')
         self.assertEqual(t['last_msg_date'], u' 08 de Febrero de 2014, 03:34:44 am \xbb')
 
+    def test_year_last_msg_with_finplay_thread(self):
+        thread_json = {u'msgs':
+            [
+            {u'date': u' 05 de Noviembre de 2013, 04:26:29 pm \xbb',
+             u'body': u'http://finplay.es/index.php?p=1\nAqu\xed ten\xe9is el enlace de lo que se ir\xe1 a\xf1adiendo con precios m\xe1s bajitos. Quiz\xe1 encuentres lo que justo buscabas ah\xed jejejeje.\nWALKING DEAD \nLA FUGA DE COLDITZ\nEXP. de CATAN\nDIRECTOR DE CAMPA\xd1A\nDOMINION: COMARCAS\nY poco a poco ir\xe1n creciendo (los juegos jejeje no los precios) \n \n', u'user': u'elqueaprende', u'id': u'msg_1173837'},
+            {u'date': u'22 de Marzo de 2014, a las 03:34:43 pm \xbb', u'body': u'http://www.juegosdemesafinplay.com/genero-41-ofertones\nhttp://www.juegosdemesafinplay.com/index.php?p=2\nhttp://www.juegosdemesafinplay.com/index.php?p=3\nSin piedad bajamos los precios de:\nCONCORDIA\nDARK DARKER DARKEST\nAGRICOLA 2 JUGADORES\nARRIALA\nCARGO NOIR\nEL PUERTO FLUVIAL\nDOMINION: COMARCAS\nROGUE AGENT\nSPECULATION\nTINNERS TRAILS\nPASHA\nTRAJAN\nSHADOWS OVER THE EMPIRE\nARCHON\nPLANET STEAM\nS\xf3lo en \nwww.juegosdemesafinplay.es\n\xa0\n \n \n \n \n',
+             u'user': u'elqueaprende',
+             u'id': u'msg_1246664'}
+             ], u'title': u'OFERTONES en FINPLAY!!!', u'answers': 2,
+             u'source': u'LaBSK',
+             u'link': u'http://labsk.net/index.php?topic=121033.0', u'location': u'Publicidad'}
+        thread_obj = ThreadModel(thread_json)
+
+        msg_list_objct = MsgListModel(thread_json['msgs'])
+        self.assertEqual(msg_list_objct.lastmsg_object().year(), 2014)
+        self.assertEqual(thread_obj.year_last_msg(), 2014)
+
 
 class TestMsgModel(unittest.TestCase):
 

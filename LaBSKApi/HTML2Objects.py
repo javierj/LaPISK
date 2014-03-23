@@ -28,6 +28,8 @@ class MsgFactory(object):
         date = soupfragment.find('div', 'smalltext').contents[2]
         if date == ' ':
             date = self.date_manager.hoy() + "," + soupfragment.find('div', 'smalltext').contents[4]
+        if date == ' ':
+            date = "Unable to discover the date"
         return date
 
     def _build_msg(self, fullmsg):

@@ -42,7 +42,6 @@ class ReportPresenter(object):
             self._filter_threads_using_year(reportDescription, report_result.report, filter_year)
         return report_result
 
-
     def _filter_report_using_year(self, reportDescription, report, year):
         query = ReportQueryModel(reportDescription)
         for kword in query.getKeywords():
@@ -73,8 +72,7 @@ class ReportPresenter(object):
         for kword in query.getKeywords():
             threats = list()
             for threadobj in report_obj.threads_in(kword):
-                #threadobj = ThreadModel(thread)
-                #print kword, ":", threadobj.year_last_msg(), ", ", year_int
+                #print kword, ":", threadobj.year_last_msg(), ", ", year_int, threadobj.link()
                 if threadobj.year_last_msg() > year_int:
                     threats.append(threadobj.json())
             report_obj.set_threads_to(kword, threats)

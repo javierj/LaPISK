@@ -2,7 +2,7 @@ __author__ = 'Javier'
 
 from LaBSKApi.Process import ProcessThreads, VoidListener
 from LaBSKApi.HTML2Objects import MsgPageFactory
-from LaBSKApi.web import get_all_descs, planetaludico_urls
+from LaBSKApi.web import get_all_descs, planetaludico_urls, labsk_urls
 from jinja2 import FileSystemLoader, Environment
 from LaBSKApi.MongoDB import MongoDB
 from LaBSKApi.reports import PreGeneratedReports, ReportService
@@ -45,7 +45,7 @@ class StdListener(VoidListener):
         print old.answers(), "==", new.answers(), ". Skipping ", old.title(), " / ", old.link()
 
     def __str__(self):
-        return "Urls: " + str(self.urls) + ". Threads: " + str(self.thread) + ". Messages readed: " + str(listener.msgs) + ". Threads skipped: " + str(self.skiped)
+        return "Urls: " + str(self.urls) + ". Threads: " + str(self.thread) + ". Messages readed: " + str(self.msgs) + ". Threads skipped: " + str(self.skiped)
 
 
 # combinar con la anterior
@@ -80,7 +80,6 @@ threads.setListener(listener)
 threads.setPageLimit(1)
 threads.setMsgPageLimit(210)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
 
-"""
 threads.scrapListOfURL(labsk_urls)
 delta = datetime.now() - starttime
 
@@ -91,7 +90,6 @@ print str(listener)
 
 mr = db.merge('link')
 print str(mr)
-"""
 
 print "Scrapping planeta ludico"
 blogs = PlanetaLudicoScrap(db.blogs_collection())
@@ -108,6 +106,7 @@ print str(listener)
 
 print "Building reports"
 
+
 def write(name, html_text):
     path = '../webgui/templates/'
     filename = 'static_'+name+'.html'
@@ -116,6 +115,7 @@ def write(name, html_text):
     with open(path + filename, 'w') as template_file:
         template_file.write(html_text.encode('utf8'))
     shutil.copyfile(path + filename, phorumledge_path + filename)
+
 
 def generate_report(name, report_schema, filter=None):
     builder = ReportPresenter(ReportService(MongoDB(col="labsk_merge")))
@@ -133,12 +133,13 @@ def generate_report(name, report_schema, filter=None):
     #html = UnicodeDammit(xhtml).unicode_markup
     write(name, xhtml)
 
-# Multithread
 
+# Multithread
 def run_thread(name, report_schema, filter=None):
     thread = threading.Thread(target=generate_report, args = (name, report_schema, filter))
     thread.daemon = True
     thread.start()
+    #thread.join()
 
 run_thread("hootboardgame", PreGeneratedReports.report_hootboardgame)
 #generate_report("hootboardgame", PreGeneratedReports.report_hootboardgame)
@@ -168,8 +169,13 @@ run_thread("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013'
 #generate_report("morapiaf", PreGeneratedReports.report_morapiaf, '2013')
 run_thread("morapiaf", PreGeneratedReports.report_morapiaf, '2013')
 
-generate_report("tienda_planeton", PreGeneratedReports.tienda_planeton, '2013')
-generate_report("tienda_100_doblones", PreGeneratedReports.tienda_100_doblones, '2013')
+
+#generate_report("tienda_planeton", PreGeneratedReports.tienda_planeton, '2013')
+run_thread("tienda_planeton", PreGeneratedReports.tienda_planeton, '2013')
+
+#generate_report("tienda_100_doblones", PreGeneratedReports.tienda_100_doblones, '2013')
+run_thread("tienda_100_doblones", PreGeneratedReports.tienda_100_doblones, '2013')
+
 generate_report("tienda_zacatrus", PreGeneratedReports.tienda_zacatrus)
 generate_report("tienda_finplay", PreGeneratedReports.tienda_finplay, '2013')
 generate_report("tienda_tablerum", PreGeneratedReports.tienda_tablerum)

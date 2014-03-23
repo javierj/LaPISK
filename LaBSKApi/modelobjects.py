@@ -102,13 +102,15 @@ class MsgModel(object):
     @staticmethod
     def build_datetime(date):
         s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', date)
+        s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', date)
 
         #print int(s.group(6)), type(int(s.group(6)))
 
         if s is None:
-            #print "Date does nor match: ", self.json(), "<<"
-            return datetime(1900,1,1, 1, 1, 1)
+            s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), a las ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', date)
 
+        if s is None:
+            return datetime(1900,1,1, 1, 1, 1)
 
         return datetime(int(s.group(3)),
                         DateManager.meses[s.group(2)],
