@@ -2,7 +2,7 @@ __author__ = 'Javier'
 
 #import sure
 from LaBSKApi.MongoDB import MongoDB
-from LaBSKApi.reports import ReportBuilder
+from LaBSKApi.reports import ReportService
 from presenter.ReportPresenter import ReportPresenter
 from expects import expect
 
@@ -14,7 +14,7 @@ def crea_informe(name="Name", keywords=None):
     return {'name': name, 'keywords': (keywords or [])}
 
 def create_report(context):
-    presenter = ReportPresenter(ReportBuilder(context.db))
+    presenter = ReportPresenter(ReportService(context.db))
     presenter.database = context.db
     return presenter
 
@@ -39,7 +39,8 @@ def given_labsk(context):
 def when_generating_report(context, word):
     presenter = create_report(context)
     informe = crea_informe(keywords=[word])
-    context.informe = presenter.report_and_stats(informe).report
+    result = presenter.report_and_stats(informe)
+    context.informe = result.report
     context.keyword = word
 
 
@@ -134,7 +135,6 @@ def when_generating_report_from_keyword(context, keyword):
     presenter = create_report(context)
     informe = crea_informe(keywords=[keyword])
     context.informe = presenter.report_and_stats(informe, data_filter = "2012").report
-    #presenter.(informe).
     context.keyword = keyword
 
 @then(u'el informe contiene un unico mensaje de "{year}"')
@@ -143,8 +143,7 @@ def assert_informe_contiene_2013(context, year):
     expect(threads).to.have.length(1)
     msgs = threads[0]['msgs']
     expect(msgs).to.have.length(1)
-    # Esto no se como hacerlo en expect
-    assert year in msgs[0]['date']
+    expect(msgs[0]['date']).to.have(year)
 
 """
     Scenario: estadistcas de mensajes e hijos
@@ -200,5 +199,4 @@ def assert_solo_aparece_asunto(context, thread_count, year):
     expect(report[context.keyword]).to.have.length(int(thread_count))
     for t in report[context.keyword]:
         #print year, ', ', t['last_msg_date'], "<<<"
-        #if t['last_msg_date'] <> " ":
-        assert year in t['last_msg_date']
+        expect(t['last_msg_date']).to.have(year)

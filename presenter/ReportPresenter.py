@@ -14,7 +14,7 @@ class ReportPresenter(object):
     def _get_builder(self):
         return self.builder
 
-    def report_and_stats(self, reportDescription, data_filter=None, filter_year = None):
+    def report_and_stats(self, reportDescription, data_filter=None, filter_year=None):
         """ Retrurns an object with the result of the query incuding
             the generated report and starts woth the reuslts
         """
@@ -33,7 +33,6 @@ class ReportPresenter(object):
         return result
 
     def generateReport(self, reportDescription, data_filter = None, filter_year = None):
-        #assert self.db is not None
         informeBuilder = self._get_builder()
         report_result = informeBuilder.build_report(reportDescription)
         if data_filter is not None:
@@ -77,7 +76,6 @@ class ReportPresenter(object):
                     threats.append(threadobj.json())
             report_obj.set_threads_to(kword, threats)
         return report_obj.json()
-
 
     # Unused by now.
     def _toGUIMode(self, report, keywords):
