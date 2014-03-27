@@ -35,13 +35,11 @@ class TestReportPresenter(unittest.TestCase):
         self.presenter.database = mongo_mock
         self.assertEquals(self.presenter.database, mongo_mock)
 
-
     def test_report_and_stats_returns_a_report_and_stats__(self):
         result = self.presenter.report_and_stats({'keywords':[]})
         post.assertIsNotNone(result)
         post.assertIsNotNone(result.report)
         post.assertIsNotNone(result.report_stats)
-
 
     def test_report_and_stats_returns_a_valid_report(self):
         result = self.presenter.report_and_stats({'keywords':[]})

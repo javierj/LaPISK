@@ -157,7 +157,7 @@ generate_report("ludonova", PreGeneratedReports.report_ludonova, '2013')
 run_thread("asmodee", PreGeneratedReports.report_asmodee, '2013')
 
 #generate_report("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')
-run_thread("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')
+#run_thread("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')
 
 #generate_report("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013')
 run_thread("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013')

@@ -243,7 +243,7 @@ class TestReportService(unittest.TestCase):
         verify(self.col).save(self.expected_stats_report)
 
     def test_saving_report_stats(self):
-        when(self.col).find_one('name', 'report').thenReturn({'name':'report', 'stats':[]})
+        when(self.col).find_one('name', 'report').thenReturn({'name': 'report', 'stats': []})
         self.service._save_report_stats({'name':'report'}, self.create_report_stat())
         verify(self.col).save(self.expected_stats_report)
 
@@ -256,12 +256,13 @@ class TestReportService(unittest.TestCase):
 
     def test_find_stat_with_date_no_delete(self):
         stats = {u'stats': [{u'date': u'2014-3-22', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}], u'name': u'HootBoardGame'}
-        stats_len = 1;
+        stats_len = 1
         self.service._delete_with_date_now(stats)
         self.assertEqual(len(stats['stats']), stats_len)
 
     def test_find_stat_with_date_delete(self):
-        stats = {u'stats': [{u'date': u'2014-1-1', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}], u'name': u'HootBoardGame'}
+        stats = {u'stats': [{u'date': u'2014-1-1', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}],
+                 u'name': u'HootBoardGame'}
         self.service._delete_with_date_now(stats)
         self.assertEqual(len(stats['stats']), 0)
 
@@ -272,6 +273,14 @@ class TestReportStats(unittest.TestCase):
         stats = ReportStats()
         result = stats.json()
         self.assertEqual(result, {'threads':'0', 'msgs':'0', 'blogs':'0'})
+
+    def test_reports_for_hootboardgame(self):
+        stats = ReportStats()
+        stats.inc_msgs()
+        self.assertEqual(stats.json(), {'threads': '0', 'msgs': '1', 'blogs': '0'})
+        stats.inc_threads()
+        stats.inc_threads()
+        self.assertEqual(stats.json(), {'threads': '2', 'msgs': '1', 'blogs': '0'})
 
 
 if __name__ == '__main__':

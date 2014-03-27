@@ -259,4 +259,4 @@ class ReportStats(object):
         self._msgs += inc
 
     def json(self):
-        return {'threads':str(self._msgs), 'msgs':str(self._msgs), 'blogs':'0'}
+        return {'threads':str(self._threads), 'msgs':str(self._msgs), 'blogs':'0'}

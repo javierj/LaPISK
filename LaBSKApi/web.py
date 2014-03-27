@@ -52,6 +52,7 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=20.0;desc", "Enlaces"),
         URL("http://labsk.net/index.php?board=10.0;desc", "Reglamentos"),
         URL("http://labsk.net/index.php?board=41.0;desc", "Reglamentos / Traducciones en proceso"),
+        URL("http://labsk.net/index.php?board=16.0;desc", "Reglamentos / Peticiones de reglamentos"),
 
         URL("http://labsk.net/index.php?board=4.0;desc", "Ayudas de juegos"),
         URL("http://labsk.net/index.php?board=5.0;desc", "Variantes"),
@@ -60,6 +61,7 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=21.0;desc", "Software"),
         URL("http://labsk.net/index.php?board=25.0;desc", "Videojuegos"),
         URL("http://labsk.net/index.php?board=77.0;desc", "Resenyas escritas"),
+        URL("http://labsk.net/index.php?board=213.0;desc", u"Resenas escritas / Resenas escritas externas"),
         URL("http://labsk.net/index.php?board=69.0;desc", "Videoresenyas"),
         URL("http://labsk.net/index.php?board=78.0;desc", "Otras resenyas"),
         URL("http://labsk.net/index.php?board=62.0;desc", "Sesiones de juego"),
@@ -67,6 +69,7 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=38.0;desc", "Recomendados"),
         URL("http://labsk.net/index.php?board=185.0;desc", "Recomendados / 10 juegos"),
         URL("http://labsk.net/index.php?board=144.0;desc", "Recomendados / Iniciacion"),
+        URL("http://labsk.net/index.php?board=147.0;desc", u"Recomendados / Pequenas joyas"),
         URL("http://labsk.net/index.php?board=149.0;desc", "Recomendados / Tiendas on-line"),
 
         URL("http://labsk.net/index.php?board=27.0;desc", "Ezines"),
@@ -118,6 +121,9 @@ labsk_urls = (
         URL("http://labsk.net/index.php?board=1.0;desc", "Cajon desastre")
 
 )
+
+# Ver este hilo:
+# 15 == 33 . Skipping  Alta Tensipn/Power Grid: Espana y Portugal (Microresena con Fotos Detalladas)  /  http://labsk.net/index.php?topic=36865.0
 
 
 planetaludico_urls = [
