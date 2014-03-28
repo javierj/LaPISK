@@ -481,6 +481,9 @@ class Reports(object):
                               {u'date': u'2014-3-26', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}],
                    u'name': u'HootBoardGame'}
 
+    edge_report_stats = {u'stats': [{u'date': u'2014-3-26', u'blogs': u'0', u'threads': u'324', u'msgs': u'1207'}],
+                         u'name': u'Editorial EDGE Entertainment'}
+
     @staticmethod
     def get_asylum_thread():
         thread = Reports.threats_with_newline.copy()

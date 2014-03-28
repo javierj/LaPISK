@@ -45,3 +45,15 @@ class Text(object):
 
     def __str__(self):
         return str(self.text)
+
+
+class Table:
+    """ Models an HTML table or grid
+    """
+
+    @property
+    def title(self):
+        return "2014-3-26"
+
+    def cell(self, index):
+        return u'0'
