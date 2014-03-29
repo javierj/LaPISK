@@ -77,8 +77,8 @@ def reports():
     #register_access("/reports")
     return render_template('reports.html')
 
-# Static reports
 
+# Static reports
 
 @app.route("/reports/hootboardgame")
 def static_hootboardgame():
@@ -212,6 +212,7 @@ def following():
 
 
 # Dynamic behaviour
+
 @app.route("/reports/dynamic-asylum-games")
 def reports_asylum_games():
     """
@@ -230,6 +231,15 @@ def reports_asylum_games():
     # This is a hack and shuld be changed
     return render_template('_static_report.html', report = report.json(), \
                                                keywords=  PreGeneratedReports.report_asylum_games['keywords'])
+
+
+# Report stats
+
+@app.route("/reportstatsxxxyyy")
+def reportsstats():
+    #table = reportstatspresenter.X(y)
+    #return render_template('reportstats.html', table = table)
+    pass
 
 
 if __name__ == "__main__":

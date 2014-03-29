@@ -474,7 +474,7 @@ class Reports(object):
                  u'title': u'ESSEN 2013 - Emisi\xf3n en Streaming',
                  }
 
-    report_stat = {u'stats': [{u'date': u'2014-3-22', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'},
+    report_stat_json = {u'stats': [{u'date': u'2014-3-22', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'},
                               {u'date': u'2014-3-23', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'},
                               {u'date': u'2014-3-24', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'},
                               {u'date': u'2014-3-25', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'},

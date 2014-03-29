@@ -4,7 +4,13 @@ __author__ = 'Javier'
 # doc: https://expects.readthedocs.org/en/0.2.0/
 from expects import expect
 from presenter.ReportStatsPresenter import ReportStatsPresenter
+from LaBSKApi.reportstats import ReportStatsService
+from LaBSKApi.MongoDB import MongoDB
 
+
+
+def _create_presenter():
+    return ReportStatsPresenter(ReportStatsService(MongoDB()))
 
 """
     Scenario: Estadisticas diarias de EDGE
@@ -17,7 +23,7 @@ from presenter.ReportStatsPresenter import ReportStatsPresenter
 
 @given('las estadisticas de lo que se habla cada dia')
 def estadticas_de_lo_que_se_habla(context):
-    context.stats_presenter = ReportStatsPresenter()
+    context.stats_presenter = _create_presenter()
 
 @when('solicito las estadisticas del informe "{nombre_informe}"')
 def solicito_estadisticas_del_informe(context, nombre_informe):
@@ -25,8 +31,15 @@ def solicito_estadisticas_del_informe(context, nombre_informe):
 
 @then('el informe contiene informacion de la fecha "{fecha}"')
 def informe_contiene_informacion_fecha(context, fecha):
-    title = context.table_stats.title
-    expect(title).to.have(fecha)
+    rows = context.table_stats.rows
+    found = False
+    for row in rows:
+        if row == fecha:
+            found = True
+            break
+    print rows
+    expect(found).to.be(True)
+
 
 # Esto e suna mala prueba porque me ato a una representacon concreta
 # Si cmabio las cosas de celda la prueba falla sin necesidad.

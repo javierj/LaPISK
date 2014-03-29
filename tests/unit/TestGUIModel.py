@@ -1,6 +1,6 @@
 __author__ = 'Javier'
 
-from presenter.GUIModel import Text
+from presenter.GUIModel import Text, Table
 from tests.Harness import Reports
 import unittest
 
@@ -37,6 +37,25 @@ class TestGUIModel(unittest.TestCase):
         msg = firm[0]['body']
         self.assertIn("<br/>", msg)
         self.assertNotIn("\n", msg)
+
+
+class TestGUITable(unittest.TestCase):
+
+    def setUp(self):
+        self.table = Table()
+
+    def test_add_one_title(self):
+        self.table.append_title("X")
+        self.assertEqual(self.table.titles, ["X"])
+
+    def test_add_one_row(self):
+        self.table.append_row("A", "B", "C")
+        self.assertEqual(self.table.row(0), ("A", "B", "C"))
+
+    def test_all_rows(self):
+        self.table.append_row("A", "B", "C")
+        self.assertEqual(self.table.rows, [("A", "B", "C")])
+
 
 if __name__ == '__main__':
     unittest.main()

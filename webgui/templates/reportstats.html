@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>HootBoardGame</title>
+  <title>HootBoardGame. Seguimiento</title>
   <meta name="description" content="HootBoardGame. Your control panel to discover everything about board games in the Net.">
   <meta name="keywords" content="hootboardgame, board, game">
   <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
@@ -48,54 +48,41 @@
 </ul>
 </div>
 <div class="mid-right">
-<h1>Menciones</h1>
+<h1>Seguimiento</h1>
 <p class="txt-1">
-Prototype 0.03 / 2014/03/16  <br/>
+Prototype 0.04 / 2014/03/30  <br/>
 <hr/>
 </p>
     <p class="txt-1">
     <b>Fuentes de información: </b> <br/>
     <ul>
-    <li> LaBSK: 2.850 hilos con 77.818 mensajes.
+    <li> LaBSK.
      </li>
     </ul>
 </p>
-<p class="txt-1">
-    <b>Informes de menciones: </b> <br/>
-    <ul>
-        <li><a href='{{ url_for("static_hootboardgame") }}'> HootBoardGame. </a>
-     </li>
-    <li><a href='{{ url_for("static_tienda_100_doblones") }}'> Tienda 100 Doblones. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_click_and_rol") }}'> Tienda Clickandrol. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_dungeon_marvels") }}'> Tienda Dungeon Marvels. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_evolution_goya") }}'> Tienda Evolution Goya. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_finplay") }}'> Tienda Finplay. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_mas_que_oca") }}'> Tienda Más que Oca. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_tablerum") }}'> Tienda Tablerum. </a>
-    </li>
-    <li><a href='{{ url_for("static_tienda_zacatrus") }}'> Tienda Zacatrus. </a>
-    </li>
-        <li><a href='{{ url_for("static_asylum_games") }}'> Editorial Asylum Games y sus juegos. </a>
-     </li>
-    <li><a href='{{ url_for("static_devir_games") }}'> Editorial Devir (informe de más de 500 Kb). </a>
-    </li>
-    <li><a href='{{ url_for("static_ludonova_games") }}'> Editorial Ludonova. </a>
-    </li>
-    <li><a href='{{ url_for("static_asmodee_games") }}'> Editorial Asmodee. </a>
-    </li>
-    <li><a href='{{ url_for("static_dizemo_ent") }}'> Editorial Dizemo Entertainment. </a>
-    </li>
-    <li><a href='{{ url_for("static_morapiaf") }}'> Editorial Morapiaf. </a>
-    </li>
+    <p class="txt-1">
+        <b>Segimiento: </b> <br/>
+    </p>
 
-    </ul>
-</p>
+        <table border ='1' width ="98%">
+            <tr>
+             {% for text in table.titles %}
+             <td> <b> {{ text }} </b> </td>
+            {% endfor %}
+            </tr>
+            {% for row in table.rows %}
+            <tr>
+                {% for text in row %}
+                <td> {{ text }} </td>
+                {% endfor %}
+             </tr>
+            {% endfor %}
+
+        </table>
+        <br/>
+        <br/>
+
+
 <br>
 
 <br/>

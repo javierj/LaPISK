@@ -13,6 +13,7 @@ class MockStats(object):
     def register_access_now(self, url):
         pass
 
+
 class TestFlaskWeb(unittest.TestCase):
 
     def setUp(self):
@@ -126,6 +127,25 @@ class TestGenerateHTMLFromText(unittest.TestCase):
         result = create.html_from(text, 2)
         self.assertEquals(result, "<p>Hola / Adios</p>")
 
+
+class TestFlaskReportStats(unittest.TestCase):
+
+    def setUp(self):
+        flaskweb.app.config['TESTING'] = True
+        self.app = flaskweb.app.test_client()
+        self.baseURL = ""
+        self.title = "HootBoardGame"
+        self.mockReportPresenter = mock()
+        flaskweb.reportPresenter = self.mockReportPresenter
+        self.mock_stat = mock()
+        flaskweb.set_stats_module(self.mock_stat)
+
+    def test_main_page_title(self):
+        rv = self.app.get('/')
+        self.assertTitleIn("", rv)
+
+    def assertTitleIn(self, title, rv):
+        self.assertIn("<title>"+title+"</title>", rv.data)
 
 if __name__ == '__main__':
     unittest.main()

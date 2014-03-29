@@ -47,13 +47,31 @@ class Text(object):
         return str(self.text)
 
 
-class Table:
+class Table(object):
     """ Models an HTML table or grid
     """
 
+    def __init__(self):
+        self._titles = []
+        self._rows = []
+
+    def append_title(self, *title):
+        for entry in title:
+            self._titles.append(entry)
+
+    def append_row(self, *columns):
+        self._rows.append(columns)
+
     @property
-    def title(self):
-        return "2014-3-26"
+    def titles(self):
+        return self._titles
+
+    @property
+    def rows(self):
+        return self._rows
 
     def cell(self, index):
         return u'0'
+
+    def row(self, index):
+        return self._rows[index]
