@@ -59,8 +59,8 @@ class Table(object):
         for entry in title:
             self._titles.append(entry)
 
-    def append_row(self, *columns):
-        self._rows.append(columns)
+    def append_row(self, columns_list):
+        self._rows.append(columns_list)
 
     @property
     def titles(self):

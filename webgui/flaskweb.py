@@ -22,9 +22,11 @@ app.config.from_envvar('FLASKR_SETTINGS', silent=True)
 # FIX: This will fail
 reportPresenter = ReportPresenter()
 
+
 ## Properties
 
 stats_module = None
+reportstatspresenter = None
 
 def set_stats_module(stats_modl):
     global stats_module
@@ -44,6 +46,9 @@ def register_access(route):
     stats_mod.register_access_now(str(route), ip)
     # Tambien vale: request.environ['REMOTE_ADDR'] o request.remote_addr
 
+def set_reportstats_module(reportstas):
+    global reportstatspresenter
+    reportstatspresenter = reportstas
 
 ## Navigation
 
@@ -76,6 +81,12 @@ def reports():
     register_access(request.path)
     #register_access("/reports")
     return render_template('reports.html')
+
+
+@app.route("/following")
+def following():
+    register_access(request.path)
+    return render_template('following.html')
 
 
 # Static reports
@@ -205,11 +216,6 @@ def people():
     register_access(request.path)
     return render_template('mock_people.html')
 
-@app.route("/following")
-def following():
-    register_access(request.path)
-    return render_template('mock_following.html')
-
 
 # Dynamic behaviour
 
@@ -235,10 +241,12 @@ def reports_asylum_games():
 
 # Report stats
 
-@app.route("/reportstatsxxxyyy")
-def reportsstats():
-    #table = reportstatspresenter.X(y)
-    #return render_template('reportstats.html', table = table)
+@app.route("/reportstat/<report_name>")
+def reportsstats(report_name):
+    #register_access(request.path)
+    result = reportstatspresenter.stats_from_report(report_name)
+    return render_template('reportstats.html', table = result,
+                                                name = report_name)
     pass
 
 

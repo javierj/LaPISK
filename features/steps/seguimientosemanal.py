@@ -34,10 +34,10 @@ def informe_contiene_informacion_fecha(context, fecha):
     rows = context.table_stats.rows
     found = False
     for row in rows:
-        if row == fecha:
+        if row[0] == fecha:
             found = True
             break
-    print rows
+    #print rows
     expect(found).to.be(True)
 
 
@@ -46,11 +46,11 @@ def informe_contiene_informacion_fecha(context, fecha):
 @then('muestra "{blogs}" blogs, "{asuntos}" asuntos y "{mensajes}" mensajes')
 def muestra_blogs_asuntos_y_mensajes(context, blogs, asuntos, mensajes):
     cell = context.table_stats.cell(0)
-    #print cell, blogs, cell == blogs
+    print cell, blogs, cell == blogs, context.table_stats.cell(1), context.table_stats.cell(2)
     expect(cell).to.equal(blogs)
-    cell = context.table_stats.cell(2)
+    cell = context.table_stats.cell(3)
     expect(cell).to.equal(asuntos)
-    cell = context.table_stats.cell(4)
+    cell = context.table_stats.cell(5)
     expect(cell).to.equal(mensajes)
 
 @then('muestra un incemento de "{blogs}" blogs, "{asuntos}" asuntos y "{mensajes}" mensajes')

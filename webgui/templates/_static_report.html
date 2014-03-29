@@ -80,7 +80,7 @@ Ordenado por fecha de más actual a más antiguo.
 
     {% for thread in report[keyword] %}
         <table border ='1' width ="98%">
-            <tr> <td>
+            <tr> <td class="report">
                 <p class="h4">
                     {{ thread['location'] }} /
                     <a href=" {{ thread['link'] }}"> {{ thread['title'] }} </a>
@@ -90,7 +90,8 @@ Ordenado por fecha de más actual a más antiguo.
                 Respuestas totales: <b>{{ thread['answers'] }} </b> <br/>
         </td></tr>
         {% for msg in thread['msgs'] %}
-            <tr> <td>
+            <tr>
+                <td class="report">
             <p class="h5">
             {{ msg['date'] }}  / <a href=" {{ msg['link'] }}"> {{ msg['link'] }} </a>
             </p>

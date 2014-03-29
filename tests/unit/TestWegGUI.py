@@ -135,14 +135,12 @@ class TestFlaskReportStats(unittest.TestCase):
         self.app = flaskweb.app.test_client()
         self.baseURL = ""
         self.title = "HootBoardGame"
-        self.mockReportPresenter = mock()
-        flaskweb.reportPresenter = self.mockReportPresenter
-        self.mock_stat = mock()
-        flaskweb.set_stats_module(self.mock_stat)
+        self.mock_presenter = mock()
+        flaskweb.reportstatspresenter = self.mock_presenter
 
-    def test_main_page_title(self):
-        rv = self.app.get('/')
-        self.assertTitleIn("", rv)
+    def test_requesting_right_report(self):
+        rv = self.app.get('/reportstat/report_name')
+        verify(self.mock_presenter).stats_from_report("report_name")
 
     def assertTitleIn(self, title, rv):
         self.assertIn("<title>"+title+"</title>", rv.data)

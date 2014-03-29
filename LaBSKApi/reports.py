@@ -24,21 +24,21 @@ class PreGeneratedReports(object):
                     'keywords': ["Ludonova"]}
     report_asmodee = {'name': 'Editorial Asmodee',
                     'keywords': ["Asmodee"]}
-    report_lost_games = {'name': 'Editorial Ludonova',
-                    'keywords': ["Lost Games"]}
-    report_edge_entertainment = {'name': 'Editorial EDGE Entertainment',
-                    'keywords': ["Edge"]}
+    #report_lost_games = {'name': 'Editorial Ludonova',
+    #                'keywords': ["Lost Games"]}
+    #report_edge_entertainment = {'name': 'Editorial EDGE Entertainment',
+    #                'keywords': ["Edge"]}
     report_dizemo_entertainment = {'name': 'Editorial Dizemo Entertainment',
                     'keywords': ["dizemo"]}
-    report_looping_games = {'name': 'Editorial Looping Games',
-                    'keywords': ["Looping Games", "1911 AMUNDSEN vs SCOTT"]}
-    report_nestor_games = {'name': 'Editorial Nestor Games',
-                    'keywords': ["Nestor"]}
+    #report_looping_games = {'name': 'Editorial Looping Games',
+    #                'keywords': ["Looping Games", "1911 AMUNDSEN vs SCOTT"]}
+    #report_nestor_games = {'name': 'Editorial Nestor Games',
+    #                'keywords': ["Nestor"]}
     report_morapiaf = {'name': 'Editorial Morapiaf',
                     'keywords': ["Morapiaf"]}
 
 
-    # Tiendas: 9
+    # Tiendas: 8
 
     tienda_planeton = {'name': 'Tienda Planeton Games',
                       'keywords': ["planeton"]}
@@ -52,8 +52,8 @@ class PreGeneratedReports(object):
                       'keywords': ["tablerum"]}
     tienda_evolution_goya = {'name': 'Tienda Evolution Goya',
                       'keywords': ["evolution goya", "Evolution Store"]}
-    tienda_dungeon_marvels = {'name': 'Tienda Dungeon Marvels',
-                      'keywords': ["dungeon marvels"]}
+    #tienda_dungeon_marvels = {'name': 'Tienda Dungeon Marvels',
+    #                  'keywords': ["dungeon marvels"]}
     tienda_mas_que_oca = {'name': 'Tienda Mas Que Oca',
                       'keywords': ["que oca", "masqueoca", "mqo"]}
     tienda_click_and_rol = {'name': 'Tienda Clickandrol',

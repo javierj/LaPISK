@@ -1,8 +1,9 @@
 __author__ = 'Javier'
 
-from flaskweb import app as application
 from LaBSKApi.statistics import Statistics
 from LaBSKApi.MongoDB import MongoDB
+from LaBSKApi.reportstats import ReportStatsService
+from presenter.ReportStatsPresenter import ReportStatsPresenter
 import flaskweb
 
 # Setup
@@ -11,5 +12,6 @@ import flaskweb
 #connection_url = "mongodb://" + MONGODB_URI + "/"
 db = MongoDB(col = 'stats')
 flaskweb.set_stats_module(Statistics(db))
+flaskweb.set_reportstats_module(ReportStatsPresenter(ReportStatsService(db)))
 #app = flaskweb.create_app()
 flaskweb.app.run()

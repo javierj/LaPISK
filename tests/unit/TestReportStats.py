@@ -25,6 +25,10 @@ class TestReportStatsModel(unittest.TestCase):
     def test_json_is_the_same(self):
         self.assertEqual(Reports.report_stat_json, self.repoststats_object.json())
 
+    def test_rows_macthes(self):
+        first_stat = self.repoststats_object.stats[0].json()
+        self.assertEqual(len(first_stat), 4)
+
 
 class TestReportStatsService(unittest.TestCase):
 

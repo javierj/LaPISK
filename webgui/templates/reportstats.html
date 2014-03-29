@@ -48,7 +48,7 @@
 </ul>
 </div>
 <div class="mid-right">
-<h1>Seguimiento</h1>
+<h1>Seguimiento {{ name }} </h1>
 <p class="txt-1">
 Prototype 0.04 / 2014/03/30  <br/>
 <hr/>
@@ -60,20 +60,18 @@ Prototype 0.04 / 2014/03/30  <br/>
      </li>
     </ul>
 </p>
-    <p class="txt-1">
-        <b>Segimiento: </b> <br/>
-    </p>
+
 
         <table border ='1' width ="98%">
             <tr>
              {% for text in table.titles %}
-             <td> <b> {{ text }} </b> </td>
+             <td> <b> <div align="center">  {{ text }} </div></b> </td>
             {% endfor %}
             </tr>
             {% for row in table.rows %}
             <tr>
                 {% for text in row %}
-                <td> {{ text }} </td>
+                <td> <div align="center"> {{ text }} </div> </td>
                 {% endfor %}
              </tr>
             {% endfor %}
@@ -89,7 +87,6 @@ Prototype 0.04 / 2014/03/30  <br/>
     <p class="txt-1">
         HootBoardGame busca las menciones de un conjunto de palabras claves en las fuentes de informacion indexadas y devuelve un resultado con las menciones de dichas palabras.
 <br/>
-        Las herramientas definir búsquedas no están implementadas aún. Mientras puedes consultar alguno de los informes disponibles o solicitar que incluyamos un nuevo informe via correo electronico.
     </p>
 </div>
     <br/>

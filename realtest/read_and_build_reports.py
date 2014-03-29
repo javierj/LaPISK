@@ -78,7 +78,7 @@ listener = StdListener()
 threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(listener)
 threads.setPageLimit(1)
-threads.setMsgPageLimit(210)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
+threads.setMsgPageLimit(230)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
 
 threads.scrapListOfURL(labsk_urls)
 delta = datetime.now() - starttime
@@ -146,7 +146,6 @@ run_thread("hootboardgame", PreGeneratedReports.report_hootboardgame)
 
 #generate_report("asylum_games", PreGeneratedReports.report_asylum_games)
 run_thread("asylum_games", PreGeneratedReports.report_asylum_games)
-
 #generate_report("devir", PreGeneratedReports.report_devir, '2013')
 run_thread("devir", PreGeneratedReports.report_devir, '2013')
 
@@ -156,9 +155,7 @@ generate_report("ludonova", PreGeneratedReports.report_ludonova, '2013')
 # generate_report("asmodee", PreGeneratedReports.report_asmodee, '2013')
 run_thread("asmodee", PreGeneratedReports.report_asmodee, '2013')
 
-#generate_report("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')
 #run_thread("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')
-
 #generate_report("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013')
 run_thread("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013')
 
@@ -169,18 +166,14 @@ run_thread("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013'
 #generate_report("morapiaf", PreGeneratedReports.report_morapiaf, '2013')
 run_thread("morapiaf", PreGeneratedReports.report_morapiaf, '2013')
 
-
-#generate_report("tienda_planeton", PreGeneratedReports.tienda_planeton, '2013')
-run_thread("tienda_planeton", PreGeneratedReports.tienda_planeton, '2013')
-
 #generate_report("tienda_100_doblones", PreGeneratedReports.tienda_100_doblones, '2013')
 run_thread("tienda_100_doblones", PreGeneratedReports.tienda_100_doblones, '2013')
-
-generate_report("tienda_zacatrus", PreGeneratedReports.tienda_zacatrus)
+#generate_report("tienda_zacatrus", PreGeneratedReports.tienda_zacatrus)
+run_thread("tienda_zacatrus", PreGeneratedReports.tienda_zacatrus, '2013')
 generate_report("tienda_finplay", PreGeneratedReports.tienda_finplay, '2013')
 generate_report("tienda_tablerum", PreGeneratedReports.tienda_tablerum)
 generate_report("tienda_evolution_goya", PreGeneratedReports.tienda_evolution_goya, '2013')
-generate_report("tienda_dungeon_marvels", PreGeneratedReports.tienda_dungeon_marvels)
+#generate_report("tienda_dungeon_marvels", PreGeneratedReports.tienda_dungeon_marvels)
 generate_report("tienda_mas_que_oca", PreGeneratedReports.tienda_mas_que_oca, '2013')
 generate_report("tienda_click_and_rol", PreGeneratedReports.tienda_click_and_rol)
 #generate_report("moviles", PreGeneratedReports.report_moviles)

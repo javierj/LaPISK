@@ -150,7 +150,7 @@ h3 {
 	color:#816385;
 	font-weight:normal;
 }
-td {
+td.report {
 	margin:0px;
 	padding:10px 10px 10px 30px;
 	font-family:"Times New Roman", Times, serif;
