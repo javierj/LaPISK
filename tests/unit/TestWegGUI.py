@@ -137,6 +137,7 @@ class TestFlaskReportStats(unittest.TestCase):
         self.title = "HootBoardGame"
         self.mock_presenter = mock()
         flaskweb.reportstatspresenter = self.mock_presenter
+        flaskweb.stats_module = mock()
 
     def test_requesting_right_report(self):
         rv = self.app.get('/reportstat/report_name')
