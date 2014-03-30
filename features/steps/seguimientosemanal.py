@@ -45,19 +45,15 @@ def informe_contiene_informacion_fecha(context, fecha):
 # Si cmabio las cosas de celda la prueba falla sin necesidad.
 @then('muestra "{blogs}" blogs, "{asuntos}" asuntos y "{mensajes}" mensajes')
 def muestra_blogs_asuntos_y_mensajes(context, blogs, asuntos, mensajes):
-    cell = context.table_stats.cell(0)
-    print cell, blogs, cell == blogs, context.table_stats.cell(1), context.table_stats.cell(2)
-    expect(cell).to.equal(blogs)
-    cell = context.table_stats.cell(3)
-    expect(cell).to.equal(asuntos)
-    cell = context.table_stats.cell(5)
-    expect(cell).to.equal(mensajes)
+    row = context.table_stats.rows[0]
+    #print cell, blogs, cell == blogs, context.table_stats.cell(1), context.table_stats.cell(2)
+    expect(row[5]).to.equal(blogs)
+    expect(row[3]).to.equal(asuntos)
+    expect(row[1]).to.equal(mensajes)
 
 @then('muestra un incemento de "{blogs}" blogs, "{asuntos}" asuntos y "{mensajes}" mensajes')
 def incremento_de_blogs_asuntos_y_mensajes(context, blogs, asuntos, mensajes):
-    cell = context.table_stats.cell(1)
-    expect(cell.to.be(blogs))
-    cell = context.table_stats.cell(3)
-    expect(cell.to.be(blogs))
-    cell = context.table_stats.cell(5)
-    expect(cell.to.be(blogs))
+    row = context.table_stats.rows[0]
+    expect(row[6]).to.equal(blogs)
+    expect(row[4]).to.equal(asuntos)
+    expect(row[2]).to.equal(mensajes)

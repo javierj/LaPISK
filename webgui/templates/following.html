@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>HootBoardGame</title>
+  <meta name="description" content="HootBoardGame. Your control panel to discover everything about board games in the Net.">
+  <meta name="keywords" content="hootboardgame, board, game">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="wrapper">
+<div class="left-gap1"><img src="{{ url_for('static', filename='images/spacer.gif') }}" alt="#" border="0"
+ height="1" width="6"></div>
+<div class="main">
+<div class="header">
+<div class="nav-area">
+<ul class="nav">
+   <li style="border: medium none ;"><a href='http://phorumledge-hootboardgame.rhcloud.com/'>HootBoardGame</a></li>
+  <li><a href='{{ url_for("reports") }}'>Menciones</a></li>
+  <li>Comparativas</li>
+     <li>Líderes de opinión</li>
+  <li>Seguimiento</li>
+  <li><a href='{{ url_for("faqs") }}'>Preguntas y respuestas</a></li>
+    <li>Contacto</li>
+</ul>
+</div>
+<div class="banner-area"><img src="{{ url_for('static', filename='images/banner-1.jpg') }}" alt="#"
+ border="0"></div>
+</div>
+<div class="mid">
+<div class="mid-left">
+<h3>Herramientas<br>
+</h3>
+<ul class="left-item">
+ <li><a href="{{ url_for('reports') }}">Menciones<br>
+    </a></li>
+  <li><a href="{{ url_for('comparatives') }}">Comparativas<br>
+    </a></li>
+    <li><a href="{{ url_for('people') }}">Líderes de opinión<br>
+    </a></li>
+      <li><a href='{{ url_for("following") }}'>Seguimiento<br>
+    </a></li>
+
+  <li><a href='{{ url_for("faqs") }}'>Preguntas y respuestas<br>
+    </a></li>
+  <li><a href='{{ url_for("contact") }}'>Contacto<br>
+    </a></li>
+</ul>
+</div>
+<div class="mid-right">
+    <h1>Seguimiento</h1>
+    <p class="txt-1">
+        Prototype 0.04 / 2014/03/40  <br/>
+        <hr/>
+    </p>
+       <br/>
+  <p class="txt-1">
+    <b>Seguimientos disponibles: </b>
+      <br/>
+      <i> Loa resultados de los seguimientos se actualizan cada 2 o 3 días.</i>
+    <br/>
+    <ul>
+        <li><a href='{{ url_for("reportsstats", report_name = "HootBoardGame") }}'> HootBoardGame. </a>
+     </li>
+    <li><a href='{{ url_for("reportsstats", report_name = "Tienda 100 Doblones") }}'> Tienda 100 Doblones. </a>
+    </li>
+    <li><a href='{{url_for("reportsstats", report_name = "Tienda Clickandrol") }}'> Tienda Clickandrol. </a>
+    </li>
+    <li><a href='{{ url_for("reportsstats", report_name = "Tienda Evolution Goya") }}'> Tienda Evolution Goya. </a>
+    </li>
+    <li><a href='{{ url_for("reportsstats", report_name = "Tienda Finplay") }}'> Tienda Finplay. </a>
+    </li>
+    <li><a href='{{ url_for("reportsstats", report_name = "Tienda Mas Que Oca")  }}'> Tienda Más que Oca. </a>
+    </li>
+    <li><a href='{{ url_for("reportsstats", report_name = "Tienda Tablerum")  }}'> Tienda Tablerum. </a>
+    </li>
+    <li><a href='{{ url_for("reportsstats", report_name = "Tienda Zacatrus")  }}'> Tienda Zacatrus. </a>
+    </li>
+    <li><a href='{{url_for("reportsstats", report_name = "Informe de Asylum Games") }}'> Editorial Asylum Games y sus juegos. </a>
+    </li>
+    <li><a href='{{url_for("reportsstats", report_name = "Informe de Devir") }}'> Editorial Devir. </a>
+    </li>
+    <li><a href='{{ url_for("reportsstats", report_name = "Editorial Ludonova") }}'> Editorial Ludonova. </a>
+    </li>
+    <li><a href='{{ url_for("reportsstats", report_name = "Editorial Asmodee") }}'> Editorial Asmodee. </a>
+    </li>
+    <li><a href='{{  url_for("reportsstats", report_name = "Editorial Dizemo Entertainment")  }}'> Editorial Dizemo Entertainment. </a>
+    </li>
+    <li><a href='{{ url_for("reportsstats", report_name = "Editorial Morapiaf")}}'> Editorial Morapiaf. </a>
+    </li>
+
+    </ul>
+</p>
+<br>
+
+    <hr/>
+    <br/>
+    <p class="txt-1"> Puedes ponerte en contacto con HootBoardGame en esta dirección: hootboardgame_arroba_yahoo.es</p>
+</div>
+</div>
+<div class="footer">
+<p class="copyright-text">Copyright 2010. Designed by <a target="_blank"
+ href="http://www.htmltemplates.net/">html templates</a></p>
+</div>
+</div>
+<div class="right-gap1"><img src="images/spacer.gif" alt="#" border="0"
+ height="1" width="6"></div>
+</div>
+
+<!--DO NOT Remove The Footer Links-->
+<!--Designed by--><a href="http://www.htmltemplates.net">
+<img src="{{ url_for('static', filename='images/footnote.gif') }}" class="copyright" alt="htmltemplates.net"></a>
+<!--In partnership with--><a href="http://websitetemplates.net">
+<img src="{{ url_for('static', filename='images/footnote.gif') }}" class="copyright" alt="websitetemplates.net"></a>
+<!--DO NOT Remove The Footer Links-->
+
+</body>
+</html>

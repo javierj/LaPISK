@@ -8,10 +8,12 @@ try:
     execfile(virtualenv, dict(__file__=virtualenv))
 except IOError:
     pass
- 
+
 from flaskweb import app as application
 from LaBSKApi.statistics import Statistics
 from LaBSKApi.MongoDB import MongoDB
+from presenter.ReportStatsPresenter import ReportStatsPresenter
+from LaBSKApi.reportstats import ReportStatsService
 import flaskweb
 
 # Setup
@@ -26,5 +28,7 @@ db.authenticate("admin","9UsXjxnQelHf")
 stats = Statistics(db)
 stats.add_ignore_ip("188.78.230.48") # My home laptop
 stats.add_ignore_ip("10.85.78.172") # Every hour
+stats.add_ignore_ip("194.179.68.63") # Every hour
 flaskweb.set_stats_module(stats)
+flaskweb.set_reportstats_module(ReportStatsPresenter(ReportStatsService(db)))
 

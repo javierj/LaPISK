@@ -70,8 +70,5 @@ class Table(object):
     def rows(self):
         return self._rows
 
-    def cell(self, index):
-        return u'0'
-
     def row(self, index):
         return self._rows[index]

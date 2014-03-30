@@ -243,11 +243,10 @@ def reports_asylum_games():
 
 @app.route("/reportstat/<report_name>")
 def reportsstats(report_name):
-    #register_access(request.path)
+    register_access(request.path)
     result = reportstatspresenter.stats_from_report(report_name)
     return render_template('reportstats.html', table = result,
                                                 name = report_name)
-    pass
 
 
 if __name__ == "__main__":
