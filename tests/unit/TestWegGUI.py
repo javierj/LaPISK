@@ -89,10 +89,6 @@ class TestWebNavigation(unittest.TestCase):
         rv = self.app.get('/reports')
         self.assertLinkIn("reports/asylum-games", rv)
 
-    def test_report_page_links_to_static_devir_report(self):
-        rv = self.app.get('/reports')
-        self.assertLinkIn("reports/devir", rv)
-
     def assertLinkIn(self, link, rv):
         self.assertIn("<a href='" + self.baseURL + "/"+link+"'", rv.data)
 

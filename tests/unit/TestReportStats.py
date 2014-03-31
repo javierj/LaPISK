@@ -51,3 +51,10 @@ class TestReportStatsService(unittest.TestCase):
         result = self.service.reportStatsFrorReport('Report name')
         self.assertEqual(result.json(), Reports.report_stat_json)
 
+    def test_when_reportname_does_not_exists_return_a_stat_with_one_line_and_0_values(self):
+        when(self.col_mock).find_one('name', "No exists").thenReturn(None)
+        result = self.service.reportStatsFrorReport('No exists')
+        self.assertEqual(len(result.stats), 1)
+        self.assertEqual(result.stats[0].msgs(), '0')
+        self.assertEqual(result.stats[0].threads(), '0')
+        self.assertEqual(result.stats[0].blogs(), '0')

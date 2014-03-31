@@ -14,14 +14,14 @@ class PreGeneratedReports(object):
     report_moviles = {'name': 'Juegos en dispositivos moviles',
                       'keywords': ["iphone", "ios", "android", "tablet"]}
 
-    # Editoriales 6
+    # Editoriales 4
 
     report_asylum_games = {'name': 'Informe de Asylum Games',
                            'keywords': ["Asylum Games", "Polis", "Mutinies", "Banjooli"]}
-    report_devir = {'name': 'Informe de Devir',
-                    'keywords': ["Devir"]}
-    report_ludonova = {'name': 'Editorial Ludonova',
-                    'keywords': ["Ludonova"]}
+    #report_devir = {'name': 'Informe de Devir',
+    #                'keywords': ["Devir"]}
+    #report_ludonova = {'name': 'Editorial Ludonova',
+    #                'keywords': ["Ludonova"]}
     report_asmodee = {'name': 'Editorial Asmodee',
                     'keywords': ["Asmodee"]}
     #report_lost_games = {'name': 'Editorial Ludonova',
@@ -38,12 +38,12 @@ class PreGeneratedReports(object):
                     'keywords': ["Morapiaf"]}
 
 
-    # Tiendas: 8
+    # Tiendas: 7
 
-    tienda_planeton = {'name': 'Tienda Planeton Games',
-                      'keywords': ["planeton"]}
-    tienda_100_doblones = {'name': 'Tienda 100 Doblones',
-                      'keywords': ["100 doblones"]}
+    #tienda_planeton = {'name': 'Tienda Planeton Games',
+    #                  'keywords': ["planeton"]}
+    #tienda_100_doblones = {'name': 'Tienda 100 Doblones',
+    #                  'keywords': ["100 doblones"]}
     tienda_zacatrus = {'name': 'Tienda Zacatrus',
                       'keywords': ["zacatrus", "coup"]}
     tienda_finplay = {'name': 'Tienda Finplay',
@@ -58,6 +58,8 @@ class PreGeneratedReports(object):
                       'keywords': ["que oca", "masqueoca", "mqo"]}
     tienda_click_and_rol = {'name': 'Tienda Clickandrol',
                       'keywords': ["click and rol", "clickandrol"]}
+    tienda_demartina = {'name': 'Tienda DeMartina',
+                      'keywords': ["demartina"]}
 
 
 class ReportBuilder(object):

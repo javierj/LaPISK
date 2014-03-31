@@ -105,6 +105,11 @@ class TestCollection(unittest.TestCase):
         new_stats = self.col.find_one('name', 'HootBoardGame')
         self.assertEqual(len(new_stats['stats']), 2)
 
+    def test_find_one_when_col_is_empty(self):
+        result = self.col.find_one('no', 'exist')
+        self.assertIsNone(result)
+
+
 
 if __name__ == '__main__':
     unittest.main()

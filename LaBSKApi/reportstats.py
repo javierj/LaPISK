@@ -1,23 +1,14 @@
 __author__ = 'Javier'
 
-class ReportStatsService(object):
-    """ Recoverst the stats for a report.
-    Saving stats is in other class, it should be moved here
-    """
-
-    def __init__(self, mongo):
-        self.col = mongo.report_stats_collection()
-
-    def reportStatsFrorReport(self, service_name):
-        stats = self.col.find_one('name', service_name)
-        return ReportStatsModel(stats)
-
 
 class ReportStatsModel(object):
 
     def __init__(self, json):
         self._json = json
-        self.stats = self._create_list(json['stats'])
+#        print json
+#        print json['stats']
+#        print "Hellooo"
+        self._stats = self._create_list(json['stats'])
 
     def json(self):
         return self._json
@@ -28,9 +19,31 @@ class ReportStatsModel(object):
             stats.append(ReportStatModel(stat))
         return stats
 
+    @property
     def stats(self):
-        return self.stats
+        return self._stats
 
+
+class ReportStatsService(object):
+    """ Recoverst the stats for a report.
+    Saving stats is in other class, it should be moved here
+    """
+
+    def __init__(self, mongo):
+        self.col = mongo.report_stats_collection()
+
+    def reportStatsFrorReport(self, service_name):
+        stats = self.col.find_one('name', service_name)
+        stats_obj = self._buidl_object(stats)
+        return stats_obj
+
+    def _buidl_object(self, stats):
+        if stats is None:
+            return ReportStatsModel({u'stats': [{'date': "No stats found",
+                                                'msgs': '0',
+                                                'threads': '0',
+                                                'blogs': '0'}]})
+        return ReportStatsModel(stats)
 
 
 class ReportStatModel(object):
