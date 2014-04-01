@@ -18,32 +18,39 @@ class PreGeneratedReports(object):
 
     report_asylum_games = {'name': 'Informe de Asylum Games',
                            'keywords': ["Asylum Games", "Polis", "Mutinies", "Banjooli"]}
+    """
     #report_devir = {'name': 'Informe de Devir',
     #                'keywords': ["Devir"]}
     #report_ludonova = {'name': 'Editorial Ludonova',
     #                'keywords': ["Ludonova"]}
-    report_asmodee = {'name': 'Editorial Asmodee',
-                    'keywords': ["Asmodee"]}
     #report_lost_games = {'name': 'Editorial Ludonova',
     #                'keywords': ["Lost Games"]}
     #report_edge_entertainment = {'name': 'Editorial EDGE Entertainment',
     #                'keywords': ["Edge"]}
-    report_dizemo_entertainment = {'name': 'Editorial Dizemo Entertainment',
-                    'keywords': ["dizemo"]}
     #report_looping_games = {'name': 'Editorial Looping Games',
     #                'keywords': ["Looping Games", "1911 AMUNDSEN vs SCOTT"]}
     #report_nestor_games = {'name': 'Editorial Nestor Games',
     #                'keywords': ["Nestor"]}
+
+    """
+    report_asmodee = {'name': 'Editorial Asmodee',
+                    'keywords': ["Asmodee"]}
+    report_dizemo_entertainment = {'name': 'Editorial Dizemo Entertainment',
+                    'keywords': ["dizemo"]}
     report_morapiaf = {'name': 'Editorial Morapiaf',
                     'keywords': ["Morapiaf"]}
 
-
+    """
     # Tiendas: 7
 
     #tienda_planeton = {'name': 'Tienda Planeton Games',
     #                  'keywords': ["planeton"]}
     #tienda_100_doblones = {'name': 'Tienda 100 Doblones',
     #                  'keywords': ["100 doblones"]}
+    #tienda_dungeon_marvels = {'name': 'Tienda Dungeon Marvels',
+    #                  'keywords': ["dungeon marvels"]}
+
+    """
     tienda_zacatrus = {'name': 'Tienda Zacatrus',
                       'keywords': ["zacatrus", "coup"]}
     tienda_finplay = {'name': 'Tienda Finplay',
@@ -52,8 +59,6 @@ class PreGeneratedReports(object):
                       'keywords': ["tablerum"]}
     tienda_evolution_goya = {'name': 'Tienda Evolution Goya',
                       'keywords': ["evolution goya", "Evolution Store"]}
-    #tienda_dungeon_marvels = {'name': 'Tienda Dungeon Marvels',
-    #                  'keywords': ["dungeon marvels"]}
     tienda_mas_que_oca = {'name': 'Tienda Mas Que Oca',
                       'keywords': ["que oca", "masqueoca", "mqo"]}
     tienda_click_and_rol = {'name': 'Tienda Clickandrol',
@@ -161,7 +166,6 @@ class ReportBuilder(object):
         """
         normal = word.lower()
         #normalword = " "+normal.strip() + " "
-        #print "'"+normalword, "' / '", line.lower()+"' "
         return normal in line.lower()
 
     def _add_link(self, thread, messagesWithKeyword):
@@ -240,7 +244,7 @@ class ReportService(object):
         now_date = str(now.year) + "-" + str(now.month) + "-" + str(now.day)
         new_stats = []
         for stat in json_report['stats']:
-            if stat['date'] <> now_date:
+            if stat['date'] != now_date:
                 new_stats.append(stat)
         json_report['stats'] = new_stats
 

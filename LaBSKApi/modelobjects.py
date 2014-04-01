@@ -50,7 +50,7 @@ class ReportModel(object):
     def getKeywords(self):
         words = list()
         for key in self.jsondoc.keys():
-            if key.lower() <> 'title' and key.lower() <> "report_date":
+            if key.lower() != 'title' and key.lower() != "report_date":
                 words.append(key)
         return words
 
@@ -62,7 +62,6 @@ class ReportModel(object):
         return threads
 
     def set_threads_to(self, keyw, threads):
-        #print keyw, ":", len(threads)
         self.jsondoc[keyw] = threads
 
 
@@ -90,7 +89,6 @@ class MsgModel(object):
         return self.jsondoc['date']
 
     def year(self):
-        #print self.datetime().year
         return self.datetime().year
 
     def datetime(self):
@@ -103,8 +101,6 @@ class MsgModel(object):
     def build_datetime(date):
         s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', date)
         s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', date)
-
-        #print int(s.group(6)), type(int(s.group(6)))
 
         if s is None:
             s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), a las ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', date)
@@ -130,7 +126,6 @@ class ThreadModel(object):
         if 'msgs' in self.jsondoc:
             self.msgs = MsgListModel(json['msgs'])
         else:
-            #print "Thread without msgs: ", json
             self.msgs =  MsgListModel([])
 
     def json(self):
