@@ -6,7 +6,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 from presenter.ReportPresenter import ReportPresenter
 from LaBSKApi.reports import PreGeneratedReports
 
-##def create_app():
+
 app = Flask(__name__)
 
 # Load default config and override config from an environment variable
@@ -79,7 +79,6 @@ def stats():
 @app.route("/reports")
 def reports():
     register_access(request.path)
-    #register_access("/reports")
     return render_template('reports.html')
 
 
@@ -102,7 +101,7 @@ def static_asylum_games():
     register_access(request.path)
     return render_template('static_asylum_games.html')
 
-
+"""
 #@app.route("/reports/devir")
 #def static_devir_games():
 #    register_access(request.path)
@@ -112,12 +111,14 @@ def static_asylum_games():
 #def static_ludonova_games():
 #    register_access(request.path)
 #    return render_template('static_ludonova.html')
+"""
 
 @app.route("/reports/asmodee")
 def static_asmodee_games():
     register_access(request.path)
     return render_template('static_asmodee.html')
 
+"""
 #@app.route("/reports/lost_games")
 #def static_lost_games_games():
 #    register_access(request.path)
@@ -127,16 +128,19 @@ def static_asmodee_games():
 #def static_edge_ent():
 #    register_access(request.path)
 #    return render_template('static_edge_ent.html')
+"""
 
 @app.route("/reports/dizemo_ent")
 def static_dizemo_ent():
     register_access(request.path)
     return render_template('static_dizemo_ent.html')
 
+"""
 #@app.route("/reports/looping_games")
 #def static_looping_games():
 #    register_access(request.path)
 #    return render_template('static_looping_games.html')
+"""
 
 @app.route("/reports/morapiaf")
 def static_morapiaf():
@@ -145,23 +149,24 @@ def static_morapiaf():
 
 # e-shops
 
+"""
 #@app.route("/reports/tienda_100_doblones")
 #def static_tienda_100_doblones():
 #    register_access(request.path)
 #    return render_template('static_tienda_100_doblones.html')
-
+"""
 
 @app.route("/reports/tienda_click_and_rol")
 def static_tienda_click_and_rol():
     register_access(request.path)
     return render_template('static_tienda_click_and_rol.html')
 
-
+"""
 #@app.route("/reports/tienda_dungeon_marvels")
 #def static_tienda_dungeon_marvels():
 #    register_access(request.path)
 #    return render_template('static_tienda_dungeon_marvels.html')
-
+"""
 
 @app.route("/reports/tienda_evolution_goya")
 def static_tienda_evolution_goya():
@@ -180,12 +185,12 @@ def static_tienda_mas_que_oca():
     register_access(request.path)
     return render_template('static_tienda_mas_que_oca.html')
 
-
+"""
 #@app.route("/reports/tienda_planeton")
 #def static_tienda_planeton():
 #    register_access(request.path)
 #    return render_template('static_tienda_planeton.html')
-
+"""
 
 @app.route("/reports/tienda_tablerum")
 def static_tienda_tablerum():
@@ -232,7 +237,6 @@ def reports_asylum_games():
     return render_template('report.html', text = html)
     """
 
-    # first obtaining the report
     report = reportPresenter.getReportFor_AsylumGames()
     # Passing the Json to the template
     # This is a hack and shuld be changed

@@ -68,7 +68,8 @@ class PreGeneratedReports(object):
 
 
 class ReportBuilder(object):
-
+    """ Builds a report using the information in mongodb from labsk
+    """
     def __init__(self, db):
         self.db = db
         self.report = None
@@ -266,3 +267,8 @@ class ReportStats(object):
 
     def json(self):
         return {'threads':str(self._threads), 'msgs':str(self._msgs), 'blogs':'0'}
+
+    def __str__(self):
+        """ for testing only
+        """
+        return "%s, %s, %s" % (self._threads, self._msgs, 0)

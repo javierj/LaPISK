@@ -465,6 +465,8 @@ class Reports(object):
 
     asylum_keywords = ('Asylum Games', 'Banjooli', 'Mutinies', 'Polis')
 
+    asylum_report_request = {'name': 'Informe de Asylum Games',
+                           'keywords': ["Asylum Games", "Polis", "Mutinies", "Banjooli"]}
     threats_with_newline = {u'source': u'LaBSK', u'_id': ObjectId('530370a9c6a54a1a4c3d837c'),
                      u'link': u'http://labsk.net/index.php?topic=119092.0',
                      u'msgs': [{u'id':'msg_1169262',

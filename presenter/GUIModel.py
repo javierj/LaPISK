@@ -28,12 +28,9 @@ class Text(object):
     def change_newline_in_report(self, keywords, report):
         for keyword in keywords:
             new_threads = list()
-            #print keywords
-            #print report
             threads = report[keyword]
             for thread in threads:
                 new_msgs = list()
-                #print thread
                 if 'msgs' in thread:
                     for msg in thread['msgs']:
                         new_msg = msg.copy()

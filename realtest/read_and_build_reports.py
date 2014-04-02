@@ -28,7 +28,6 @@ class StdListener(VoidListener):
 
     # Override
     def newMsg(self, user, body):
-        #print "   ", user, ": ", body
         self.msgs += 1
 
     # Override
@@ -117,40 +116,39 @@ def write(name, html_text):
     shutil.copyfile(path + filename, phorumledge_path + filename)
 
 
-def generate_report(name, report_schema, filter=None):
+def generate_report(name, report_schema, filter_criterion=None):
     builder = ReportPresenter(ReportService(MongoDB(col="labsk_merge")))
     text = Text()
     env = Environment(loader=FileSystemLoader('../webgui/templates'))
     template = env.get_template("_static_report.html")
-    result = builder.report_and_stats(report_schema, filter_year=filter)
+    result = builder.report_and_stats(report_schema, filter_year=filter_criterion)
     text.change_newline_in_report(report_schema['keywords'], result.report)
     xhtml = template.render(keywords=report_schema['keywords'],
                             report=result.report,
                             links=get_all_descs(),
                             stats=result.report_stats.get_text()
                             )
-
     #html = UnicodeDammit(xhtml).unicode_markup
     write(name, xhtml)
 
 
 # Multithread
-def run_thread(name, report_schema, filter=None):
-    thread = threading.Thread(target=generate_report, args = (name, report_schema, filter))
+def run_thread(name, report_schema, filter_threads=None):
+    thread = threading.Thread(target=generate_report, args=(name, report_schema, filter_threads))
     thread.daemon = True
     thread.start()
     #thread.join()
 
-run_thread("hootboardgame", PreGeneratedReports.report_hootboardgame)
+"""
 #generate_report("hootboardgame", PreGeneratedReports.report_hootboardgame)
-
 #generate_report("asylum_games", PreGeneratedReports.report_asylum_games)
-run_thread("asylum_games", PreGeneratedReports.report_asylum_games)
-
 #run_thread("devir", PreGeneratedReports.report_devir, '2013')
 #generate_report("ludonova", PreGeneratedReports.report_ludonova, '2013')
-
 # generate_report("asmodee", PreGeneratedReports.report_asmodee, '2013')
+"""
+
+run_thread("hootboardgame", PreGeneratedReports.report_hootboardgame)
+run_thread("asylum_games", PreGeneratedReports.report_asylum_games)
 run_thread("asmodee", PreGeneratedReports.report_asmodee, '2013')
 
 #run_thread("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')

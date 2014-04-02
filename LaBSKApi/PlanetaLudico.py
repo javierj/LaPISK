@@ -3,6 +3,7 @@ __author__ = 'Javier'
 from LaBSKApi.web import RESTReader
 from LaBSKApi.Process import VoidListener
 
+
 class PlanetaLudicoScrap(object):
 
     def __init__(self, col):
@@ -68,4 +69,19 @@ class Entry(object):
         return self._source
 
     def json(self):
-        return {'title':self._title, 'date':self._date, 'link':self._link, 'source':self._source}
+        return {'title': self._title, 'date': self._date, 'link': self._link, 'source': self._source}
+
+
+"""
+##############################################################
+
+Reports
+"""
+
+class PlanetaLudicoReport(object):
+
+    def build_report(self, report_request, report, stats):
+        """ This mehtods search for ocurrences of the key words y reporr reest in
+        the information from PlanetaLudico blogs and tores them in report updatind stats object
+        """
+        pass
