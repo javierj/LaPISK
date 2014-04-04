@@ -282,6 +282,30 @@ class TestReportStats(unittest.TestCase):
         stats.inc_threads()
         self.assertEqual(stats.json(), {'threads': '2', 'msgs': '1', 'blogs': '0'})
 
+    def test_blog_increment(self):
+        stats = ReportStats()
+        stats.inc_blogs()
+        self.assertEqual(stats.json(), {'threads': '0', 'msgs': '0', 'blogs': '1'})
+        stats.inc_blogs(2)
+        self.assertEqual(stats.json(), {'threads': '0', 'msgs': '0', 'blogs': '3'})
+
+    def test_merge_stats_both_empty(self):
+        stats_acum = ReportStats()
+        stats = ReportStats()
+        stats_acum.merge(stats)
+        self.assertEqual(str(stats_acum), "0, 0, 0")
+        self.assertEqual(str(stats), "0, 0, 0")
+
+    def test_merge_stats_both_empty(self):
+        stats_acum = ReportStats()
+        stats_acum.inc_threads()
+        stats = ReportStats()
+        stats.inc_threads()
+        stats_acum.merge(stats)
+        self.assertEqual(str(stats_acum), "2, 0, 0")
+        self.assertEqual(str(stats), "1, 0, 0")
+
+
 
 if __name__ == '__main__':
     unittest.main()

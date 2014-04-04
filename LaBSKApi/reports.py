@@ -192,6 +192,20 @@ class ReportBuilder(object):
         return thread_obj.last_msg_date_as_datetime()
 
 
+class StatsBuilder(object):
+    """This class generates a set of stats from a report"""
+
+    def build_stats(self, reportDescription, report_json):
+        result = ReportStats()
+        report_obj = ReportModel(report_json)
+        for key in reportDescription['keywords']:
+            for thread_obj in report_obj.threads_in(key):
+                result.inc_threads()
+                result.inc_msgs( thread_obj.msg_count() )
+
+        return result
+
+
 class ReportService(object):
     """ This class creates and generated a report and stores the stats in
         a MomgoDB column
@@ -208,15 +222,9 @@ class ReportService(object):
         self._save_report_stats(report_request, stats)
         return ReportResult(result, stats)
 
-    def _generateStats(self, reportDescription, report_json):
-        result = ReportStats()
-        report_obj = ReportModel(report_json)
-        for key in reportDescription['keywords']:
-            for thread_obj in report_obj.threads_in(key):
-                result.inc_threads()
-                result.inc_msgs( thread_obj.msg_count() )
-
-        return result
+    def _generateStats(self, report_request, result):
+        builder = StatsBuilder()
+        return builder.build_stats(report_request, result)
 
     def _save_report_stats(self, report_request, report_stats):
         """ I need two abtsractions here. first one a mediator between this class and
@@ -258,6 +266,7 @@ class ReportStats(object):
     def __init__(self):
         self._threads = 0
         self._msgs = 0
+        self._blogs = 0
 
     def inc_threads(self):
         self._threads += 1
@@ -265,10 +274,18 @@ class ReportStats(object):
     def inc_msgs(self, inc = 1):
         self._msgs += inc
 
+    def inc_blogs(self, inc = 1):
+        self._blogs += inc
+
+    def merge(self, stats):
+        self._blogs += stats._blogs
+        self._msgs += self._msgs
+        self._threads += self._threads
+
     def json(self):
-        return {'threads':str(self._threads), 'msgs':str(self._msgs), 'blogs':'0'}
+        return {'threads':str(self._threads), 'msgs':str(self._msgs), 'blogs':str(self._blogs)}
 
     def __str__(self):
         """ for testing only
         """
-        return "%s, %s, %s" % (self._threads, self._msgs, 0)
+        return "%s, %s, %s" % (self._threads, self._msgs, self._blogs)

@@ -2,6 +2,7 @@ __author__ = 'Javier'
 
 from LaBSKApi.web import RESTReader
 from LaBSKApi.Process import VoidListener
+from LaBSKApi.reports import ReportStats
 
 
 class PlanetaLudicoScrap(object):
@@ -72,16 +73,28 @@ class Entry(object):
         return {'title': self._title, 'date': self._date, 'link': self._link, 'source': self._source}
 
 
-"""
-##############################################################
+######################################################################
 
-Reports
-"""
 
 class PlanetaLudicoReport(object):
+
+    def __init__(self):
+        self._report_builder = None
 
     def build_report(self, report_request, report, stats):
         """ This mehtods search for ocurrences of the key words y reporr reest in
         the information from PlanetaLudico blogs and tores them in report updatind stats object
         """
-        pass
+        report_result = self._report_builder.build_report(report_request)
+        new_stats = ReportStats()
+        for keyword in report_request['keywords']:
+            report[keyword].extend(report_result[keyword])
+            new_stats.inc_blogs(len(report_result[keyword]))
+        #stats = self._generate_stats(report_request, report_result)
+        # Merge stats
+        stats.merge(new_stats)
+
+"""
+    def _generate_stats(self, report_request, report_result):
+        stats =  ReportStats()
+"""
