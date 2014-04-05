@@ -67,6 +67,37 @@ class PreGeneratedReports(object):
                       'keywords': ["demartina"]}
 
 
+class ReportStats(object):
+    """ Untested
+    """
+
+    def __init__(self):
+        self._threads = 0
+        self._msgs = 0
+        self._blogs = 0
+
+    def inc_threads(self):
+        self._threads += 1
+
+    def inc_msgs(self, inc = 1):
+        self._msgs += inc
+
+    def inc_blogs(self, inc = 1):
+        self._blogs += inc
+
+    def merge(self, stats):
+        self._blogs += stats._blogs
+        self._msgs += self._msgs
+        self._threads += self._threads
+
+    def json(self):
+        return {'threads':str(self._threads), 'msgs':str(self._msgs), 'blogs':str(self._blogs)}
+
+    def __str__(self):
+        """ for testing only
+        """
+        return "%s, %s, %s" % (self._threads, self._msgs, self._blogs)
+
 class ReportBuilder(object):
     """ Builds a report using the information in mongodb from labsk
     """
@@ -192,18 +223,63 @@ class ReportBuilder(object):
         return thread_obj.last_msg_date_as_datetime()
 
 
-class StatsBuilder(object):
-    """This class generates a set of stats from a report"""
+class LaBSKReportBuilder(object):
+    """Cass under construction do nor use it"""
 
-    def build_stats(self, reportDescription, report_json):
+    def __init__(self, builder = None):
+        self._report_builder = builder
+
+    def build_report(self, report_request, report, stats):
         result = ReportStats()
-        report_obj = ReportModel(report_json)
-        for key in reportDescription['keywords']:
+
+        report_result = self._report_builder.build_report(report_request)
+        new_stats = ReportStats()
+        for keyword in report_request['keywords']:
+            report[keyword].extend(report_result[keyword])
+
+        report_obj = ReportModel(report)
+        for key in report_request['keywords']:
             for thread_obj in report_obj.threads_in(key):
                 result.inc_threads()
                 result.inc_msgs( thread_obj.msg_count() )
 
-        return result
+        stats.merge(result)
+
+
+class ReportBuilderService(object):
+    """ This class creates and generated a report and stores the stats in
+        a MomgoDB column
+    """
+
+    def __init__(self):
+        self.report_modules = []
+
+    def add_module(self, module):
+        self.report_modules.append(module)
+
+    def build_report(self, report_request):
+        report = self._create_empty_report(report_request)
+        stats = ReportStats()
+        for module in self.report_modules:
+            module.build_report(report_request, report, stats)
+        # Save stats
+        # Filter
+        # Sort
+
+    def _create_empty_report(self, report_request):
+        report = dict()
+        if 'name' in report_request:
+            report['title'] = "Result for report " + report_request['name']
+        else:
+            report['title'] = "Result for report."
+        # Untested feature
+        now = datetime.now()
+        report['report_date'] = str(datetime.date(now)) +", " + str(now.hour) + ":" + str(now.minute)
+
+        for keyword in report_request['keywords']:
+            report[keyword] = []
+
+        return report
 
 
 class ReportService(object):
@@ -212,32 +288,54 @@ class ReportService(object):
     """
 
     def __init__(self, db):
+        self.db = db
         self._builder = ReportBuilder(db)
-        self._collection = db.report_stats_collection()
-        self._now = datetime
+        #self._collection = db.report_stats_collection()
+        #self._now = datetime
 
     def build_report(self, report_request):
-        result = self._builder.build_report(report_request)
+        result = self._build_report_from_modules(report_request)
         stats = self._generateStats(report_request, result)
         self._save_report_stats(report_request, stats)
         return ReportResult(result, stats)
 
-    def _generateStats(self, report_request, result):
-        builder = StatsBuilder()
-        return builder.build_stats(report_request, result)
+    def _build_report_from_modules(self, report_request):
+        result = self._builder.build_report(report_request)
+        return result
 
-    def _save_report_stats(self, report_request, report_stats):
+    def _generateStats(self, report_request, report_json):
+        result = ReportStats()
+        report_obj = ReportModel(report_json)
+        for key in report_request['keywords']:
+            for thread_obj in report_obj.threads_in(key):
+                result.inc_threads()
+                result.inc_msgs( thread_obj.msg_count() )
+
+        return result
+
+    def _save_report_stats(self, report_request, stats):
+        service = SaveReportStatsService(self.db)
+        service._save_report_stats(report_request['name'], stats)
+
+
+class SaveReportStatsService(object):
+
+    def __init__(self, db):
+        self._collection = db.report_stats_collection()
+        self._now = datetime
+
+    def _save_report_stats(self, report_name, report_stats):
         """ I need two abtsractions here. first one a mediator between this class and
             the collection that knows the structure of the json.
             The second abstraction is an object fro report_request.
         """
 
-        json_report = self._collection.find_one('name', report_request['name'])
+        json_report = self._collection.find_one('name', report_name)
         if json_report is None:
             #self._collection.save({'stats': [], 'name': report_request['name']})
-            json_report = {'stats': [], 'name': report_request['name']}
+            json_report = {'stats': [], 'name': report_name}
         else:
-            self._collection.remove('name', report_request['name'])
+            self._collection.remove('name', report_name)
             self._delete_with_date_now(json_report)
 
         json_stats = report_stats.json()
@@ -259,33 +357,3 @@ class ReportService(object):
 
 
 
-class ReportStats(object):
-    """ Untested
-    """
-
-    def __init__(self):
-        self._threads = 0
-        self._msgs = 0
-        self._blogs = 0
-
-    def inc_threads(self):
-        self._threads += 1
-
-    def inc_msgs(self, inc = 1):
-        self._msgs += inc
-
-    def inc_blogs(self, inc = 1):
-        self._blogs += inc
-
-    def merge(self, stats):
-        self._blogs += stats._blogs
-        self._msgs += self._msgs
-        self._threads += self._threads
-
-    def json(self):
-        return {'threads':str(self._threads), 'msgs':str(self._msgs), 'blogs':str(self._blogs)}
-
-    def __str__(self):
-        """ for testing only
-        """
-        return "%s, %s, %s" % (self._threads, self._msgs, self._blogs)

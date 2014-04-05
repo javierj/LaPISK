@@ -1,10 +1,16 @@
 __author__ = 'Javier'
 
 import unittest
-from tests.Harness import Reports
-from LaBSKApi.PlanetaLudico import PlanetaLudicoReport
+from LaBSKApi.PlanetaLudico import PlanetaLudicoReport, BlogEntry
 from LaBSKApi.reports import ReportStats
 from mockito import mock, when
+
+
+class TestBlogEntry(unittest.TestCase):
+
+    def test_create_BlogEntry(self):
+        result = BlogEntry("xx")
+        self.assertEqual(result.json(), "xx")
 
 
 class TestPlanetaLudicoReport(unittest.TestCase):
@@ -27,25 +33,29 @@ class TestPlanetaLudicoReport(unittest.TestCase):
         self.madeira_request = {'name': 'Planeta Ludico demo',
                                 'keywords': ["madeira"]}
         self.rb = mock()
-        when(self.rb).build_report(self.madeira_request).thenReturn(self.report)
+        when(self.rb).build_report(self.madeira_request).thenReturn(TestPlanetaLudicoReport.madeira_report)
+
         self.plr._report_builder = self.rb
 
     def test_when_no_enties_report_and_stats_remains_unmodified(self):
+        when(self.rb).build_report(self.madeira_request).thenReturn(self.report)
+
         self.plr.build_report(self.madeira_request, self.report, self.stats)
         self.assertEqual(self.report, {'madeira': []})
         self.assertEqual(str(self.stats), "0, 0, 0")
 
     def test_when_two_entries_are_found_return_entries(self):
-        when(self.rb).build_report(self.madeira_request).thenReturn(TestPlanetaLudicoReport.madeira_report)
         self.plr.build_report(self.madeira_request, self.report, self.stats)
         self.assertEqual(len(self.report['madeira']), 2)
 
     def test_when_two_entries_are_found_blog_stats_are_incremented(self):
-
-        when(self.rb).build_report(self.madeira_request).thenReturn(TestPlanetaLudicoReport.madeira_report)
         self.plr.build_report(self.madeira_request, self.report, self.stats)
         self.assertEqual(str(self.stats), "0, 0, 2")
 
+    def test_all_objects_from_report_are_from_class_(self):
+        self.plr.build_report(self.madeira_request, self.report, self.stats)
+        for object in self.report['madeira']:
+            self.assertIsInstance(object, BlogEntry)
 
 if __name__ == '__main__':
     unittest.main()

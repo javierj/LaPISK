@@ -2,8 +2,8 @@ __author__ = 'Javier'
 
 import unittest
 from tests.Harness import MockMongo, Reports, MockDatetime
-from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, ReportService, ReportStats
-from mockito import mock, verify, when
+from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, ReportService, ReportStats, ReportBuilderService, SaveReportStatsService
+from mockito import mock, verify, when, any
 from presenter.ReportPresenter import ReportResult
 
 
@@ -55,7 +55,6 @@ class TestReportBuilder(unittest.TestCase):
         result = self.builder.report
 
         self.assertLen(2, result[self.keyword])
-        #print result
 
     def test_when_keyword_is_foun_in_therad_titles_then_msgs_are_not_added(self):
         self.builder._find_keywords(self.thread, ['key'])
@@ -237,22 +236,33 @@ class TestReportService(unittest.TestCase):
         self.service.build_report(self.empty_report_request)
         verify(self.service._builder, 1).build_report(self.empty_report_request)
 
-    def test_when_stats_for_a_report_does_not_exist_then_create_it(self):
-        when(self.col).find_one('name', 'report').thenReturn(None)
-        self.service._save_report_stats(self.empty_report_request, self.create_report_stat())
-        verify(self.col).save(self.expected_stats_report)
-
-    def test_saving_report_stats(self):
-        when(self.col).find_one('name', 'report').thenReturn({'name': 'report', 'stats': []})
-        self.service._save_report_stats({'name':'report'}, self.create_report_stat())
-        verify(self.col).save(self.expected_stats_report)
-
     def test_when_building_repot_a_report_and_stats_are_returned(self):
         result = self.service.build_report(self.empty_report_request)
         self.assertIsInstance(result, ReportResult)
 
-    def test_when_exists_a_stat_for_same_reort_and_date_delete_old_one(self):
-        pass
+    def test_building_a_report_stats_are_saved(self):
+        when(self.col).find_one('name', 'report').thenReturn(None)
+        self.service.build_report(self.empty_report_request)
+        verify(self.col).save(any())
+
+
+class TestSaveReportStatsService(unittest.TestCase):
+
+    def create_report_stat(self):
+        report_stats = ReportStats()
+        report_stats.inc_msgs()
+        report_stats.inc_threads()
+        return report_stats
+
+    def setUp(self):
+        self.col = mock()
+        self.mongo = mock()
+        when(self.mongo).report_stats_collection().thenReturn(self.col)
+        self.service = SaveReportStatsService(self.mongo)
+        self.service._now = MockDatetime()
+        self.empty_report_request = {'name':'report', 'keywords':[]}
+        self.expected_stats_report = {'name':'report', 'stats':[
+            {'date':'2014-1-1', 'threads':'1', 'msgs':'1', 'blogs':'0'}]}
 
     def test_find_stat_with_date_no_delete(self):
         stats = {u'stats': [{u'date': u'2014-3-22', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}], u'name': u'HootBoardGame'}
@@ -265,6 +275,36 @@ class TestReportService(unittest.TestCase):
                  u'name': u'HootBoardGame'}
         self.service._delete_with_date_now(stats)
         self.assertEqual(len(stats['stats']), 0)
+
+    def test_when_stats_for_a_report_does_not_exist_then_create_it(self):
+        when(self.col).find_one('name', 'report').thenReturn(None)
+        self.service._save_report_stats(self.empty_report_request['name'], self.create_report_stat())
+        verify(self.col).save(self.expected_stats_report)
+
+    def test_saving_report_stats(self):
+        when(self.col).find_one('name', 'report').thenReturn({'name': 'report', 'stats': []})
+        self.service._save_report_stats('report', self.create_report_stat())
+        verify(self.col).save(self.expected_stats_report)
+
+
+class TestReportBuilderService(unittest.TestCase):
+
+    def setUp(self):
+        self.service = ReportBuilderService()
+        self.empty_report_request = {'name':'report', 'keywords':[]}
+
+    def test_when_generating_a_report_service_calls_all_reports_module(self):
+        report_module = mock()
+        self.service.add_module(report_module)
+        self.service.build_report(self.empty_report_request)
+        #empty_report = {}
+        #empty_ststa = ReportStats()
+        verify(report_module).build_report(self.empty_report_request, any(), any())
+
+    def test__build_empry_report_with_all_keywords(self):
+        result = self.service._create_empty_report(Reports.asylum_report_request)
+        for word in Reports.asylum_report_request['keywords']:
+            self.assertIn(word, result)
 
 
 class TestReportStats(unittest.TestCase):

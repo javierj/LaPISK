@@ -75,11 +75,21 @@ class Entry(object):
 
 ######################################################################
 
+class BlogEntry(object):
+    """ Models a message from a blog.
+    """
+
+    def __init__(self, jsondoc):
+        self._json = jsondoc
+
+    def json(self):
+        return self._json
+
 
 class PlanetaLudicoReport(object):
 
-    def __init__(self):
-        self._report_builder = None
+    def __init__(self, builder = None):
+        self._report_builder = builder
 
     def build_report(self, report_request, report, stats):
         """ This mehtods search for ocurrences of the key words y reporr reest in
@@ -88,7 +98,8 @@ class PlanetaLudicoReport(object):
         report_result = self._report_builder.build_report(report_request)
         new_stats = ReportStats()
         for keyword in report_request['keywords']:
-            report[keyword].extend(report_result[keyword])
+            for entry in report_result[keyword]:
+                report[keyword].append(BlogEntry(entry))
             new_stats.inc_blogs(len(report_result[keyword]))
         #stats = self._generate_stats(report_request, report_result)
         # Merge stats

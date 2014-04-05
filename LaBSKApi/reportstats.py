@@ -5,9 +5,6 @@ class ReportStatsModel(object):
 
     def __init__(self, json):
         self._json = json
-#        print json
-#        print json['stats']
-#        print "Hellooo"
         self._stats = self._create_list(json['stats'])
 
     def json(self):
