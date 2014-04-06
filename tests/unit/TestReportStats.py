@@ -1,7 +1,7 @@
 __author__ = 'Javier'
 
 from tests.Harness import Reports
-from LaBSKApi.reportstats import ReportStatsModel, ReportStatsService
+from LaBSKApi.reportstats import ReportStatsModel, ReportStatsService, ReportStats
 from mockito import mock, when, verify
 import unittest
 
@@ -58,3 +58,42 @@ class TestReportStatsService(unittest.TestCase):
         self.assertEqual(result.stats[0].msgs(), '0')
         self.assertEqual(result.stats[0].threads(), '0')
         self.assertEqual(result.stats[0].blogs(), '0')
+
+class TestReportStats(unittest.TestCase):
+
+    def test_json(self):
+        stats = ReportStats()
+        result = stats.json()
+        self.assertEqual(result, {'threads':'0', 'msgs':'0', 'blogs':'0'})
+
+    def test_reports_for_hootboardgame(self):
+        stats = ReportStats()
+        stats.inc_msgs()
+        self.assertEqual(stats.json(), {'threads': '0', 'msgs': '1', 'blogs': '0'})
+        stats.inc_threads()
+        stats.inc_threads()
+        self.assertEqual(stats.json(), {'threads': '2', 'msgs': '1', 'blogs': '0'})
+
+    def test_blog_increment(self):
+        stats = ReportStats()
+        stats.inc_blogs()
+        self.assertEqual(stats.json(), {'threads': '0', 'msgs': '0', 'blogs': '1'})
+        stats.inc_blogs(2)
+        self.assertEqual(stats.json(), {'threads': '0', 'msgs': '0', 'blogs': '3'})
+
+    def test_merge_stats_both_empty(self):
+        stats_acum = ReportStats()
+        stats = ReportStats()
+        stats_acum.merge(stats)
+        self.assertEqual(str(stats_acum), "0, 0, 0")
+        self.assertEqual(str(stats), "0, 0, 0")
+
+    def test_merge_stats_no_empty(self):
+        stats_acum = ReportStats()
+        stats_acum.inc_threads()
+        stats = ReportStats()
+        stats.inc_threads()
+        stats_acum.merge(stats)
+        self.assertEqual(str(stats_acum), "2, 0, 0")
+        self.assertEqual(str(stats), "1, 0, 0")
+

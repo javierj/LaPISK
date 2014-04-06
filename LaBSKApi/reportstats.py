@@ -44,6 +44,8 @@ class ReportStatsService(object):
 
 
 class ReportStatModel(object):
+    """ Objects returned from de data repository
+    """
 
     def __init__(self, json):
         self._json = json
@@ -62,3 +64,33 @@ class ReportStatModel(object):
 
     def blogs(self):
         return self._json['blogs']
+
+
+class ReportStats(object):
+
+    def __init__(self):
+        self._threads = 0
+        self._msgs = 0
+        self._blogs = 0
+
+    def inc_threads(self):
+        self._threads += 1
+
+    def inc_msgs(self, inc = 1):
+        self._msgs += inc
+
+    def inc_blogs(self, inc = 1):
+        self._blogs += inc
+
+    def merge(self, stats):
+        self._blogs += stats._blogs
+        self._msgs += self._msgs
+        self._threads += self._threads
+
+    def json(self):
+        return {'threads':str(self._threads), 'msgs':str(self._msgs), 'blogs':str(self._blogs)}
+
+    def __str__(self):
+        """ for testing only
+        """
+        return "%s, %s, %s" % (self._threads, self._msgs, self._blogs)

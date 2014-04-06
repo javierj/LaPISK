@@ -1,3 +1,5 @@
+from LaBSKApi.reportstats import ReportStats
+
 __author__ = 'Javier'
 
 from datetime import datetime
@@ -31,7 +33,6 @@ class PreGeneratedReports(object):
     #                'keywords': ["Looping Games", "1911 AMUNDSEN vs SCOTT"]}
     #report_nestor_games = {'name': 'Editorial Nestor Games',
     #                'keywords': ["Nestor"]}
-
     """
     report_asmodee = {'name': 'Editorial Asmodee',
                     'keywords': ["Asmodee"]}
@@ -49,7 +50,6 @@ class PreGeneratedReports(object):
     #                  'keywords': ["100 doblones"]}
     #tienda_dungeon_marvels = {'name': 'Tienda Dungeon Marvels',
     #                  'keywords': ["dungeon marvels"]}
-
     """
     tienda_zacatrus = {'name': 'Tienda Zacatrus',
                       'keywords': ["zacatrus", "coup"]}
@@ -66,37 +66,6 @@ class PreGeneratedReports(object):
     tienda_demartina = {'name': 'Tienda DeMartina',
                       'keywords': ["demartina"]}
 
-
-class ReportStats(object):
-    """ Untested
-    """
-
-    def __init__(self):
-        self._threads = 0
-        self._msgs = 0
-        self._blogs = 0
-
-    def inc_threads(self):
-        self._threads += 1
-
-    def inc_msgs(self, inc = 1):
-        self._msgs += inc
-
-    def inc_blogs(self, inc = 1):
-        self._blogs += inc
-
-    def merge(self, stats):
-        self._blogs += stats._blogs
-        self._msgs += self._msgs
-        self._threads += self._threads
-
-    def json(self):
-        return {'threads':str(self._threads), 'msgs':str(self._msgs), 'blogs':str(self._blogs)}
-
-    def __str__(self):
-        """ for testing only
-        """
-        return "%s, %s, %s" % (self._threads, self._msgs, self._blogs)
 
 class ReportBuilder(object):
     """ Builds a report using the information in mongodb from labsk
@@ -230,12 +199,9 @@ class LaBSKReportBuilder(object):
         self._report_builder = builder
 
     def build_report(self, report_request, report, stats):
+        """ Should return a set of thread objects
+        """
         result = ReportStats()
-
-        report_result = self._report_builder.build_report(report_request)
-        new_stats = ReportStats()
-        for keyword in report_request['keywords']:
-            report[keyword].extend(report_result[keyword])
 
         report_obj = ReportModel(report)
         for key in report_request['keywords']:
@@ -245,14 +211,23 @@ class LaBSKReportBuilder(object):
 
         stats.merge(result)
 
+        report_result = self._report_builder.build_report(report_request)
+        new_stats = ReportStats()
+        for keyword in report_request['keywords']:
+            for entry in report_result[keyword]:
+                report[keyword].append(ThreadModel(entry))
+
+
 
 class ReportBuilderService(object):
     """ This class creates and generated a report and stores the stats in
         a MomgoDB column
     """
 
-    def __init__(self):
+    def __init__(self, db):
         self.report_modules = []
+        self.db = db
+        self.save_stats = SaveReportStatsService(db)
 
     def add_module(self, module):
         self.report_modules.append(module)
@@ -262,7 +237,7 @@ class ReportBuilderService(object):
         stats = ReportStats()
         for module in self.report_modules:
             module.build_report(report_request, report, stats)
-        # Save stats
+        self._save_stats(report_request['name'], stats)
         # Filter
         # Sort
 
@@ -280,6 +255,9 @@ class ReportBuilderService(object):
             report[keyword] = []
 
         return report
+
+    def _save_stats(self, report_name, stats):
+        self.save_stats._save_report_stats(report_name, stats)
 
 
 class ReportService(object):
@@ -356,4 +334,6 @@ class SaveReportStatsService(object):
         json_report['stats'] = new_stats
 
 
+class FilteringService(object):
+    pass
 

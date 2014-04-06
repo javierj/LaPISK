@@ -1,10 +1,20 @@
+from LaBSKApi.reportstats import ReportStats
+
 __author__ = 'Javier'
 
 import unittest
 from tests.Harness import MockMongo, Reports, MockDatetime
-from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, ReportService, ReportStats, ReportBuilderService, SaveReportStatsService
+from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, ReportService, ReportBuilderService, SaveReportStatsService
 from mockito import mock, verify, when, any
 from presenter.ReportPresenter import ReportResult
+
+
+
+def create_mock_for_db():
+    col = mock()
+    mongo = mock()
+    when(mongo).report_stats_collection().thenReturn(col)
+    return (mongo, col)
 
 
 class TestReportBuilder(unittest.TestCase):
@@ -255,9 +265,7 @@ class TestSaveReportStatsService(unittest.TestCase):
         return report_stats
 
     def setUp(self):
-        self.col = mock()
-        self.mongo = mock()
-        when(self.mongo).report_stats_collection().thenReturn(self.col)
+        (self.mongo, self.col) = create_mock_for_db()
         self.service = SaveReportStatsService(self.mongo)
         self.service._now = MockDatetime()
         self.empty_report_request = {'name':'report', 'keywords':[]}
@@ -290,7 +298,8 @@ class TestSaveReportStatsService(unittest.TestCase):
 class TestReportBuilderService(unittest.TestCase):
 
     def setUp(self):
-        self.service = ReportBuilderService()
+        (self.db, self.col) = create_mock_for_db()
+        self.service = ReportBuilderService(self.db)
         self.empty_report_request = {'name':'report', 'keywords':[]}
 
     def test_when_generating_a_report_service_calls_all_reports_module(self):
@@ -301,49 +310,15 @@ class TestReportBuilderService(unittest.TestCase):
         #empty_ststa = ReportStats()
         verify(report_module).build_report(self.empty_report_request, any(), any())
 
-    def test__build_empry_report_with_all_keywords(self):
+    def test__build_empty_report_with_all_keywords(self):
         result = self.service._create_empty_report(Reports.asylum_report_request)
         for word in Reports.asylum_report_request['keywords']:
             self.assertIn(word, result)
 
-
-class TestReportStats(unittest.TestCase):
-
-    def test_json(self):
-        stats = ReportStats()
-        result = stats.json()
-        self.assertEqual(result, {'threads':'0', 'msgs':'0', 'blogs':'0'})
-
-    def test_reports_for_hootboardgame(self):
-        stats = ReportStats()
-        stats.inc_msgs()
-        self.assertEqual(stats.json(), {'threads': '0', 'msgs': '1', 'blogs': '0'})
-        stats.inc_threads()
-        stats.inc_threads()
-        self.assertEqual(stats.json(), {'threads': '2', 'msgs': '1', 'blogs': '0'})
-
-    def test_blog_increment(self):
-        stats = ReportStats()
-        stats.inc_blogs()
-        self.assertEqual(stats.json(), {'threads': '0', 'msgs': '0', 'blogs': '1'})
-        stats.inc_blogs(2)
-        self.assertEqual(stats.json(), {'threads': '0', 'msgs': '0', 'blogs': '3'})
-
-    def test_merge_stats_both_empty(self):
-        stats_acum = ReportStats()
-        stats = ReportStats()
-        stats_acum.merge(stats)
-        self.assertEqual(str(stats_acum), "0, 0, 0")
-        self.assertEqual(str(stats), "0, 0, 0")
-
-    def test_merge_stats_both_empty(self):
-        stats_acum = ReportStats()
-        stats_acum.inc_threads()
-        stats = ReportStats()
-        stats.inc_threads()
-        stats_acum.merge(stats)
-        self.assertEqual(str(stats_acum), "2, 0, 0")
-        self.assertEqual(str(stats), "1, 0, 0")
+    def test_when_building_report_save_stats(self):
+        self.service.save_stats = mock()
+        self.service.build_report(self.empty_report_request)
+        verify(self.service.save_stats, 1)._save_report_stats(self.empty_report_request['name'], any())
 
 
 

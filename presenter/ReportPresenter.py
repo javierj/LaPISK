@@ -83,6 +83,7 @@ class ReportPresenter(object):
             result.addNextText(Text(keyword))
         return result
 
+    # Duplicate code. Report services return stats.
     def generateStats(self, reportDescription, report_json):
         threads = 0
         msgs = 0

@@ -1,8 +1,9 @@
+from LaBSKApi.reportstats import ReportStats
+
 __author__ = 'Javier'
 
 import unittest
 from LaBSKApi.PlanetaLudico import PlanetaLudicoReport, BlogEntry
-from LaBSKApi.reports import ReportStats
 from mockito import mock, when
 
 

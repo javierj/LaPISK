@@ -1,8 +1,9 @@
+from LaBSKApi.reportstats import ReportStats
+
 __author__ = 'Javier'
 
 from LaBSKApi.web import RESTReader
 from LaBSKApi.Process import VoidListener
-from LaBSKApi.reports import ReportStats
 
 
 class PlanetaLudicoScrap(object):
