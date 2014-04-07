@@ -136,6 +136,15 @@ class TestThreadModel(unittest.TestCase):
         self.assertEqual(msg_list_objct.lastmsg_object().year(), 2014)
         self.assertEqual(thread_obj.year_last_msg(), 2014)
 
+    def test_thread_object_always_has_msgs(self):
+        self.assertTrue(self.thread.has_msgs())
+
+    def test_replace_msgs_objs(self):
+        thread = ThreadModel(Reports.get_asylum_polis_thread())
+        self.assertGreater(thread.msg_count(), 1)
+        thread.replace_msgs_objs([MsgModel({})])
+        self.assertEqual(thread.msg_count(), 1)
+
 
 class TestMsgModel(unittest.TestCase):
 

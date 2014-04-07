@@ -336,11 +336,32 @@ class SaveReportStatsService(object):
 #################################################################
 # Filtering services
 
+
 class FilterMsgYear(object):
+    """ Report_entry must has a method called has_msgs()
+    """
 
     def __init__(self, year):
         self._year = year
 
+    def filter(self, report_entry):
+        if not report_entry.has_msgs():
+            return
+        msgs = []
+        year_int = int(self._year)
+        for msgobj in report_entry.msgs_objs():
+            if msgobj.year() > year_int:
+                print "Add"
+                msgs.append(msgobj)
+        report_entry.replace_msgs_objs(msgs)
+
+
+class FilterEntryYear(object):
+    def __init__(self, year):
+        self._year = year
+
+    def filter(self, report_entry):
+        return True
 
 class FilteringService(object):
     """ Filters a report using the filters added.
@@ -351,13 +372,13 @@ class FilteringService(object):
     def __init__(self):
         self.filters = []
 
-    def add_filter(self, filer):
+    def add_filter(self, filter):
         self.filters.append(filter)
 
     def filter_report(self, report_query, report_objects):
         for kword in report_query.getKeywords():
             print report_objects
             for entry in report_objects[kword]:
-                for filter in self.filters:
-                    pass
+                for filter_obj in self.filters:
+                    filter_obj.filter(entry)
 

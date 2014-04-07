@@ -173,8 +173,10 @@ class ThreadModel(object):
     def msg_count(self):
         return self.msgList().size()
 
+    """
     def replace_msgs(self, msgs):
         self.jsondoc['msgs'] = msgs.json()
+    """
 
     def firstmsg(self):
         #print "Fisrt msg: ", self.jsondoc['msgs']
@@ -200,6 +202,7 @@ class ThreadModel(object):
         for msg_obj in msgs_objs:
             msgs.append(msg_obj.json() )
         self.jsondoc['msgs'] = msgs
+        self.msgs = MsgListModel(self.jsondoc['msgs'])
 
     def msgs_objs(self):
         objs = []
@@ -230,6 +233,12 @@ class ThreadModel(object):
         if 'last_msg_date' not in self.jsondoc:
             self.jsondoc['last_msg_date'] = self.date_last_msg()
         return MsgModel.build_datetime(self.jsondoc['last_msg_date'])
+
+    def has_msgs(self):
+        """ This method is used by the report's filtering to distingsh
+        a thread entry from a blog entry.
+        """
+        return True
 
 
 class MsgListModel(object):

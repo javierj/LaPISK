@@ -471,7 +471,8 @@ class Reports(object):
                      u'link': u'http://labsk.net/index.php?topic=119092.0',
                      u'msgs': [{u'id':'msg_1169262',
                                    u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb',
-                                u'body': u"Programaci\xf3n de la emisi\xf3n para hoy jueves 24.\nEn el aire desde:10:00 - Grublin Games Publishing - Cornish Smuggler10:20 - Lautapelit.fi - Nations10:40 - Blackrock Editions - Armad\xf6ra11:00 - Ares Games - Sails of Glory, Galaxy Defenders11:30 - Placentia Games - Florenza: The Card Game12:00 - Schmidt Spiele/Drei Magier Spiele - Stories!, Dog Deluxe, Der geheimnisvolle Spiegel12:30 - Czech Board Games - Dr. Hrubec13:00 - Deinko Games - Patchistory13:30 - Asylum Games - Banjooli Xeet, 21 Mutinies Arrr! Edition14:00 - eggertspiele - Rokoko, Coal Baron14:30 - Portal Games - Legacy: The Testament of Duke de Crecy, Theseus: The Dark Orbit15:00 - Hans im Gl\xfcck - Russian Railroads, Carcassonne: South Seas15:30 - Hurrican - Sheeepzz15:45 - LudiCreations - Byzantio16:00 - Backspindle Games - Luchador! Mexican Wrestling Dice16:30 - IELLO - C'est pas faux!, Guardians' Chronicles, Heroes of Normandie17:00 - IELLO - Continued17:30 - Spielworxx - Agora, Kohle & Kolonie18:00 - Queen Games - Dark Darker Darkest, Amerigo, Speculation, Templar: The Secret Treasures18:30 - Queen Games - Continued", u'user': u'winston smith'}
+                                u'body': u"Programaci\xf3n de la emisi\xf3n para hoy jueves 24.\nEn el aire desde:10:00 - Grublin Games Publishing - Cornish Smuggler10:20 - Lautapelit.fi - Nations10:40 - Blackrock Editions - Armad\xf6ra11:00 - Ares Games - Sails of Glory, Galaxy Defenders11:30 - Placentia Games - Florenza: The Card Game12:00 - Schmidt Spiele/Drei Magier Spiele - Stories!, Dog Deluxe, Der geheimnisvolle Spiegel12:30 - Czech Board Games - Dr. Hrubec13:00 - Deinko Games - Patchistory13:30 - Asylum Games - Banjooli Xeet, 21 Mutinies Arrr! Edition14:00 - eggertspiele - Rokoko, Coal Baron14:30 - Portal Games - Legacy: The Testament of Duke de Crecy, Theseus: The Dark Orbit15:00 - Hans im Gl\xfcck - Russian Railroads, Carcassonne: South Seas15:30 - Hurrican - Sheeepzz15:45 - LudiCreations - Byzantio16:00 - Backspindle Games - Luchador! Mexican Wrestling Dice16:30 - IELLO - C'est pas faux!, Guardians' Chronicles, Heroes of Normandie17:00 - IELLO - Continued17:30 - Spielworxx - Agora, Kohle & Kolonie18:00 - Queen Games - Dark Darker Darkest, Amerigo, Speculation, Templar: The Secret Treasures18:30 - Queen Games - Continued",
+                                u'user': u'winston smith'}
                               ],
                  u'title': u'ESSEN 2013 - Emisi\xf3n en Streaming',
                  }
@@ -507,6 +508,12 @@ class Reports(object):
                     new_t['msgs'].append(msg.copy())
 
         return report
+
+
+    @staticmethod
+    def get_asylum_polis_thread():
+        report = Reports.get_asylum_report()
+        return report['Polis'][0]
 
 
 class MockDatetime(object):

@@ -6,7 +6,7 @@ import unittest
 from tests.Harness import MockMongo, Reports, MockDatetime
 from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, \
     ReportService, ReportBuilderService, SaveReportStatsService, \
-    FilteringService, FilterMsgYear
+    FilteringService, FilterMsgYear, FilterEntryYear
 from mockito import mock, verify, when, any
 from presenter.ReportPresenter import ReportResult
 from LaBSKApi.modelobjects import MsgModel, ThreadModel, ReportQueryModel
@@ -350,19 +350,53 @@ class TestReportFilteringService(unittest.TestCase):
         expected = self.transtale_report_into_threads(Reports.asylum_report_request, Reports.get_asylum_report())
         self.assertEqual(len(self.asylum_report['Polis']), len(expected['Polis']))
 
+    def test_when_deleting_2012_two_msg_from_polis_is_deleted(self):
+        filterMsgYear = FilterMsgYear('2012')
+        self.filtering.add_filter(filterMsgYear)
+        polis = self.asylum_report['Polis'][0].msg_count()
+
+        self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
+        self.assertEqual(self.asylum_report['Polis'][0].msg_count(), (polis-2))
 
 
 class TestFilterMsgYear(unittest.TestCase):
 
     def setUp(self):
-        self.msgs = [MsgModel({u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb'}),
-        MsgModel({u'date': u' 24 de Octubre de 2012, 08:22:36 am \xbb'})]
-        self.thread_mock = mock()
-        when(self.thread_mock).msgs_objs().thenReturn(self.msgs)
+        self.thread_obj = ThreadModel(Reports.get_asylum_polis_thread())
+        self.msg_count = self.thread_obj.msg_count()
+        self.filter2012 = FilterMsgYear('2012')
 
-    def test_(self):
-        pass
+    def test_when_entry_has_not_msgs_then_it_remains_unchanged(self):
+        entry_mock = mock()
+        when(entry_mock).has_msgs().thenReturn(False)
+        self.filter2012.filter(entry_mock)
+        verify(entry_mock, 1).has_msgs()
+        verify(entry_mock, 0).msgs_objs()
 
+    def test_when_entry_has_not_msgs_with_or_under_indicated_date_it_remains_unchanged(self):
+        self.filter2011 = FilterMsgYear('2011')
+        self.filter2011.filter(self.thread_obj)
+        self.assertEqual(self.thread_obj.msg_count(), self.msg_count)
+
+    def test_when_entry_has_msgs_with_the_indicated_date_remove_them(self):
+        self.filter2012.filter(self.thread_obj)
+        self.assertEqual((self.msg_count - 2), self.thread_obj.msg_count())
+
+    def test_when_entry_has_msgs_with_the_indicated_and_under_date_remove_them(self):
+        filter2013 = FilterMsgYear('2013')
+        filter2013.filter(self.thread_obj)
+        self.assertEqual(0, self.thread_obj.msg_count())
+
+
+class TestFilterEntryYear(unittest.TestCase):
+
+    def setUp(self):
+        self.thread_obj = ThreadModel(Reports.get_asylum_polis_thread())
+
+    def test_when_entry_has_not_msgs_with_or_under_indicated_date_it_remains_unchanged(self):
+        self.filter2011 = FilterEntryYear('2011')
+        include = self.filter2011.filter(self.thread_obj)
+        self.assertTrue(include)
 
 
 if __name__ == '__main__':
