@@ -4,9 +4,12 @@ __author__ = 'Javier'
 
 import unittest
 from tests.Harness import MockMongo, Reports, MockDatetime
-from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, ReportService, ReportBuilderService, SaveReportStatsService
+from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, \
+    ReportService, ReportBuilderService, SaveReportStatsService, \
+    FilteringService, FilterMsgYear
 from mockito import mock, verify, when, any
 from presenter.ReportPresenter import ReportResult
+from LaBSKApi.modelobjects import MsgModel, ThreadModel, ReportQueryModel
 
 
 
@@ -319,6 +322,46 @@ class TestReportBuilderService(unittest.TestCase):
         self.service.save_stats = mock()
         self.service.build_report(self.empty_report_request)
         verify(self.service.save_stats, 1)._save_report_stats(self.empty_report_request['name'], any())
+
+
+class TestReportFilteringService(unittest.TestCase):
+
+    def transtale_report_into_threads(self, report_query, report):
+        new_report = {}
+        for kword in report_query['keywords']:
+            threads = []
+            for thread in report[kword]:
+                threads.append(ThreadModel(thread))
+            new_report[kword] = threads
+        return new_report
+
+    def setUp(self):
+        self.filtering = FilteringService()
+        self.asylum_report = self.transtale_report_into_threads(Reports.asylum_report_request, Reports.get_asylum_report())
+        #self.polis_msgs = self.asylum['Polis'][0]['msgs']
+        self.msgs = [MsgModel({u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb'}),
+                     MsgModel({u'date': u' 24 de Octubre de 2012, 08:22:36 am \xbb'})]
+        self.thread_mock = mock()
+        when(self.thread_mock).msgs_objs().thenReturn(self.msgs)
+        self.asylum_report_query = ReportQueryModel(Reports.asylum_report_request)
+
+    def test_when_filtering_without_filter_result_is_teh_same(self):
+        self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
+        expected = self.transtale_report_into_threads(Reports.asylum_report_request, Reports.get_asylum_report())
+        self.assertEqual(len(self.asylum_report['Polis']), len(expected['Polis']))
+
+
+
+class TestFilterMsgYear(unittest.TestCase):
+
+    def setUp(self):
+        self.msgs = [MsgModel({u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb'}),
+        MsgModel({u'date': u' 24 de Octubre de 2012, 08:22:36 am \xbb'})]
+        self.thread_mock = mock()
+        when(self.thread_mock).msgs_objs().thenReturn(self.msgs)
+
+    def test_(self):
+        pass
 
 
 

@@ -218,7 +218,6 @@ class LaBSKReportBuilder(object):
                 report[keyword].append(ThreadModel(entry))
 
 
-
 class ReportBuilderService(object):
     """ This class creates and generated a report and stores the stats in
         a MomgoDB column
@@ -334,6 +333,31 @@ class SaveReportStatsService(object):
         json_report['stats'] = new_stats
 
 
+#################################################################
+# Filtering services
+
+class FilterMsgYear(object):
+
+    def __init__(self, year):
+        self._year = year
+
+
 class FilteringService(object):
-    pass
+    """ Filters a report using the filters added.
+        Report must be a dict of objects.
+        Methods of the objects depnds on the type of filters.
+    """
+
+    def __init__(self):
+        self.filters = []
+
+    def add_filter(self, filer):
+        self.filters.append(filter)
+
+    def filter_report(self, report_query, report_objects):
+        for kword in report_query.getKeywords():
+            print report_objects
+            for entry in report_objects[kword]:
+                for filter in self.filters:
+                    pass
 
