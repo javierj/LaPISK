@@ -6,11 +6,11 @@ import unittest
 from tests.Harness import MockMongo, Reports, MockDatetime
 from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, \
     ReportService, ReportBuilderService, SaveReportStatsService, \
-    FilteringService, FilterMsgYear, FilterEntryYear
+    FilteringService, FilterMsgYear, FilterEntryYear, SortService
 from mockito import mock, verify, when, any
 from presenter.ReportPresenter import ReportResult
-from LaBSKApi.modelobjects import MsgModel, ThreadModel, ReportQueryModel
-
+from LaBSKApi.modelobjects import ThreadModel, ReportQueryModel
+from LaBSKApi.PlanetaLudico import BlogEntry
 
 
 def create_mock_for_db():
@@ -18,6 +18,15 @@ def create_mock_for_db():
     mongo = mock()
     when(mongo).report_stats_collection().thenReturn(col)
     return (mongo, col)
+
+def transtale_report_into_threads(report_query, report):
+    new_report = {}
+    for kword in report_query['keywords']:
+        threads = []
+        for thread in report[kword]:
+            threads.append(ThreadModel(thread))
+        new_report[kword] = threads
+    return new_report
 
 
 class TestReportBuilder(unittest.TestCase):
@@ -32,9 +41,6 @@ class TestReportBuilder(unittest.TestCase):
 
     def assertLen(self, count, elements):
         self.assertEquals(count, len(elements))
-
-    ##################################################################################
-    # Test cases:
 
     def test_when_report_has_no_keywords_launch_exception(self):
         emptyReport = dict()
@@ -176,7 +182,10 @@ class TestReportBuilder(unittest.TestCase):
         self.assertEquals(1, len(report["android"]))
 
 
-class TestSortingThreads(unittest.TestCase):
+class TestSortingThreads_Deprecated(unittest.TestCase):
+    """ This test suite test the sorting in the report builder.
+        Nor the sorting has moved to a comlete service
+    """
 
     def setUp(self):
         self.mock = MockMongo()
@@ -326,28 +335,14 @@ class TestReportBuilderService(unittest.TestCase):
 
 class TestReportFilteringService(unittest.TestCase):
 
-    def transtale_report_into_threads(self, report_query, report):
-        new_report = {}
-        for kword in report_query['keywords']:
-            threads = []
-            for thread in report[kword]:
-                threads.append(ThreadModel(thread))
-            new_report[kword] = threads
-        return new_report
-
     def setUp(self):
         self.filtering = FilteringService()
-        self.asylum_report = self.transtale_report_into_threads(Reports.asylum_report_request, Reports.get_asylum_report())
-        #self.polis_msgs = self.asylum['Polis'][0]['msgs']
-        self.msgs = [MsgModel({u'date': u' 24 de Octubre de 2013, 08:22:36 am \xbb'}),
-                     MsgModel({u'date': u' 24 de Octubre de 2012, 08:22:36 am \xbb'})]
-        self.thread_mock = mock()
-        when(self.thread_mock).msgs_objs().thenReturn(self.msgs)
+        self.asylum_report = transtale_report_into_threads(Reports.asylum_report_request, Reports.get_asylum_report())
         self.asylum_report_query = ReportQueryModel(Reports.asylum_report_request)
 
     def test_when_filtering_without_filter_result_is_teh_same(self):
         self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
-        expected = self.transtale_report_into_threads(Reports.asylum_report_request, Reports.get_asylum_report())
+        expected = transtale_report_into_threads(Reports.asylum_report_request, Reports.get_asylum_report())
         self.assertEqual(len(self.asylum_report['Polis']), len(expected['Polis']))
 
     def test_when_deleting_2012_two_msg_from_polis_is_deleted(self):
@@ -357,6 +352,28 @@ class TestReportFilteringService(unittest.TestCase):
 
         self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
         self.assertEqual(self.asylum_report['Polis'][0].msg_count(), (polis-2))
+
+    def test_when_deleting_2013_all_therads_from_polis_are_deleted(self):
+        self.filtering.add_filter(FilterEntryYear('2013'))
+
+        self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
+        self.assertEqual(len(self.asylum_report['Polis']), 0)
+
+    def test_deleing_threads_and_blog_entries(self):
+        blog_entry = BlogEntry({"date": "21 marzo, 2013"})
+        self.asylum_report['Polis'].append(blog_entry)
+        self.filtering.add_filter(FilterEntryYear('2013'))
+
+        self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
+        self.assertEqual(len(self.asylum_report['Polis']), 0)
+
+    def test_deleing_threads_and_blog_entries_no_deletes(self):
+        blog_entry = BlogEntry({"date": "21 marzo, 2013"})
+        self.asylum_report['Polis'].append(blog_entry)
+        self.filtering.add_filter(FilterEntryYear('2012'))
+
+        self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
+        self.assertEqual(len(self.asylum_report['Polis']), 2)
 
 
 class TestFilterMsgYear(unittest.TestCase):
@@ -369,13 +386,14 @@ class TestFilterMsgYear(unittest.TestCase):
     def test_when_entry_has_not_msgs_then_it_remains_unchanged(self):
         entry_mock = mock()
         when(entry_mock).has_msgs().thenReturn(False)
-        self.filter2012.filter(entry_mock)
+        result = self.filter2012.filter(entry_mock)
         verify(entry_mock, 1).has_msgs()
         verify(entry_mock, 0).msgs_objs()
+        self.assertTrue(result)
 
     def test_when_entry_has_not_msgs_with_or_under_indicated_date_it_remains_unchanged(self):
-        self.filter2011 = FilterMsgYear('2011')
-        self.filter2011.filter(self.thread_obj)
+        filter2011 = FilterMsgYear('2011')
+        filter2011.filter(self.thread_obj)
         self.assertEqual(self.thread_obj.msg_count(), self.msg_count)
 
     def test_when_entry_has_msgs_with_the_indicated_date_remove_them(self):
@@ -393,11 +411,111 @@ class TestFilterEntryYear(unittest.TestCase):
     def setUp(self):
         self.thread_obj = ThreadModel(Reports.get_asylum_polis_thread())
 
-    def test_when_entry_has_not_msgs_with_or_under_indicated_date_it_remains_unchanged(self):
-        self.filter2011 = FilterEntryYear('2011')
-        include = self.filter2011.filter(self.thread_obj)
+    def test_when_entry_date_is_over_filtering_return_true(self):
+        filter2011 = FilterEntryYear('2011')
+        include = filter2011.filter(self.thread_obj)
         self.assertTrue(include)
 
+        filter2012 = FilterEntryYear('2012')
+        include = filter2012.filter(self.thread_obj)
+        self.assertTrue(include)
+
+    def test_when_entry_date_is_equal_or_under_over_filtering_return_true(self):
+        filter2013 = FilterEntryYear('2013')
+        include = filter2013.filter(self.thread_obj)
+        self.assertFalse(include)
+
+
+class TestSortingService(unittest.TestCase):
+    """ This test suite test the sorting in the report builder.
+        Nor the sorting has moved to a comlete service
+    """
+
+    def setUp(self):
+        self.service = SortService()
+        self.report = {'name': "TestReport", 'keywords': ['key', 'word']}
+        self.thread = {'title': (self.report['keywords'][0]), 'msgs': []}.copy()
+        self.keyword = self.report['keywords'][0]
+
+    def test_sorts_threads_by_creation_date_and_hour(self):
+        report = {'key': [ {'title':'b', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]},
+                           {'title':'a', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]}]}
+        report_obj = transtale_report_into_threads({'keywords':['key']}, report)
+        self.service.sort_report(['key'], report_obj)
+        self.assertEqual(report_obj['key'][0].title(), "a")
+        self.assertEqual(report_obj['key'][1].title(), "b")
+
+    def test_sorts_threads_by_second(self):
+        report = {'key': [{'title': 'b', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:36 am \xbb'}]},
+                           {'title': 'a', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:37 am \xbb'}]}]}
+        report_obj = transtale_report_into_threads({'keywords':['key']}, report)
+        self.service.sort_report(['key'], report_obj)
+        self.assertGoesFirst(report_obj, "a")
+        self.assertEqual(report_obj['key'][1].title(), "b")
+
+    def test_sorts_threads_by_creation_date_and_moth(self):
+        report = {'key': [{'title': 'b', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]},
+                           {'title': 'a', 'msgs': [{'date': u' 21 de Diciembre de 2012, 10:18:38 am \xbb'}]}]}
+        report_obj = transtale_report_into_threads({'keywords':['key']}, report)
+        self.service.sort_report(['key'], report_obj)
+        self.assertGoesFirst(report_obj, "a")
+        self.assertEqual(report_obj['key'][1].title(), "b")
+
+    def test_sorts_threads_by_creation_date_year(self):
+        report = {'key': [{'title': 'b', 'msgs':[{'date':u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}]},
+                           {'title': 'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
+        report_obj = transtale_report_into_threads({'keywords':['key']}, report)
+        self.service.sort_report(['key'], report_obj)
+        self.assertGoesFirst(report_obj, "a")
+        self.assertEqual(report_obj['key'][1].title(), "b")
+
+    def test_sorts_threads_by_creation_date_without_date(self):
+        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}],
+                            'link': "Test data"},
+                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
+        report_obj = transtale_report_into_threads({'keywords':['key']}, report)
+        self.service.sort_report(['key'], report_obj)
+        self.assertGoesFirst(report_obj, "a")
+        self.assertEqual(report_obj['key'][1].title(), "b")
+
+    # Test con entradas de blog
+
+    def test_sorts_threads_and_blog_entry_goes_first(self):
+        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}],
+                            'link': "Test data"},
+                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
+        report_obj = transtale_report_into_threads({'keywords':['key']}, report)
+        entry = BlogEntry({'date':'23 Noviembre, 2012'})
+        report_obj['key'].append(entry)
+        self.service.sort_report(['key'], report_obj)
+        self.assertEqual(report_obj['key'][1].title(), "a")
+        self.assertEqual(report_obj['key'][2].title(), "b")
+
+    def test_sorts_threads_and_blog_entry_goes_last(self):
+        report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}],
+                            'link': "Test data"},
+                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
+        report_obj = transtale_report_into_threads({'keywords':['key']}, report)
+        entry = BlogEntry({'date':'23 Noviembre, 2010'})
+        report_obj['key'].append(entry)
+        self.service.sort_report(['key'], report_obj)
+        self.assertGoesFirst(report_obj, "a")
+        self.assertEqual(report_obj['key'][1].title(), "b")
+
+    def test_sorts_threads_and_blog_entry_goes_in_the_middle(self):
+        report = {'key': [ {'title': 'b', 'msgs': [{'date': u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}],
+                            'link': "Test data"},
+                           {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
+        report_obj = transtale_report_into_threads({'keywords':['key']}, report)
+        entry = BlogEntry({'date':'23 Enero, 2012'})
+        report_obj['key'].append(entry)
+        self.service.sort_report(['key'], report_obj)
+        self.assertGoesFirst(report_obj, "a")
+        self.assertEqual(report_obj['key'][2].title(), "b")
+
+
+    def assertGoesFirst(self, report, title):
+        self.assertEqual(report['key'][0].title(), title)
 
 if __name__ == '__main__':
     unittest.main()

@@ -428,6 +428,7 @@ class ObjectId(object):
     def __init__(self, key):
         pass
 
+
 class Reports(object):
     """ Sample reports
     """
@@ -509,7 +510,6 @@ class Reports(object):
 
         return report
 
-
     @staticmethod
     def get_asylum_polis_thread():
         report = Reports.get_asylum_report()
@@ -517,6 +517,7 @@ class Reports(object):
 
 
 class MockDatetime(object):
+
     def __init__(self, date = None):
         self.dt = self.set_datetime("01/01/2014", "14:10")
 

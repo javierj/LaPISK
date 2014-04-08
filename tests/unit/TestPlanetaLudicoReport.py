@@ -5,6 +5,7 @@ __author__ = 'Javier'
 import unittest
 from LaBSKApi.PlanetaLudico import PlanetaLudicoReport, BlogEntry
 from mockito import mock, when
+from datetime import datetime
 
 
 class TestBlogEntry(unittest.TestCase):
@@ -12,6 +13,14 @@ class TestBlogEntry(unittest.TestCase):
     def test_create_BlogEntry(self):
         result = BlogEntry("xx")
         self.assertEqual(result.json(), "xx")
+
+    def test_year(self):
+        entry = BlogEntry({'date':'23 Noviembre, 2012'})
+        self.assertEqual(entry.year(), 2012)
+
+    def test_date_as_datetime(self):
+        entry = BlogEntry({'date':'23 Noviembre, 2012'})
+        self.assertEqual(entry.date_as_datetime(), datetime(2012, 11, 23))
 
 
 class TestPlanetaLudicoReport(unittest.TestCase):

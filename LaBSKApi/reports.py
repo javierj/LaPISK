@@ -342,26 +342,32 @@ class FilterMsgYear(object):
     """
 
     def __init__(self, year):
-        self._year = year
+        self._year = int(year)
 
     def filter(self, report_entry):
+        """ A filter retusn true if the entry should be not filtered.
+        """
         if not report_entry.has_msgs():
-            return
+            return True
         msgs = []
-        year_int = int(self._year)
         for msgobj in report_entry.msgs_objs():
-            if msgobj.year() > year_int:
+            if msgobj.year() > self._year:
                 print "Add"
                 msgs.append(msgobj)
         report_entry.replace_msgs_objs(msgs)
+        return True
 
 
 class FilterEntryYear(object):
+    """ Report entry  must ahs a method called year()
+    """
+
     def __init__(self, year):
-        self._year = year
+        self._year = int(year)
 
     def filter(self, report_entry):
-        return True
+        return report_entry.year() > self._year
+
 
 class FilteringService(object):
     """ Filters a report using the filters added.
@@ -377,8 +383,26 @@ class FilteringService(object):
 
     def filter_report(self, report_query, report_objects):
         for kword in report_query.getKeywords():
-            print report_objects
-            for entry in report_objects[kword]:
-                for filter_obj in self.filters:
-                    filter_obj.filter(entry)
+            entries = self._select_entries(report_objects[kword])
+            report_objects[kword] = entries
 
+    def _select_entries(self, report_objects):
+        entries = []
+        for entry in report_objects:
+               include = True
+               for filter_obj in self.filters:
+                   include = filter_obj.filter(entry)
+                   if not include:
+                       break
+               if include:
+                   entries.append(entry)
+        return entries
+
+
+class SortService(object):
+    """ Objects in report must have a date() method.
+    """
+    def sort_report(self, keywords, report_object):
+        for kword in keywords:
+            entries = report_object[kword]
+            report_object[kword] = sorted(entries, key=lambda t: t.date_as_datetime(), reverse=True)

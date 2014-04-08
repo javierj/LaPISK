@@ -4,7 +4,9 @@ __author__ = 'Javier'
 
 from LaBSKApi.web import RESTReader
 from LaBSKApi.Process import VoidListener
-
+from LaBSKApi.modelobjects import DateManager
+import re
+from datetime import datetime
 
 class PlanetaLudicoScrap(object):
 
@@ -86,6 +88,22 @@ class BlogEntry(object):
     def json(self):
         return self._json
 
+    def year(self):
+        #  "date": "21 marzo, 2014",
+        s = re.search('([0-9][0-9]) (.*), ([0-9][0-9][0-9][0-9])', self._json['date'])
+        return int(s.group(3))
+
+    def has_msgs(self):
+        """ This method is used by the report's filtering to distingsh
+        a thread entry from a blog entry.
+        """
+        return False
+
+    def date_as_datetime(self):
+        #([EFMAJSOND].+)
+        s = re.search('([0-9][0-9]) (.*), ([0-9][0-9][0-9][0-9])', self._json['date'])
+        return datetime( int(s.group(3)), DateManager.meses[s.group(2)], int(s.group(1)) )
+
 
 class PlanetaLudicoReport(object):
 
@@ -94,7 +112,7 @@ class PlanetaLudicoReport(object):
 
     def build_report(self, report_request, report, stats):
         """ This mehtods search for ocurrences of the key words y reporr reest in
-        the information from PlanetaLudico blogs and tores them in report updatind stats object
+            the information from PlanetaLudico blogs and tores them in report updatind stats object
         """
         report_result = self._report_builder.build_report(report_request)
         new_stats = ReportStats()
@@ -102,11 +120,5 @@ class PlanetaLudicoReport(object):
             for entry in report_result[keyword]:
                 report[keyword].append(BlogEntry(entry))
             new_stats.inc_blogs(len(report_result[keyword]))
-        #stats = self._generate_stats(report_request, report_result)
         # Merge stats
         stats.merge(new_stats)
-
-"""
-    def _generate_stats(self, report_request, report_result):
-        stats =  ReportStats()
-"""

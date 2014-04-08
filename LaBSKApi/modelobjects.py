@@ -3,6 +3,7 @@ __author__ = 'Javier'
 import re
 from datetime import datetime
 
+
 class DateManager(object):
     meses = {"Enero": 1,
          "Febrero": 2,
@@ -23,7 +24,10 @@ class DateManager(object):
 
     def hoy(self):
         date = self.now()
-        return str(date.day) + " de " + DateManager.meses.keys()[DateManager.meses.values().index(date.month)] + " de " + str(date.year)
+        return str(date.day) + " de " + self.month_name(date.month) + " de " + str(date.year)
+
+    def month_name(self, index):
+        return DateManager.meses.keys()[DateManager.meses.values().index(index)]
 
 
 class ReportQueryModel(object):
@@ -219,6 +223,9 @@ class ThreadModel(object):
             return None
         return self.msgList().lastmsg_object().year()
 
+    def year(self):
+        return self.year_last_msg()
+
     def add_creation_and_last_update_dates(self):
         """ Use this mathod only generating reports
         """
@@ -239,6 +246,11 @@ class ThreadModel(object):
         a thread entry from a blog entry.
         """
         return True
+
+    def date_as_datetime(self):
+        """ This method is sued by the sorted service to sort report entries
+        """
+        return self.last_msg_date_as_datetime()
 
 
 class MsgListModel(object):
