@@ -20,7 +20,7 @@ class ReportPresenter(object):
         """
         rr = self.generateReport(reportDescription, data_filter, filter_year)
         #rr.report = self.generateReport(reportDescription, data_filter, filter_year)
-        result = ReportAndStats()
+        result = ReportResult()
         result.report_stats = self.generateStats(reportDescription, rr.report)
         if data_filter is not None:
             prev_year = int(data_filter) +1
@@ -40,9 +40,10 @@ class ReportPresenter(object):
             self._filter_threads_using_year(reportDescription, report_result.report, filter_year)
         return report_result
 
+    # Duplicate code. For filtering use the classes in report module
     def _filter_report_using_year(self, reportDescription, report, year):
         query = ReportQueryModel(reportDescription)
-        for kword in query.getKeywords():
+        for kword in query.keywords():
             for thread in report[kword]:
                 threadobj = ThreadModel(thread)
                 new_msgs = self._filer_msgs_in(threadobj, year)
@@ -65,7 +66,7 @@ class ReportPresenter(object):
         year_int = int(year)
         query = ReportQueryModel(reportDescription)
         report_obj = ReportModel(report)
-        for kword in query.getKeywords():
+        for kword in query.keywords():
             threats = list()
             for threadobj in report_obj.threads_in(kword):
                 #print kword, ":", threadobj.year_last_msg(), ", ", year_int, threadobj.link()
@@ -97,7 +98,7 @@ class ReportPresenter(object):
         result.addText(u"Mensajes encontrados: " + str(msgs))
         return result
 
-
+"""
 class ReportAndStats(object):
 
     def __init__(self, report=None, stats=None):
@@ -119,7 +120,7 @@ class ReportAndStats(object):
     @report_stats.setter
     def report_stats(self, value):
         self.stat = value
-
+"""
 
 class ReportResult(object):
 
@@ -142,3 +143,19 @@ class ReportResult(object):
     @report_stats.setter
     def report_stats(self, value):
         self.stat = value
+
+
+""" Puede que no lo necesite
+class ReportBuilderPresenter(object):
+     This presenter worksa with the new builder that suport diferente information sources.
+        Use ths presenter instea dthe previous one.
+
+
+    def _create_filter(msg_year, entry_year):
+        filter = FilteringService()
+        if msg_year is not None:
+            filter.add_filter(FilterMsgYear(msg_year))
+        if entry_year is not None:
+            filter.add_filter(FilterEntryYear(entry_year))
+        return filter
+"""

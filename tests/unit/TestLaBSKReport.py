@@ -6,7 +6,7 @@ import unittest
 from mockito import mock, when
 from tests.Harness import Reports
 from LaBSKApi.modelobjects import ThreadModel
-from LaBSKApi.reports import LaBSKReportBuilder
+from LaBSKApi.LaBSK import LaBSKReportBuilder
 
 
 class TestLaBSKReport(unittest.TestCase):

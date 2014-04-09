@@ -3,8 +3,7 @@ from LaBSKApi.reportstats import ReportStats
 __author__ = 'Javier'
 
 from datetime import datetime
-from LaBSKApi.modelobjects import ThreadModel, ReportModel
-# change this dependence, maybe ReportResult should be in other place
+from LaBSKApi.modelobjects import ThreadModel, ReportModel, ReportQueryModel
 from presenter.ReportPresenter import ReportResult
 
 
@@ -192,73 +191,6 @@ class ReportBuilder(object):
         return thread_obj.last_msg_date_as_datetime()
 
 
-class LaBSKReportBuilder(object):
-    """Cass under construction do nor use it"""
-
-    def __init__(self, builder = None):
-        self._report_builder = builder
-
-    def build_report(self, report_request, report, stats):
-        """ Should return a set of thread objects
-        """
-        result = ReportStats()
-
-        report_obj = ReportModel(report)
-        for key in report_request['keywords']:
-            for thread_obj in report_obj.threads_in(key):
-                result.inc_threads()
-                result.inc_msgs( thread_obj.msg_count() )
-
-        stats.merge(result)
-
-        report_result = self._report_builder.build_report(report_request)
-        new_stats = ReportStats()
-        for keyword in report_request['keywords']:
-            for entry in report_result[keyword]:
-                report[keyword].append(ThreadModel(entry))
-
-
-class ReportBuilderService(object):
-    """ This class creates and generated a report and stores the stats in
-        a MomgoDB column
-    """
-
-    def __init__(self, db):
-        self.report_modules = []
-        self.db = db
-        self.save_stats = SaveReportStatsService(db)
-
-    def add_module(self, module):
-        self.report_modules.append(module)
-
-    def build_report(self, report_request):
-        report = self._create_empty_report(report_request)
-        stats = ReportStats()
-        for module in self.report_modules:
-            module.build_report(report_request, report, stats)
-        self._save_stats(report_request['name'], stats)
-        # Filter
-        # Sort
-
-    def _create_empty_report(self, report_request):
-        report = dict()
-        if 'name' in report_request:
-            report['title'] = "Result for report " + report_request['name']
-        else:
-            report['title'] = "Result for report."
-        # Untested feature
-        now = datetime.now()
-        report['report_date'] = str(datetime.date(now)) +", " + str(now.hour) + ":" + str(now.minute)
-
-        for keyword in report_request['keywords']:
-            report[keyword] = []
-
-        return report
-
-    def _save_stats(self, report_name, stats):
-        self.save_stats._save_report_stats(report_name, stats)
-
-
 class ReportService(object):
     """ This class creates and generated a report and stores the stats in
         a MomgoDB column
@@ -382,7 +314,7 @@ class FilteringService(object):
         self.filters.append(filter)
 
     def filter_report(self, report_query, report_objects):
-        for kword in report_query.getKeywords():
+        for kword in report_query.keywords():
             entries = self._select_entries(report_objects[kword])
             report_objects[kword] = entries
 
@@ -406,3 +338,54 @@ class SortService(object):
         for kword in keywords:
             entries = report_object[kword]
             report_object[kword] = sorted(entries, key=lambda t: t.date_as_datetime(), reverse=True)
+
+
+class ReportBuilderService(object):
+    """ This class creates and generated a report and stores the stats in
+        a MomgoDB column.
+        Seeral report modules may be used for diferent data sources.
+        This service expects a filtering service propertly configures.
+        In other case, there is no filtering
+    """
+
+    def __init__(self, db, filter_service = FilteringService()):
+        self.report_modules = []
+        self.db = db
+        self.save_stats = SaveReportStatsService(db)
+        self.sorting_service = SortService()
+        self.filter_service = filter_service
+
+    def add_module(self, module):
+        self.report_modules.append(module)
+
+    def build_report(self, report_request):
+        report = self._create_empty_report(report_request)
+        report_query = ReportQueryModel(report_request)
+        stats = ReportStats()
+        for module in self.report_modules:
+            module.build_report(report_request, report, stats)
+        self._save_stats(report_query.name(), stats)
+        self._filter_report(report_query, report)
+        self.sorting_service.sort_report(report_query.keywords(), report)
+
+    def _create_empty_report(self, report_request):
+        report = dict()
+        if 'name' in report_request:
+            report['title'] = "Result for report " + report_request['name']
+        else:
+            report['title'] = "Result for report."
+        # Untested feature
+        now = datetime.now()
+        report['report_date'] = str(datetime.date(now)) +", " + str(now.hour) + ":" + str(now.minute)
+
+        for keyword in report_request['keywords']:
+            report[keyword] = []
+
+        return report
+
+    def _save_stats(self, report_name, stats):
+        self.save_stats._save_report_stats(report_name, stats)
+
+    def _filter_report(self, report_query, report):
+        self.filter_service.filter_report(report_query, report)
+

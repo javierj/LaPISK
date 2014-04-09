@@ -40,8 +40,11 @@ class ReportQueryModel(object):
     def json(self):
         return self.jsondoc
 
-    def getKeywords(self):
+    def keywords(self):
         return self.jsondoc['keywords']
+
+    def name(self):
+        return self.jsondoc['name']
 
 
 class ReportModel(object):

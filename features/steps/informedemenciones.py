@@ -2,7 +2,9 @@ __author__ = 'Javier'
 
 #import sure
 from LaBSKApi.MongoDB import MongoDB
-from LaBSKApi.reports import ReportService
+from LaBSKApi.reports import ReportService, ReportBuilderService, ReportBuilder
+from LaBSKApi.LaBSK import LaBSKReportBuilder
+from LaBSKApi.PlanetaLudico import PlanetaLudicoReport
 from presenter.ReportPresenter import ReportPresenter
 from expects import expect
 
@@ -13,10 +15,21 @@ from expects import expect
 def crea_informe(name="Name", keywords=None):
     return {'name': name, 'keywords': (keywords or [])}
 
-def create_report(context):
+def create_report_old(context):
     presenter = ReportPresenter(ReportService(context.db))
     presenter.database = context.db
     return presenter
+
+
+def create_report(context):
+    #filter_service =
+    rb_service = ReportBuilderService(context.db)
+    rb_service.add_module(LaBSKReportBuilder(ReportBuilder(context.db)))
+    rb_service.add_module(PlanetaLudicoReport(ReportBuilder(context.db)))
+    presenter = ReportPresenter(ReportService(context.db))
+    presenter.database = context.db
+    return presenter
+
 
 """
 	Scenario encontrar hilos que mencionan un juego

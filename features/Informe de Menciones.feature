@@ -15,11 +15,13 @@ Feature: generar informe de menciones
 		Then el informe contiene "2" hilos que la mencionan en el titulo
         And "2" hilos que la mencionan en un mensaje
 
+
 	Scenario: encontrar mensajes que mencionan un juego
 		Given las noticias de LaBSK
 		When solicito el informe del juego "Grenadier"
 		Then obtengo el hilo con enlace "http://labsk.net/index.php?topic=127181.0"
         And "1" mensaje del usuairo "Ech-Pi-El"
+
 
     Scenario: sin menciones del juego
 		Given Las noticias de LaBSK

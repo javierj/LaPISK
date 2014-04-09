@@ -155,5 +155,17 @@ class TestReportPresenter_FilteringThreads(unittest.TestCase):
         post.assertEqual(self.asylum["report_date"], "This")
 
 
+class TestReportBuilderPresenter(unittest.TestCase):
+
+    def test_creating_filtering_with_two_filters(self):
+        pass
+        """
+        rb_presenter = ReportBuilderPresenter(db=None)
+        filter = rb_presenter._create_filter('2012', '2012')
+        #filter = rb_presenter.
+        self.assertEqual(len(filter.filters), 2)
+        """
+
+
 if __name__ == '__main__':
     unittest.main()
