@@ -332,6 +332,22 @@ class TestReportBuilderService(unittest.TestCase):
         self.service.build_report(self.empty_report_request)
         verify(self.service.save_stats, 1)._save_report_stats(self.empty_report_request['name'], any())
 
+    ## Testing the description of the filters
+
+    def test_when_bukider_has_no_filters_description_is_empty(self):
+        desc = self.service.descriptions_from_filters()
+        self.assertEqual(len(desc), 0)
+
+    def test_when_builder_has_filter_Service_with_two_filters_description_has_two_strings(self):
+        mock_filter = mock()
+        filter_service = FilteringService()
+        filter_service.add_filter(mock_filter)
+        filter_service.add_filter(mock_filter)
+        self.service.set_filter_service(filter_service)
+
+        desc = self.service.descriptions_from_filters()
+        self.assertEqual(len(desc), 2)
+
 
 class TestReportFilteringService(unittest.TestCase):
 
@@ -405,6 +421,9 @@ class TestFilterMsgYear(unittest.TestCase):
         filter2013.filter(self.thread_obj)
         self.assertEqual(0, self.thread_obj.msg_count())
 
+    def test_its_description_includes_the_year(self):
+        self.assertIn('2012', str(self.filter2012))
+
 
 class TestFilterEntryYear(unittest.TestCase):
 
@@ -424,6 +443,10 @@ class TestFilterEntryYear(unittest.TestCase):
         filter2013 = FilterEntryYear('2013')
         include = filter2013.filter(self.thread_obj)
         self.assertFalse(include)
+
+    def test_its_description_includes_the_year(self):
+        filter2011 = FilterEntryYear('2011')
+        self.assertIn('2011', str(filter2011))
 
 
 class TestSortingService(unittest.TestCase):

@@ -35,8 +35,8 @@ class PreGeneratedReports(object):
     """
     report_asmodee = {'name': 'Editorial Asmodee',
                     'keywords': ["Asmodee"]}
-    report_dizemo_entertainment = {'name': 'Editorial Dizemo Entertainment',
-                    'keywords': ["dizemo"]}
+    #report_dizemo_entertainment = {'name': 'Editorial Dizemo Entertainment',
+    #                'keywords': ["dizemo"]}
     report_morapiaf = {'name': 'Editorial Morapiaf',
                     'keywords': ["Morapiaf"]}
 
@@ -65,6 +65,7 @@ class PreGeneratedReports(object):
     tienda_demartina = {'name': 'Tienda DeMartina',
                       'keywords': ["demartina"]}
 
+    # tienda: Juegos en la Mesa
 
 class ReportBuilder(object):
     """ Builds a report using the information in mongodb from labsk
@@ -289,6 +290,9 @@ class FilterMsgYear(object):
         report_entry.replace_msgs_objs(msgs)
         return True
 
+    def __str__(self):
+        return "Se omiten mensajes desde el "+str(self._year)+" o posteriores"
+
 
 class FilterEntryYear(object):
     """ Report entry  must ahs a method called year()
@@ -299,6 +303,9 @@ class FilterEntryYear(object):
 
     def filter(self, report_entry):
         return report_entry.year() > self._year
+
+    def __str__(self):
+        return "Se omiten asuntos sin mensajes desde el "+str(self._year)+" o posteriores"
 
 
 class FilteringService(object):
@@ -330,6 +337,22 @@ class FilteringService(object):
                    entries.append(entry)
         return entries
 
+    def descriptions_from_filters(self):
+        return [str(filter) for filter in self.filters]
+
+
+class FilteringServiceFactory():
+    """ Several methods to facilitate the creation of
+        filtering_service objects
+    """
+
+    @staticmethod
+    def create_2_filters_same_year(year):
+        service = FilteringService()
+        service.add_filter(FilterEntryYear(year))
+        service.add_filter(FilterMsgYear(year))
+        return service
+
 
 class SortService(object):
     """ Objects in report must have a date() method.
@@ -358,6 +381,9 @@ class ReportBuilderService(object):
     def add_module(self, module):
         self.report_modules.append(module)
 
+    def set_filter_service(self, fs):
+        self.filter_service = fs
+
     def build_report(self, report_request):
         report = self._create_empty_report(report_request)
         report_query = ReportQueryModel(report_request)
@@ -367,6 +393,7 @@ class ReportBuilderService(object):
         self._save_stats(report_query.name(), stats)
         self._filter_report(report_query, report)
         self.sorting_service.sort_report(report_query.keywords(), report)
+        return ReportResult(report, stats)
 
     def _create_empty_report(self, report_request):
         report = dict()
@@ -388,4 +415,7 @@ class ReportBuilderService(object):
 
     def _filter_report(self, report_query, report):
         self.filter_service.filter_report(report_query, report)
+
+    def descriptions_from_filters(self):
+        return self.filter_service.descriptions_from_filters()
 

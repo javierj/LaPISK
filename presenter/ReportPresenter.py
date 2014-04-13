@@ -145,17 +145,54 @@ class ReportResult(object):
         self.stat = value
 
 
-""" Puede que no lo necesite
 class ReportBuilderPresenter(object):
-     This presenter worksa with the new builder that suport diferente information sources.
-        Use ths presenter instea dthe previous one.
 
+    def __init__(self, builder=None):
+        """ Builder should have the filters setted """
+        self.builder = builder
 
-    def _create_filter(msg_year, entry_year):
-        filter = FilteringService()
-        if msg_year is not None:
-            filter.add_filter(FilterMsgYear(msg_year))
-        if entry_year is not None:
-            filter.add_filter(FilterEntryYear(entry_year))
-        return filter
-"""
+    def set_builder(self, builder):
+        self.builder = builder
+
+    def _get_builder(self):
+        return self.builder
+
+    def report_and_stats(self, reportDescription):
+        """ Retrurns an object with the result of the query incuding
+            the generated report and starts woth the reuslts
+        """
+        rr = self.generateReport(reportDescription)
+        #rr.report = self.generateReport(reportDescription, data_filter, filter_year)
+        result = ReportResult()
+        result.report_stats = self.generateStats(reportDescription, rr.report)
+        result.report_stats.addText(self.builder.descriptions_from_filters())
+        result.report = rr.report
+        return result
+
+    def generateReport(self, reportDescription):
+        informeBuilder = self._get_builder()
+        report_result = informeBuilder.build_report(reportDescription)
+        return report_result
+
+    def _toGUIMode(self, report, keywords):
+        """ Unused by now.
+        Translates a report from model domain to GUI domain
+        """
+        result = Text(report['title'])
+        for keyword in keywords:
+            result.addNextText(Text(keyword))
+        return result
+
+    # Duplicate code. Report services return stats.
+    def generateStats(self, reportDescription, report_json):
+        threads = 0
+        msgs = 0
+        report_obj = ReportModel(report_json)
+        for key in reportDescription['keywords']:
+            for thread_obj in report_obj.threads_in(key):
+                threads += 1
+                msgs += thread_obj.msg_count()
+
+        result = Text(u"Asuntos encontrados: " + str(threads))
+        result.addText(u"Mensajes encontrados: " + str(msgs))
+        return result
