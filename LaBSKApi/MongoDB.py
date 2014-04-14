@@ -7,6 +7,7 @@ class MongoDB(object):
 
     COL_REPORT_STATS = "report_stats"
     COL_BLOGS = "blogs"
+    COL_LABSK = "labsk_merge"
 
     def __init__(self, host="localhost", port=27017, db="labsk", col=None):
         #self.connection = MongoClient(host, port)

@@ -5,9 +5,9 @@ from LaBSKApi.HTML2Objects import MsgPageFactory
 from LaBSKApi.web import get_all_descs, planetaludico_urls, labsk_urls
 from jinja2 import FileSystemLoader, Environment
 from LaBSKApi.MongoDB import MongoDB
-from LaBSKApi.reports import PreGeneratedReports, ReportService
+from LaBSKApi.reports import PreGeneratedReports, ReportService, FilteringServiceFactory, ReportBuilderServiceFactory
 from presenter.GUIModel import Text
-from presenter.ReportPresenter import ReportPresenter
+from presenter.ReportPresenter import ReportPresenter, ReportBuilderPresenter
 from datetime import datetime
 from LaBSKApi.PlanetaLudico import PlanetaLudicoScrap
 import shutil
@@ -77,8 +77,9 @@ listener = StdListener()
 threads = ProcessThreads(db, MsgPageFactory())
 threads.setListener(listener)
 threads.setPageLimit(1)
-threads.setMsgPageLimit(230)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
+threads.setMsgPageLimit(250)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
 
+"""
 threads.scrapListOfURL(labsk_urls)
 delta = datetime.now() - starttime
 
@@ -99,6 +100,7 @@ blogs.scrapListOfURL(planetaludico_urls)
 print "----------------------------------------------"
 #print "Total time: ", delta
 print str(listener)
+"""
 
 #------------------------------------------------
 # Build reports
@@ -116,19 +118,32 @@ def write(name, html_text):
     shutil.copyfile(path + filename, phorumledge_path + filename)
 
 
+def create_builder():
+    return ReportPresenter(ReportService(MongoDB(col="labsk_merge")))
+
+
+def create_builder_new(filter_year):
+    service = ReportBuilderServiceFactory.create_service_with_all_modules()
+    if filter_year is not None:
+        filter_service = FilteringServiceFactory.create_2_filters_same_year(filter_year)
+        service.set_filter_service(filter_service)
+    return ReportBuilderPresenter(service)
+
+
 def generate_report(name, report_schema, filter_criterion=None):
-    builder = ReportPresenter(ReportService(MongoDB(col="labsk_merge")))
+    #builder = create_builder()
+    builder = create_builder_new(filter_criterion)
     text = Text()
     env = Environment(loader=FileSystemLoader('../webgui/templates'))
     template = env.get_template("_static_report.html")
-    result = builder.report_and_stats(report_schema, filter_year=filter_criterion)
+    #result = builder.report_and_stats(report_schema, filter_year=filter_criterion)
+    result = builder.report_and_stats(report_schema)
     text.change_newline_in_report(report_schema['keywords'], result.report)
     xhtml = template.render(keywords=report_schema['keywords'],
                             report=result.report,
                             links=get_all_descs(),
                             stats=result.report_stats.get_text()
                             )
-    #html = UnicodeDammit(xhtml).unicode_markup
     write(name, xhtml)
 
 
@@ -150,14 +165,6 @@ def run_thread(name, report_schema, filter_threads=None):
 run_thread("hootboardgame", PreGeneratedReports.report_hootboardgame)
 run_thread("asylum_games", PreGeneratedReports.report_asylum_games)
 run_thread("asmodee", PreGeneratedReports.report_asmodee, '2013')
-
-#run_thread("edge_ent", PreGeneratedReports.report_edge_entertainment, '2013')
-#generate_report("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013')
-run_thread("dizemo_ent", PreGeneratedReports.report_dizemo_entertainment, '2013')
-
-#generate_report("looping_games", PreGeneratedReports.report_looping_games, '2013')
-#generate_report("nestor_games", PreGeneratedReports.report_nestor_games, '2013')
-#generate_report("lost_games", PreGeneratedReports.report_lost_games, '2013')
 
 #generate_report("morapiaf", PreGeneratedReports.report_morapiaf, '2013')
 run_thread("morapiaf", PreGeneratedReports.report_morapiaf, '2013')

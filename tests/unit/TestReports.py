@@ -311,8 +311,9 @@ class TestReportBuilderService(unittest.TestCase):
 
     def setUp(self):
         (self.db, self.col) = create_mock_for_db()
-        self.service = ReportBuilderService(self.db)
+        self.service = ReportBuilderService()
         self.empty_report_request = {'name':'report', 'keywords':[]}
+        self.service.set_save_stats_service(mock())
 
     def test_when_generating_a_report_service_calls_all_reports_module(self):
         report_module = mock()
@@ -336,6 +337,7 @@ class TestReportBuilderService(unittest.TestCase):
 
     def test_when_bukider_has_no_filters_description_is_empty(self):
         desc = self.service.descriptions_from_filters()
+        print desc
         self.assertEqual(len(desc), 0)
 
     def test_when_builder_has_filter_Service_with_two_filters_description_has_two_strings(self):

@@ -5,6 +5,10 @@ __author__ = 'Javier'
 from datetime import datetime
 from LaBSKApi.modelobjects import ThreadModel, ReportModel, ReportQueryModel
 from presenter.ReportPresenter import ReportResult
+# Too much dependencies
+from LaBSKApi.MongoDB import MongoDB
+from PlanetaLudico import PlanetaLudicoReport
+from LaBSKApi.LaBSK import LaBSKReportBuilder
 
 
 class PreGeneratedReports(object):
@@ -338,7 +342,10 @@ class FilteringService(object):
         return entries
 
     def descriptions_from_filters(self):
-        return [str(filter) for filter in self.filters]
+        result = [str(filter) for filter in self.filters]
+        if result is None:
+            return []
+        return result
 
 
 class FilteringServiceFactory():
@@ -371,10 +378,10 @@ class ReportBuilderService(object):
         In other case, there is no filtering
     """
 
-    def __init__(self, db, filter_service = FilteringService()):
+    def __init__(self, filter_service = FilteringService()):
         self.report_modules = []
-        self.db = db
-        self.save_stats = SaveReportStatsService(db)
+        #self.db = db
+        self.save_stats = None
         self.sorting_service = SortService()
         self.filter_service = filter_service
 
@@ -383,6 +390,9 @@ class ReportBuilderService(object):
 
     def set_filter_service(self, fs):
         self.filter_service = fs
+
+    def set_save_stats_service(self, service):
+        self.save_stats = service
 
     def build_report(self, report_request):
         report = self._create_empty_report(report_request)
@@ -419,3 +429,13 @@ class ReportBuilderService(object):
     def descriptions_from_filters(self):
         return self.filter_service.descriptions_from_filters()
 
+
+class ReportBuilderServiceFactory(object):
+
+    @staticmethod
+    def create_service_with_all_modules():
+        service = ReportBuilderService()
+        service.add_module(LaBSKReportBuilder(ReportBuilder(MongoDB(col=MongoDB.COL_LABSK))))
+        service.add_module(PlanetaLudicoReport(ReportBuilder(MongoDB(col=MongoDB.COL_BLOGS))))
+        service.set_save_stats_service(SaveReportStatsService(MongoDB(col=MongoDB.COL_REPORT_STATS)))
+        return service
