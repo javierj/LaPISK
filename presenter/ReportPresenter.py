@@ -98,29 +98,6 @@ class ReportPresenter(object):
         result.addText(u"Mensajes encontrados: " + str(msgs))
         return result
 
-"""
-class ReportAndStats(object):
-
-    def __init__(self, report=None, stats=None):
-        self.thereport = report
-        self.stat = stats
-
-    @property
-    def report(self):
-        return self.thereport
-
-    @report.setter
-    def report(self, value):
-        self.thereport = value
-
-    @property
-    def report_stats(self):
-        return self.stat
-
-    @report_stats.setter
-    def report_stats(self, value):
-        self.stat = value
-"""
 
 class ReportResult(object):
 
@@ -183,16 +160,13 @@ class ReportBuilderPresenter(object):
             result.addNextText(Text(keyword))
         return result
 
-    # Duplicate code. Report services return stats.
+    # Untested
     def generateStats(self, reportDescription, report_json):
-        threads = 0
-        msgs = 0
+        count = 0
         report_obj = ReportModel(report_json)
         for key in reportDescription['keywords']:
-            for thread_obj in report_obj.threads_in(key):
-                threads += 1
-                msgs += thread_obj.msg_count()
+            count += report_obj.count_entries_in(key)
 
-        result = Text(u"Asuntos encontrados: " + str(threads))
-        result.addText(u"Mensajes encontrados: " + str(msgs))
+        result = Text(u"Resultados encontrados: " + str(count))
+        #result.addText(u"Mensajes encontrados: " + str(msgs))
         return result

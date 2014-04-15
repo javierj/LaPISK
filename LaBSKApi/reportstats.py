@@ -84,8 +84,8 @@ class ReportStats(object):
 
     def merge(self, stats):
         self._blogs += stats._blogs
-        self._msgs += self._msgs
-        self._threads += self._threads
+        self._msgs += stats._msgs
+        self._threads += stats._threads
 
     def json(self):
         return {'threads':str(self._threads), 'msgs':str(self._msgs), 'blogs':str(self._blogs)}

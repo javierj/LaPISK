@@ -9,7 +9,7 @@ from LaBSKApi.reports import ReportBuilder, PreGeneratedReports, \
     FilteringService, FilterMsgYear, FilterEntryYear, SortService
 from mockito import mock, verify, when, any
 from presenter.ReportPresenter import ReportResult
-from LaBSKApi.modelobjects import ThreadModel, ReportQueryModel
+from LaBSKApi.modelobjects import ThreadModel, ReportQueryModel, ReportEntriesModel
 from LaBSKApi.PlanetaLudico import BlogEntry
 
 
@@ -315,18 +315,24 @@ class TestReportBuilderService(unittest.TestCase):
         self.empty_report_request = {'name':'report', 'keywords':[]}
         self.service.set_save_stats_service(mock())
 
-    def test_when_generating_a_report_service_calls_all_reports_module(self):
+    def test_when_create_empty_report_an_entrymodel_object_is_created(self):
+        result = self.service._create_empty_report(self.empty_report_request)
+        self.assertIsInstance(result, ReportEntriesModel)
+
+    def test_when_generating_a_report_service_calls_all_reports_module_with_entry_reoport_object(self):
         report_module = mock()
         self.service.add_module(report_module)
         self.service.build_report(self.empty_report_request)
         #empty_report = {}
         #empty_ststa = ReportStats()
-        verify(report_module).build_report(self.empty_report_request, any(), any())
+        verify(report_module).build_report(self.empty_report_request, any(ReportEntriesModel), any())
 
+    """
     def test__build_empty_report_with_all_keywords(self):
         result = self.service._create_empty_report(Reports.asylum_report_request)
         for word in Reports.asylum_report_request['keywords']:
             self.assertIn(word, result)
+    """
 
     def test_when_building_report_save_stats(self):
         self.service.save_stats = mock()

@@ -91,6 +91,8 @@ class BlogEntry(object):
     def year(self):
         #  "date": "21 marzo, 2014",
         s = re.search('([0-9][0-9]) (.*), ([0-9][0-9][0-9][0-9])', self._json['date'])
+        if s is None or s.groups < 3:
+            print "BlogEntry.year - RE invalid for date in: " + self._json
         return int(s.group(3))
 
     def has_msgs(self):
@@ -110,15 +112,16 @@ class PlanetaLudicoReport(object):
     def __init__(self, builder = None):
         self._report_builder = builder
 
-    def build_report(self, report_request, report, stats):
+    def build_report(self, report_request, report_obj, stats):
         """ This mehtods search for ocurrences of the key words y reporr reest in
             the information from PlanetaLudico blogs and tores them in report updatind stats object
         """
         report_result = self._report_builder.build_report(report_request)
         new_stats = ReportStats()
         for keyword in report_request['keywords']:
+            print report_result[keyword]
             for entry in report_result[keyword]:
-                report[keyword].append(BlogEntry(entry))
+                report_obj.add_entry(keyword, BlogEntry(entry))
             new_stats.inc_blogs(len(report_result[keyword]))
         # Merge stats
         stats.merge(new_stats)

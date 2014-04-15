@@ -91,9 +91,13 @@ class TestReportStats(unittest.TestCase):
     def test_merge_stats_no_empty(self):
         stats_acum = ReportStats()
         stats_acum.inc_threads()
+        stats_acum.inc_msgs(3)
+        stats_acum.inc_blogs(3)
         stats = ReportStats()
         stats.inc_threads()
+        stats.inc_msgs(2)
+        stats.inc_blogs(4)
         stats_acum.merge(stats)
-        self.assertEqual(str(stats_acum), "2, 0, 0")
-        self.assertEqual(str(stats), "1, 0, 0")
+        self.assertEqual(str(stats_acum), "2, 5, 7")
+        self.assertEqual(str(stats), "1, 2, 4")
 

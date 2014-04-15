@@ -3,7 +3,7 @@ from LaBSKApi.reportstats import ReportStats
 __author__ = 'Javier'
 
 from datetime import datetime
-from LaBSKApi.modelobjects import ThreadModel, ReportModel, ReportQueryModel
+from LaBSKApi.modelobjects import ThreadModel, ReportModel, ReportQueryModel, ReportEntriesModel
 from presenter.ReportPresenter import ReportResult
 # Too much dependencies
 from LaBSKApi.MongoDB import MongoDB
@@ -289,7 +289,7 @@ class FilterMsgYear(object):
         msgs = []
         for msgobj in report_entry.msgs_objs():
             if msgobj.year() > self._year:
-                print "Add"
+                #print "Add"
                 msgs.append(msgobj)
         report_entry.replace_msgs_objs(msgs)
         return True
@@ -395,17 +395,20 @@ class ReportBuilderService(object):
         self.save_stats = service
 
     def build_report(self, report_request):
-        report = self._create_empty_report(report_request)
+        """ This mehtod should return a json ???"""
+        report_obj = self._create_empty_report(report_request)
+        #report_obj = ReportModel(report_json)
         report_query = ReportQueryModel(report_request)
         stats = ReportStats()
         for module in self.report_modules:
-            module.build_report(report_request, report, stats)
+            module.build_report(report_request, report_obj, stats)
         self._save_stats(report_query.name(), stats)
-        self._filter_report(report_query, report)
-        self.sorting_service.sort_report(report_query.keywords(), report)
-        return ReportResult(report, stats)
+        self._filter_report(report_query, report_obj)
+        self.sorting_service.sort_report(report_query.keywords(), report_obj)
+        return ReportResult(report_obj, stats)
 
     def _create_empty_report(self, report_request):
+        """
         report = dict()
         if 'name' in report_request:
             report['title'] = "Result for report " + report_request['name']
@@ -417,6 +420,16 @@ class ReportBuilderService(object):
 
         for keyword in report_request['keywords']:
             report[keyword] = []
+        """
+
+        report = ReportEntriesModel()
+        if 'name' in report_request:
+            report.set_title("Result for report " + report_request['name'])
+        else:
+            report.set_title("Result for report.")
+
+        now = datetime.now()
+        report.set_report_date( str(datetime.date(now)) +", " + str(now.hour) + ":" + str(now.minute) )
 
         return report
 

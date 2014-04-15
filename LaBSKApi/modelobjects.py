@@ -48,6 +48,9 @@ class ReportQueryModel(object):
 
 
 class ReportModel(object):
+    """ Deprecated. Try to use ReportEntriesModel
+    """
+
     def __init__(self, json):
         self.jsondoc = json
 
@@ -68,8 +71,56 @@ class ReportModel(object):
         threads = [ThreadModel(t) for t in self.jsondoc[key]]
         return threads
 
+    # Untested
+    def count_entries_in(self, key):
+        return len(self.jsondoc[key])
+
     def set_threads_to(self, keyw, threads):
         self.jsondoc[keyw] = threads
+
+    # Untested
+    def add_thread(self, key, thread):
+        self.jsondoc[key].append(thread)
+
+
+class ReportEntriesModel(object):
+    """ This class sores entries (thredas and blogs) modeled as objects
+        This class replaces the ReportModel class
+
+        # Untested class
+    """
+
+    def __init__(self):
+        self.report= dict()
+        self._title = ""
+        self._report_date = ""
+
+    def json(self):
+        return "No implemented yet"
+
+    def set_title(self, title):
+        self._title = title
+
+    def set_report_date(self, report_date):
+        self._report_date = report_date
+
+    def entries_in(self, key):
+        return self.report[key]
+
+    def count_entries_in(self, key):
+        return len(self.report[key])
+
+    def set_entries_to(self, keyw, threads):
+        self.report[keyw] = threads
+
+    def add_entry(self, key, thread):
+        if key not in self.report:
+            self.report[key] = []
+        self.report[key].append(thread)
+
+    # Tesing only
+    def size(self):
+        return len(self.report)
 
 
 class MsgModel(object):
@@ -143,7 +194,7 @@ class ThreadModel(object):
             because LaNSK doses not count the first answer
         """
         if 'answers' not in self.jsondoc:
-            return self.msgs.size() -1
+            return self.msgs.size() - 1
         return int(self.jsondoc['answers'])
 
     def set_answers(self, a):
@@ -180,11 +231,6 @@ class ThreadModel(object):
     def msg_count(self):
         return self.msgList().size()
 
-    """
-    def replace_msgs(self, msgs):
-        self.jsondoc['msgs'] = msgs.json()
-    """
-
     def firstmsg(self):
         #print "Fisrt msg: ", self.jsondoc['msgs']
         #return MsgModel(self.jsondoc['msgs'][0])
@@ -207,7 +253,7 @@ class ThreadModel(object):
     def replace_msgs_objs(self, msgs_objs):
         msgs = []
         for msg_obj in msgs_objs:
-            msgs.append(msg_obj.json() )
+            msgs.append(msg_obj.json())
         self.jsondoc['msgs'] = msgs
         self.msgs = MsgListModel(self.jsondoc['msgs'])
 
@@ -271,10 +317,8 @@ class MsgListModel(object):
         """
         result = list()
         for msg in self.jsondoc:
-            #print "Before: ", msg['body']
             result_msg = msg.copy()
             new_msg = msg['body'].replace("\n", newline)
-            #print "After: ", new_msg
             result_msg['body'] = new_msg
             result.append(result_msg)
         self.jsondoc = result

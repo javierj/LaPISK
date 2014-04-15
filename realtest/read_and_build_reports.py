@@ -79,7 +79,7 @@ threads.setListener(listener)
 threads.setPageLimit(1)
 threads.setMsgPageLimit(250)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
 
-"""
+
 threads.scrapListOfURL(labsk_urls)
 delta = datetime.now() - starttime
 
@@ -98,9 +98,8 @@ blogs.setListener(listener)
 blogs.scrapListOfURL(planetaludico_urls)
 
 print "----------------------------------------------"
-#print "Total time: ", delta
 print str(listener)
-"""
+
 
 #------------------------------------------------
 # Build reports
@@ -131,13 +130,13 @@ def create_builder_new(filter_year):
 
 
 def generate_report(name, report_schema, filter_criterion=None):
-    #builder = create_builder()
-    builder = create_builder_new(filter_criterion)
+    builder = create_builder()
+    #builder = create_builder_new(filter_criterion)
     text = Text()
     env = Environment(loader=FileSystemLoader('../webgui/templates'))
     template = env.get_template("_static_report.html")
-    #result = builder.report_and_stats(report_schema, filter_year=filter_criterion)
-    result = builder.report_and_stats(report_schema)
+    result = builder.report_and_stats(report_schema, filter_year=filter_criterion)
+    #result = builder.report_and_stats(report_schema)
     text.change_newline_in_report(report_schema['keywords'], result.report)
     xhtml = template.render(keywords=report_schema['keywords'],
                             report=result.report,
@@ -154,13 +153,6 @@ def run_thread(name, report_schema, filter_threads=None):
     thread.start()
     #thread.join()
 
-"""
-#generate_report("hootboardgame", PreGeneratedReports.report_hootboardgame)
-#generate_report("asylum_games", PreGeneratedReports.report_asylum_games)
-#run_thread("devir", PreGeneratedReports.report_devir, '2013')
-#generate_report("ludonova", PreGeneratedReports.report_ludonova, '2013')
-# generate_report("asmodee", PreGeneratedReports.report_asmodee, '2013')
-"""
 
 run_thread("hootboardgame", PreGeneratedReports.report_hootboardgame)
 run_thread("asylum_games", PreGeneratedReports.report_asylum_games)

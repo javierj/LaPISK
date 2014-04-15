@@ -4,6 +4,7 @@ __author__ = 'Javier'
 
 import unittest
 from LaBSKApi.PlanetaLudico import PlanetaLudicoReport, BlogEntry
+from LaBSKApi.modelobjects import ReportModel, ReportEntriesModel
 from mockito import mock, when
 from datetime import datetime
 
@@ -36,10 +37,9 @@ class TestPlanetaLudicoReport(unittest.TestCase):
      u'date': u'2 abril, 2014'}]}
 
     def setUp(self):
-        self.report = {}
+        self.report = ReportEntriesModel()
         self.stats = ReportStats()
         self.plr = PlanetaLudicoReport()
-        self.report['madeira'] = []
         self.madeira_request = {'name': 'Planeta Ludico demo',
                                 'keywords': ["madeira"]}
         self.rb = mock()
@@ -47,16 +47,16 @@ class TestPlanetaLudicoReport(unittest.TestCase):
 
         self.plr._report_builder = self.rb
 
-    def test_when_no_enties_report_and_stats_remains_unmodified(self):
-        when(self.rb).build_report(self.madeira_request).thenReturn(self.report)
+    def test_when_no_entries_report_and_stats_remains_unmodified(self):
+        when(self.rb).build_report(self.madeira_request).thenReturn({'madeira': []})
 
         self.plr.build_report(self.madeira_request, self.report, self.stats)
-        self.assertEqual(self.report, {'madeira': []})
+        self.assertEqual(self.report.size(), 0)
         self.assertEqual(str(self.stats), "0, 0, 0")
 
     def test_when_two_entries_are_found_return_entries(self):
         self.plr.build_report(self.madeira_request, self.report, self.stats)
-        self.assertEqual(len(self.report['madeira']), 2)
+        self.assertEqual(self.report.count_entries_in('madeira'), 2)
 
     def test_when_two_entries_are_found_blog_stats_are_incremented(self):
         self.plr.build_report(self.madeira_request, self.report, self.stats)
@@ -64,7 +64,7 @@ class TestPlanetaLudicoReport(unittest.TestCase):
 
     def test_all_objects_from_report_are_from_class_(self):
         self.plr.build_report(self.madeira_request, self.report, self.stats)
-        for object in self.report['madeira']:
+        for object in self.report.entries_in('madeira'):
             self.assertIsInstance(object, BlogEntry)
 
 if __name__ == '__main__':
