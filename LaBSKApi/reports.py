@@ -326,8 +326,8 @@ class FilteringService(object):
 
     def filter_report(self, report_query, report_objects):
         for kword in report_query.keywords():
-            entries = self._select_entries(report_objects[kword])
-            report_objects[kword] = entries
+            entries = self._select_entries(report_objects.entries_in(kword))
+            report_objects.set_entries_to(kword, entries)
 
     def _select_entries(self, report_objects):
         entries = []
@@ -366,8 +366,9 @@ class SortService(object):
     """
     def sort_report(self, keywords, report_object):
         for kword in keywords:
-            entries = report_object[kword]
-            report_object[kword] = sorted(entries, key=lambda t: t.date_as_datetime(), reverse=True)
+            entries = report_object.entries_in(kword)
+            new_entries = sorted(entries, key=lambda t: t.date_as_datetime(), reverse=True)
+            report_object.set_entries_to(kword, new_entries)
 
 
 class ReportBuilderService(object):
@@ -405,7 +406,7 @@ class ReportBuilderService(object):
         self._save_stats(report_query.name(), stats)
         self._filter_report(report_query, report_obj)
         self.sorting_service.sort_report(report_query.keywords(), report_obj)
-        return ReportResult(report_obj, stats)
+        return ReportResult(report_obj.json(), stats)
 
     def _create_empty_report(self, report_request):
         """

@@ -18,10 +18,14 @@ class TestBlogEntry(unittest.TestCase):
     def test_year(self):
         entry = BlogEntry({'date':'23 Noviembre, 2012'})
         self.assertEqual(entry.year(), 2012)
+        entry = BlogEntry({'date':'3 Noviembre, 2012'})
+        self.assertEqual(entry.year(), 2012)
 
     def test_date_as_datetime(self):
         entry = BlogEntry({'date':'23 Noviembre, 2012'})
         self.assertEqual(entry.date_as_datetime(), datetime(2012, 11, 23))
+        entry = BlogEntry({'date':'2 Noviembre, 2012'})
+        self.assertEqual(entry.date_as_datetime(), datetime(2012, 11, 2))
 
 
 class TestPlanetaLudicoReport(unittest.TestCase):

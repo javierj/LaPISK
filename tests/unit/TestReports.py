@@ -20,12 +20,10 @@ def create_mock_for_db():
     return (mongo, col)
 
 def transtale_report_into_threads(report_query, report):
-    new_report = {}
+    new_report = ReportEntriesModel()
     for kword in report_query['keywords']:
-        threads = []
         for thread in report[kword]:
-            threads.append(ThreadModel(thread))
-        new_report[kword] = threads
+            new_report.add_entry(kword, ThreadModel(thread))
     return new_report
 
 
@@ -48,7 +46,6 @@ class TestReportBuilder(unittest.TestCase):
 
     def test_when_report_has_keywords_calls_hreads(self):
         self.builder.build_report(self.report)
-
         self.assertEquals(self.mock.threadscalled, 1)
 
     def test_report_has_title(self):
@@ -64,7 +61,6 @@ class TestReportBuilder(unittest.TestCase):
     def test_when_add_first_therad_report_contains_the_keyword(self):
         self.builder._add_thead_to_report('key', self.thread)
         result = self.builder.report
-
         self.assertIn(self.keyword, result)
         self.assertLen(1, result[self.keyword])
 
@@ -72,18 +68,15 @@ class TestReportBuilder(unittest.TestCase):
         self.builder._add_thead_to_report(self.keyword, self.thread)
         self.builder._add_thead_to_report(self.keyword, self.thread)
         result = self.builder.report
-
         self.assertLen(2, result[self.keyword])
 
     def test_when_keyword_is_foun_in_therad_titles_then_msgs_are_not_added(self):
         self.builder._find_keywords(self.thread, ['key'])
-        #self.builder._add_thead_to_report('key', self.thread)
         keyline = self.builder.report[self.keyword][0]
         self.assertNotIn('msgs', keyline)
 
     def test_words_are_searched_in_title_ignoring_case(self):
         self.thread['title']= self.keyword.lower()
-
         self.builder._add_thead_to_report(self.keyword.upper(), self.thread)
         result = self.builder.report
         self.assertIn(self.keyword.upper(), result)
@@ -319,20 +312,15 @@ class TestReportBuilderService(unittest.TestCase):
         result = self.service._create_empty_report(self.empty_report_request)
         self.assertIsInstance(result, ReportEntriesModel)
 
+    def test_report_is_returned_as_json(self):
+        result = self.service.build_report(self.empty_report_request)
+        self.assertIsInstance(result.report, dict)
+
     def test_when_generating_a_report_service_calls_all_reports_module_with_entry_reoport_object(self):
         report_module = mock()
         self.service.add_module(report_module)
         self.service.build_report(self.empty_report_request)
-        #empty_report = {}
-        #empty_ststa = ReportStats()
         verify(report_module).build_report(self.empty_report_request, any(ReportEntriesModel), any())
-
-    """
-    def test__build_empty_report_with_all_keywords(self):
-        result = self.service._create_empty_report(Reports.asylum_report_request)
-        for word in Reports.asylum_report_request['keywords']:
-            self.assertIn(word, result)
-    """
 
     def test_when_building_report_save_stats(self):
         self.service.save_stats = mock()
@@ -367,37 +355,37 @@ class TestReportFilteringService(unittest.TestCase):
     def test_when_filtering_without_filter_result_is_teh_same(self):
         self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
         expected = transtale_report_into_threads(Reports.asylum_report_request, Reports.get_asylum_report())
-        self.assertEqual(len(self.asylum_report['Polis']), len(expected['Polis']))
+        self.assertEqual(self.asylum_report.count_entries_in('Polis'), expected.count_entries_in('Polis'))
 
     def test_when_deleting_2012_two_msg_from_polis_is_deleted(self):
         filterMsgYear = FilterMsgYear('2012')
         self.filtering.add_filter(filterMsgYear)
-        polis = self.asylum_report['Polis'][0].msg_count()
+        polis = self.asylum_report.entries_in('Polis')[0].msg_count()
 
         self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
-        self.assertEqual(self.asylum_report['Polis'][0].msg_count(), (polis-2))
+        self.assertEqual(self.asylum_report.entries_in('Polis')[0].msg_count(), (polis-2))
 
     def test_when_deleting_2013_all_therads_from_polis_are_deleted(self):
         self.filtering.add_filter(FilterEntryYear('2013'))
 
         self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
-        self.assertEqual(len(self.asylum_report['Polis']), 0)
+        self.assertEqual(self.asylum_report.count_entries_in('Polis'), 0)
 
     def test_deleing_threads_and_blog_entries(self):
         blog_entry = BlogEntry({"date": "21 marzo, 2013"})
-        self.asylum_report['Polis'].append(blog_entry)
+        self.asylum_report.add_entry('Polis', blog_entry)
         self.filtering.add_filter(FilterEntryYear('2013'))
 
         self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
-        self.assertEqual(len(self.asylum_report['Polis']), 0)
+        self.assertEqual(self.asylum_report.count_entries_in('Polis'), 0)
 
     def test_deleing_threads_and_blog_entries_no_deletes(self):
         blog_entry = BlogEntry({"date": "21 marzo, 2013"})
-        self.asylum_report['Polis'].append(blog_entry)
+        self.asylum_report.add_entry('Polis', blog_entry)
         self.filtering.add_filter(FilterEntryYear('2012'))
 
         self.filtering.filter_report(self.asylum_report_query, self.asylum_report)
-        self.assertEqual(len(self.asylum_report['Polis']), 2)
+        self.assertEqual(self.asylum_report.count_entries_in('Polis'), 2)
 
 
 class TestFilterMsgYear(unittest.TestCase):
@@ -462,6 +450,12 @@ class TestSortingService(unittest.TestCase):
         Nor the sorting has moved to a comlete service
     """
 
+    def title(self, report, index):
+        return report.entries_in('key')[index].title()
+
+    def report_append(self, report_obj, enttry_json):
+        report_obj.add_entry('key', BlogEntry(enttry_json))
+
     def setUp(self):
         self.service = SortService()
         self.report = {'name': "TestReport", 'keywords': ['key', 'word']}
@@ -473,8 +467,8 @@ class TestSortingService(unittest.TestCase):
                            {'title':'a', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]}]}
         report_obj = transtale_report_into_threads({'keywords':['key']}, report)
         self.service.sort_report(['key'], report_obj)
-        self.assertEqual(report_obj['key'][0].title(), "a")
-        self.assertEqual(report_obj['key'][1].title(), "b")
+        self.assertEqual(self.title(report_obj, 0), "a")
+        self.assertEqual(self.title(report_obj, 1), "b")
 
     def test_sorts_threads_by_second(self):
         report = {'key': [{'title': 'b', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:36 am \xbb'}]},
@@ -482,7 +476,7 @@ class TestSortingService(unittest.TestCase):
         report_obj = transtale_report_into_threads({'keywords':['key']}, report)
         self.service.sort_report(['key'], report_obj)
         self.assertGoesFirst(report_obj, "a")
-        self.assertEqual(report_obj['key'][1].title(), "b")
+        self.assertEqual(self.title(report_obj, 1), "b")
 
     def test_sorts_threads_by_creation_date_and_moth(self):
         report = {'key': [{'title': 'b', 'msgs': [{'date': u' 21 de Noviembre de 2012, 10:28:38 am \xbb'}]},
@@ -490,7 +484,7 @@ class TestSortingService(unittest.TestCase):
         report_obj = transtale_report_into_threads({'keywords':['key']}, report)
         self.service.sort_report(['key'], report_obj)
         self.assertGoesFirst(report_obj, "a")
-        self.assertEqual(report_obj['key'][1].title(), "b")
+        self.assertEqual(self.title(report_obj, 1), "b")
 
     def test_sorts_threads_by_creation_date_year(self):
         report = {'key': [{'title': 'b', 'msgs':[{'date':u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}]},
@@ -498,7 +492,7 @@ class TestSortingService(unittest.TestCase):
         report_obj = transtale_report_into_threads({'keywords':['key']}, report)
         self.service.sort_report(['key'], report_obj)
         self.assertGoesFirst(report_obj, "a")
-        self.assertEqual(report_obj['key'][1].title(), "b")
+        self.assertEqual(self.title(report_obj, 1).title(), "B")
 
     def test_sorts_threads_by_creation_date_without_date(self):
         report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}],
@@ -507,7 +501,7 @@ class TestSortingService(unittest.TestCase):
         report_obj = transtale_report_into_threads({'keywords':['key']}, report)
         self.service.sort_report(['key'], report_obj)
         self.assertGoesFirst(report_obj, "a")
-        self.assertEqual(report_obj['key'][1].title(), "b")
+        self.assertEqual(self.title(report_obj, 1), "b")
 
     # Test con entradas de blog
 
@@ -516,37 +510,34 @@ class TestSortingService(unittest.TestCase):
                             'link': "Test data"},
                            {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
         report_obj = transtale_report_into_threads({'keywords':['key']}, report)
-        entry = BlogEntry({'date':'23 Noviembre, 2012'})
-        report_obj['key'].append(entry)
+        self.report_append(report_obj, {'date':'23 Noviembre, 2012'})
         self.service.sort_report(['key'], report_obj)
-        self.assertEqual(report_obj['key'][1].title(), "a")
-        self.assertEqual(report_obj['key'][2].title(), "b")
+        self.assertEqual(self.title(report_obj, 1), "a")
+        self.assertEqual(self.title(report_obj, 2), "b")
 
     def test_sorts_threads_and_blog_entry_goes_last(self):
         report = {'key': [ {'title':'b', 'msgs':[{'date':u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}],
                             'link': "Test data"},
                            {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
         report_obj = transtale_report_into_threads({'keywords':['key']}, report)
-        entry = BlogEntry({'date':'23 Noviembre, 2010'})
-        report_obj['key'].append(entry)
+        report_obj.add_entry('key', BlogEntry({'date':'23 Noviembre, 2010'}))
         self.service.sort_report(['key'], report_obj)
         self.assertGoesFirst(report_obj, "a")
-        self.assertEqual(report_obj['key'][1].title(), "b")
+        self.assertEqual(self.title(report_obj, 1), "b")
 
     def test_sorts_threads_and_blog_entry_goes_in_the_middle(self):
         report = {'key': [ {'title': 'b', 'msgs': [{'date': u' 21 de Diciembre de 2011, 10:28:38 am \xbb'}],
                             'link': "Test data"},
                            {'title':'a', 'msgs':[{'date':u' 21 de Noviembre de 2012, 10:18:38 am \xbb'}]}]}
         report_obj = transtale_report_into_threads({'keywords':['key']}, report)
-        entry = BlogEntry({'date':'23 Enero, 2012'})
-        report_obj['key'].append(entry)
+        self.report_append(report_obj, {'date':'23 Enero, 2012'})
         self.service.sort_report(['key'], report_obj)
         self.assertGoesFirst(report_obj, "a")
-        self.assertEqual(report_obj['key'][2].title(), "b")
+        self.assertEqual(self.title(report_obj, 2), "b")
 
 
     def assertGoesFirst(self, report, title):
-        self.assertEqual(report['key'][0].title(), title)
+        self.assertEqual(self.title(report, 0), title)
 
 if __name__ == '__main__':
     unittest.main()

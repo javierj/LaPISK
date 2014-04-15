@@ -19,6 +19,10 @@ class DateManager(object):
              "Diciembre": 12
     }
 
+    @staticmethod
+    def month_index(month_name):
+        return DateManager.meses[month_name.title()]
+
     def __init__(self, now = datetime.now):
         self.now = now
 
@@ -92,11 +96,14 @@ class ReportEntriesModel(object):
 
     def __init__(self):
         self.report= dict()
-        self._title = ""
-        self._report_date = ""
+        self._title = "No title"
+        self._report_date = "No date"
 
     def json(self):
-        return "No implemented yet"
+        json = {'title': self._title, 'report_date': self._report_date}
+        for key, entries in self.report.items():
+            json[key] = [entry.json() for entry in entries]
+        return json
 
     def set_title(self, title):
         self._title = title
@@ -105,6 +112,10 @@ class ReportEntriesModel(object):
         self._report_date = report_date
 
     def entries_in(self, key):
+        if key not in self.report:
+            print "Key " + key + " is not in this report."
+            print self.report
+            return []
         return self.report[key]
 
     def count_entries_in(self, key):

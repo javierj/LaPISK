@@ -8,6 +8,7 @@ from LaBSKApi.modelobjects import DateManager
 import re
 from datetime import datetime
 
+
 class PlanetaLudicoScrap(object):
 
     def __init__(self, col):
@@ -85,14 +86,17 @@ class BlogEntry(object):
     def __init__(self, jsondoc):
         self._json = jsondoc
 
+    def _split_date(self):
+        return re.search('([0-9]+) (.*), ([0-9][0-9][0-9][0-9])', self._json['date'])
+
     def json(self):
         return self._json
 
     def year(self):
         #  "date": "21 marzo, 2014",
-        s = re.search('([0-9][0-9]) (.*), ([0-9][0-9][0-9][0-9])', self._json['date'])
+        s = self._split_date()
         if s is None or s.groups < 3:
-            print "BlogEntry.year - RE invalid for date in: " + self._json
+            print "BlogEntry.year - RE invalid for date in: " + str(self._json)
         return int(s.group(3))
 
     def has_msgs(self):
@@ -102,14 +106,16 @@ class BlogEntry(object):
         return False
 
     def date_as_datetime(self):
-        #([EFMAJSOND].+)
-        s = re.search('([0-9][0-9]) (.*), ([0-9][0-9][0-9][0-9])', self._json['date'])
-        return datetime( int(s.group(3)), DateManager.meses[s.group(2)], int(s.group(1)) )
+        s = self._split_date()
+        if s is None:
+            print "date_as_datetime() - No RE for ", self._json['date']
+            print "Full doc: ", self._json
+        return datetime(int(s.group(3)), DateManager.month_index(s.group(2)), int(s.group(1)))
 
 
 class PlanetaLudicoReport(object):
 
-    def __init__(self, builder = None):
+    def __init__(self, builder=None):
         self._report_builder = builder
 
     def build_report(self, report_request, report_obj, stats):
@@ -119,7 +125,7 @@ class PlanetaLudicoReport(object):
         report_result = self._report_builder.build_report(report_request)
         new_stats = ReportStats()
         for keyword in report_request['keywords']:
-            print report_result[keyword]
+            #print report_result[keyword]
             for entry in report_result[keyword]:
                 report_obj.add_entry(keyword, BlogEntry(entry))
             new_stats.inc_blogs(len(report_result[keyword]))

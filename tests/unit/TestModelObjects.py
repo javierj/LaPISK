@@ -1,7 +1,8 @@
 __author__ = 'Javier'
 
 import unittest
-from LaBSKApi.modelobjects import ReportModel, ThreadModel, MsgListModel, MsgModel, DateManager
+from LaBSKApi.modelobjects import ReportModel, ThreadModel, MsgListModel, MsgModel, DateManager, ReportEntriesModel
+from LaBSKApi.PlanetaLudico import BlogEntry
 from tests.Harness import Reports
 from datetime import datetime
 
@@ -48,7 +49,6 @@ class TestMsgListModel(unittest.TestCase):
     def test_lastmsg_object(self):
         msg_obj = self.msglist.lastmsg_object()
         self.assertEqual(msg_obj.id(), "msg_1169262")
-
 
 
 class TestThreadModel(unittest.TestCase):
@@ -187,6 +187,36 @@ class TestDateManager(unittest.TestCase):
     def test_hoy(self):
         res = DateManager(TestDateManager.mock_hoy).hoy()
         self.assertEqual("1 de Enero de 2014", res)
+
+    def test_month_index(self):
+        self.assertEqual(DateManager.month_index("Enero"), 1)
+        self.assertEqual(DateManager.month_index("enero"), 1)
+
+class TestReportEntriesModel(unittest.TestCase):
+
+    def setUp(self):
+        self.model = ReportEntriesModel()
+
+    def test_to_json_empty_with_title_and_date(self):
+        self.model.set_title("Demo")
+        self.model.set_report_date("Demo date")
+        json = self.model.json()
+        self.assertEqual(json, {'title': "Demo", 'report_date': "Demo date"})
+
+    def test_to_json_empty_with_defailt_title_and_date(self):
+        json = self.model.json()
+        self.assertEqual(json, {'title': "No title", 'report_date': "No date"})
+
+    def test_to_json_with_thead_and_blog(self):
+        thread = ThreadModel({'title':"Demo T"})
+        blog = BlogEntry({'title': "Demo B"})
+        self.model.add_entry("1", thread)
+        self.model.add_entry("2", blog)
+
+        json = self.model.json()
+        #self.assertEqual(json, {'title': "", 'report_date': ""})
+        self.assertEqual(json['1'], [{'title': "Demo T"}])
+        self.assertEqual(json['2'], [{'title': "Demo B"}])
 
 
 if __name__ == '__main__':
