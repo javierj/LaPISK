@@ -55,7 +55,7 @@ class Entry(object):
         self._title = title
         self._date = date
         self._link = link
-        self._source = source
+        self._location = source
 
     @property
     def title(self):
@@ -70,11 +70,12 @@ class Entry(object):
         return self._link
 
     @property
-    def source(self):
-        return self._source
+    def location(self):
+        return self._location
 
     def json(self):
-        return {'title': self._title, 'date': self._date, 'link': self._link, 'source': self._source}
+        return {'title': self._title, 'creation_date': self._date, 'link': self._link,
+                'location': self._location}
 
 
 ######################################################################

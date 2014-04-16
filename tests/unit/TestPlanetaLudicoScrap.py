@@ -40,7 +40,7 @@ class TestPlanetaLudicoScrap(unittest.TestCase):
 
     def test_when_read_an_entry_source_is_the_blog(self):
         result = self.scrap._build_entry(MockKimonoPlanetaLudicoAPI.entry_json)
-        self.assertEqual(result.source,
+        self.assertEqual(result.json()['location'],
                          MockKimonoPlanetaLudicoAPI.entry_json['source']['text'])
 
 
@@ -50,7 +50,7 @@ class TestEntry(unittest.TestCase):
         entry = Entry('title', 'date', 'link', 'source')
         result = entry.json()
         self.assertEqual(entry.json(),
-                         {'title':'title', 'date':'date', 'link':'link', 'source':'source'})
+                         {'title':'title', 'creation_date':'date', 'link':'link', 'location':'source'})
 
 if __name__ == '__main__':
     unittest.main()

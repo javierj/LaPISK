@@ -17,7 +17,8 @@ def create_mock_for_db():
     col = mock()
     mongo = mock()
     when(mongo).report_stats_collection().thenReturn(col)
-    return (mongo, col)
+    return mongo, col
+
 
 def transtale_report_into_threads(report_query, report):
     new_report = ReportEntriesModel()
@@ -273,12 +274,13 @@ class TestSaveReportStatsService(unittest.TestCase):
         (self.mongo, self.col) = create_mock_for_db()
         self.service = SaveReportStatsService(self.mongo)
         self.service._now = MockDatetime()
-        self.empty_report_request = {'name':'report', 'keywords':[]}
-        self.expected_stats_report = {'name':'report', 'stats':[
-            {'date':'2014-1-1', 'threads':'1', 'msgs':'1', 'blogs':'0'}]}
+        self.empty_report_request = {'name': 'report', 'keywords': []}
+        self.expected_stats_report = {'name': 'report', 'stats': [
+            {'date': '2014-1-1', 'threads': '1', 'msgs': '1', 'blogs': '0'}]}
 
     def test_find_stat_with_date_no_delete(self):
-        stats = {u'stats': [{u'date': u'2014-3-22', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}], u'name': u'HootBoardGame'}
+        stats = {u'stats': [{u'date': u'2014-3-22', u'blogs': u'0', u'threads': u'0', u'msgs': u'0'}],
+                 u'name': u'HootBoardGame'}
         stats_len = 1
         self.service._delete_with_date_now(stats)
         self.assertEqual(len(stats['stats']), stats_len)

@@ -582,3 +582,21 @@ class MockKimonoPlanetaLudicoAPI(object):
           "text": u"Mi Juego del Mes"
         }
     }
+
+    report_json =  {'report_date': '2014-04-16, 11:18',
+                    'madeira': [
+                        {'last_msg_date': 'No messages',
+                         u'title': u'The Ambassadors nueva expansi\xf3n para Madeira',
+
+                         u'source': u'Daniel Mayoralas',
+                         u'link': u'http://ludonoticias.com/2014/04/02/ambassadors-nueva-expansion-para-madeira/?utm_source=rss&utm_medium=rss&utm_campaign=ambassadors-nueva-expansion-para-madeira',
+                         u'date': u'2 abril, 2014'},
+                        {'last_msg_date': 'No messages',
+                         u'title': u'Embajadores en Madeira',
+                         'creation_date': 'No messages',
+                         u'source': u'CUBO Magazine', u'link': u'http://cubomagazine.com/?p=13146',
+                         u'date': u'2 abril, 2014', }],
+                    'title': 'Result for report Planeta Ludico demo'}
+
+
+    keywords_reort_json = ['madeira']

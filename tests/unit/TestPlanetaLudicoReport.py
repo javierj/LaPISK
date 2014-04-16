@@ -4,7 +4,8 @@ __author__ = 'Javier'
 
 import unittest
 from LaBSKApi.PlanetaLudico import PlanetaLudicoReport, BlogEntry
-from LaBSKApi.modelobjects import ReportModel, ReportEntriesModel
+from LaBSKApi.modelobjects import ReportEntriesModel
+from tests.Harness import MockKimonoPlanetaLudicoAPI
 from mockito import mock, when
 from datetime import datetime
 
@@ -30,15 +31,7 @@ class TestBlogEntry(unittest.TestCase):
 
 class TestPlanetaLudicoReport(unittest.TestCase):
 
-    madeira_report = {'madeira': [
-                        {'last_msg_date': 'No messages',
-      u'title': u'The Ambassadors nueva expansi\xf3n para Madeira', 'creation_date': 'No messages',
-      u'source': u'Daniel Mayoralas',
-       u'link': u'http://ludonoticias.com/2014/04/02/ambassadors-nueva-expansion-para-madeira/?utm_source=rss&utm_medium=rss&utm_campaign=ambassadors-nueva-expansion-para-madeira',
-       u'date': u'2 abril, 2014'},
-    {'last_msg_date': 'No messages', u'title': u'Embajadores en Madeira',
-     'creation_date': 'No messages', u'source': u'CUBO Magazine', u'link': u'http://cubomagazine.com/?p=13146',
-     u'date': u'2 abril, 2014'}]}
+    madeira_report = MockKimonoPlanetaLudicoAPI.report_json
 
     def setUp(self):
         self.report = ReportEntriesModel()
@@ -70,6 +63,13 @@ class TestPlanetaLudicoReport(unittest.TestCase):
         self.plr.build_report(self.madeira_request, self.report, self.stats)
         for object in self.report.entries_in('madeira'):
             self.assertIsInstance(object, BlogEntry)
+
+    def test_creation_date(self):
+        self.plr.build_report(self.madeira_request, self.report, self.stats)
+        json = self.report.entries_in('madeira')[0].json()
+        date = json['creation_date']
+        print json
+        self.assertEqual(date, "21 marzo, 2014")
 
 if __name__ == '__main__':
     unittest.main()

@@ -6,11 +6,11 @@ from datetime import datetime
 
 class DateManager(object):
     meses = {"Enero": 1,
-         "Febrero": 2,
-         "Marzo": 3,
-         "Abril": 4,
-          "Mayo": 5,
-          "Junio": 6,
+             "Febrero": 2,
+             "Marzo": 3,
+             "Abril": 4,
+             "Mayo": 5,
+             "Junio": 6,
              "Julio": 7,
              "Agosto": 8,
              "Septiembre": 9,
@@ -95,7 +95,7 @@ class ReportEntriesModel(object):
     """
 
     def __init__(self):
-        self.report= dict()
+        self.report = dict()
         self._title = "No title"
         self._report_date = "No date"
 
@@ -113,7 +113,7 @@ class ReportEntriesModel(object):
 
     def entries_in(self, key):
         if key not in self.report:
-            print "Key " + key + " is not in this report."
+            print "ReportEntriesModel - Key " + key + " is not in this report."
             print self.report
             return []
         return self.report[key]
@@ -175,7 +175,7 @@ class MsgModel(object):
             s = re.search('([0-9][0-9]) de (.*) de ([0-9][0-9][0-9][0-9]), a las ([0-9][0-9]):([0-9][0-9]):([0-9][0-9]) ([ap]m)', date)
 
         if s is None:
-            return datetime(1900,1,1, 1, 1, 1)
+            return datetime(1900, 1, 1, 1, 1, 1)
 
         return datetime(int(s.group(3)),
                         DateManager.meses[s.group(2)],
@@ -183,7 +183,7 @@ class MsgModel(object):
                         int(s.group(4)),
                         int(s.group(5)),
                         int(s.group(6))
-        )
+                       )
 
 
 class ThreadModel(object):
@@ -195,7 +195,7 @@ class ThreadModel(object):
         if 'msgs' in self.jsondoc:
             self.msgs = MsgListModel(json['msgs'])
         else:
-            self.msgs =  MsgListModel([])
+            self.msgs = MsgListModel([])
 
     def json(self):
         return self.jsondoc

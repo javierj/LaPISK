@@ -79,7 +79,6 @@ threads.setListener(listener)
 threads.setPageLimit(1)
 threads.setMsgPageLimit(250)  # Nunca bajes este valor o perderas mensajes, al menos mantenlo igual
 
-
 threads.scrapListOfURL(labsk_urls)
 delta = datetime.now() - starttime
 
@@ -91,6 +90,7 @@ print str(listener)
 mr = db.merge('link')
 print str(mr)
 
+
 print "Scrapping planeta ludico"
 blogs = PlanetaLudicoScrap(db.blogs_collection())
 listener = BlogListener()
@@ -99,7 +99,6 @@ blogs.scrapListOfURL(planetaludico_urls)
 
 print "----------------------------------------------"
 print str(listener)
-
 
 #------------------------------------------------
 # Build reports

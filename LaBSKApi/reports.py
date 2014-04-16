@@ -283,8 +283,12 @@ class FilterMsgYear(object):
 
     def filter(self, report_entry):
         """ A filter retusn true if the entry should be not filtered.
+            Return true if, after filtering, there are still messages.
+            Return false in other case.
         """
         if not report_entry.has_msgs():
+            return True
+        if report_entry.msg_count() == 0:
             return True
         msgs = []
         for msgobj in report_entry.msgs_objs():
@@ -292,7 +296,7 @@ class FilterMsgYear(object):
                 #print "Add"
                 msgs.append(msgobj)
         report_entry.replace_msgs_objs(msgs)
-        return True
+        return len(msgs) > 0
 
     def __str__(self):
         return "Se omiten mensajes desde el "+str(self._year)+" o posteriores"
@@ -396,7 +400,8 @@ class ReportBuilderService(object):
         self.save_stats = service
 
     def build_report(self, report_request):
-        """ This mehtod should return a json ???"""
+        """ This mehtod should return a json
+        """
         report_obj = self._create_empty_report(report_request)
         #report_obj = ReportModel(report_json)
         report_query = ReportQueryModel(report_request)
@@ -409,20 +414,6 @@ class ReportBuilderService(object):
         return ReportResult(report_obj.json(), stats)
 
     def _create_empty_report(self, report_request):
-        """
-        report = dict()
-        if 'name' in report_request:
-            report['title'] = "Result for report " + report_request['name']
-        else:
-            report['title'] = "Result for report."
-        # Untested feature
-        now = datetime.now()
-        report['report_date'] = str(datetime.date(now)) +", " + str(now.hour) + ":" + str(now.minute)
-
-        for keyword in report_request['keywords']:
-            report[keyword] = []
-        """
-
         report = ReportEntriesModel()
         if 'name' in report_request:
             report.set_title("Result for report " + report_request['name'])
