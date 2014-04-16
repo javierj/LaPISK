@@ -69,7 +69,7 @@ class TestPlanetaLudicoReport(unittest.TestCase):
         json = self.report.entries_in('madeira')[0].json()
         date = json['creation_date']
         print json
-        self.assertEqual(date, "21 marzo, 2014")
+        self.assertEqual(date, "2 abril, 2014")
 
 if __name__ == '__main__':
     unittest.main()

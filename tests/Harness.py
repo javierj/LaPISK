@@ -590,7 +590,7 @@ class MockKimonoPlanetaLudicoAPI(object):
 
                          u'source': u'Daniel Mayoralas',
                          u'link': u'http://ludonoticias.com/2014/04/02/ambassadors-nueva-expansion-para-madeira/?utm_source=rss&utm_medium=rss&utm_campaign=ambassadors-nueva-expansion-para-madeira',
-                         u'date': u'2 abril, 2014'},
+                         u'creation_date': u'2 abril, 2014'},
                         {'last_msg_date': 'No messages',
                          u'title': u'Embajadores en Madeira',
                          'creation_date': 'No messages',

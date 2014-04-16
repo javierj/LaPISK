@@ -1,8 +1,8 @@
 __author__ = 'Javier'
 
 
-from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
+from flask import Flask, request, g, \
+     render_template
 from presenter.ReportPresenter import ReportPresenter
 from LaBSKApi.reports import PreGeneratedReports
 
@@ -28,6 +28,7 @@ reportPresenter = ReportPresenter()
 stats_module = None
 reportstatspresenter = None
 
+
 def set_stats_module(stats_modl):
     global stats_module
     stats_module = stats_modl
@@ -45,6 +46,7 @@ def register_access(route):
         ip = request.headers['X-Client-Ip']
     stats_mod.register_access_now(str(route), ip)
     # Tambien vale: request.environ['REMOTE_ADDR'] o request.remote_addr
+
 
 def set_reportstats_module(reportstas):
     global reportstatspresenter
@@ -101,6 +103,7 @@ def static_asylum_games():
     register_access(request.path)
     return render_template('static_asylum_games.html')
 
+
 """
 #@app.route("/reports/devir")
 #def static_devir_games():
@@ -149,24 +152,11 @@ def static_morapiaf():
 
 # e-shops
 
-"""
-#@app.route("/reports/tienda_100_doblones")
-#def static_tienda_100_doblones():
-#    register_access(request.path)
-#    return render_template('static_tienda_100_doblones.html')
-"""
-
 @app.route("/reports/tienda_click_and_rol")
 def static_tienda_click_and_rol():
     register_access(request.path)
     return render_template('static_tienda_click_and_rol.html')
 
-"""
-#@app.route("/reports/tienda_dungeon_marvels")
-#def static_tienda_dungeon_marvels():
-#    register_access(request.path)
-#    return render_template('static_tienda_dungeon_marvels.html')
-"""
 
 @app.route("/reports/tienda_evolution_goya")
 def static_tienda_evolution_goya():
